@@ -1,17 +1,15 @@
 # Claude Swift Toolkit
 
-**Comprehensive Swift/macOS development toolkit for Claude Code** — skills, agents, hooks, and commands for SwiftUI, Liquid Glass design, test-driven development, and autonomous project management.
+**Swift/macOS development toolkit for Claude Code** — SwiftUI API references, Liquid Glass design, autonomous UI workflows, and specialized agents for native macOS development.
 
 ## Overview
 
-This plugin provides a complete development environment for Swift/macOS projects in Claude Code, with specialized support for:
+This plugin provides specialized tools for Swift/macOS projects in Claude Code, with focused support for:
 
 - **SwiftUI & Liquid Glass Design**: 8 comprehensive API reference skills covering glass effects, materials, typography, colors, iconography, and more
 - **Autonomous UI Development**: Complete workflow automation from spec to validated implementation
-- **Test-Driven Development**: Rigorous TDD practices with fixtures, mocks, and integration test patterns
-- **Code Quality**: Architecture review, code analysis, systematic debugging, and code review workflows
-- **Project Management**: Plan execution, feature development, git workflows, and branch management
-- **AI-Powered Development**: Subagent-driven development, parallel agent dispatching, and autonomous problem-solving
+- **Specialized Agents**: Domain-specific agents for architecture review, UI development, and code analysis
+- **macOS Native Patterns**: HIG-compliant design, Liquid Glass components, and macOS-first development
 
 ## Installation
 
@@ -43,11 +41,30 @@ Add to your project's `.claude/settings.json`:
 npx skills add kmshdev/claude-swift-toolkit
 ```
 
+## Dependencies
+
+This toolkit works best alongside these recommended plugins:
+
+### Required
+
+- **[obra/superpowers](https://github.com/obra/superpowers)** — Core workflow skills (29K+ installs)
+  - Includes: brainstorming, TDD, systematic debugging, planning, code review, subagent orchestration, verification workflows
+  ```bash
+  npx skills add obra/superpowers -g -y
+  ```
+
+### Recommended
+
+- **[dimillian/skills@swiftui-view-refactor](https://skills.sh/dimillian/skills/swiftui-view-refactor)** — SwiftUI view refactoring (605 installs)
+  ```bash
+  npx skills add dimillian/skills@swiftui-view-refactor -g -y
+  ```
+
 ## Component Inventory
 
 | Component Type | Count | Description |
 |---------------|-------|-------------|
-| **Skills** | 49 | Specialized workflows and API references |
+| **Skills** | 27 | SwiftUI API references, UI workflows, and domain-specific skills |
 | **Agents** | 11 | Task-specific AI agents (architect, reviewer, iOS/macOS developers) |
 | **Commands** | 22 | Quick-access shortcuts for common workflows |
 | **Hooks** | 5 | Event-driven automation (Python scripts) |
@@ -67,33 +84,30 @@ Complete documentation coverage for macOS 26 SwiftUI development:
 - **swiftui-effects-api** — Blur, shadow, opacity, animations
 - **swiftui-presentation-api** — Sheets, popovers, alerts, navigation
 
-### Development Workflows (10+ skills)
+### Development Workflows (4 skills)
 
 - **autonomous-ui-workflow** — Full loop: Spec → Research → Design → Implement → Build → Preview → Validate
-- **test-driven-development** — TDD discipline: write tests first, watch them fail, implement minimally
-- **executing-plans** — Convert markdown plans into executed tasks with verification
-- **systematic-debugging** — Structured problem-solving: reproduce, isolate, hypothesize, validate
 - **code-analyzer** — Deep codebase analysis for patterns, dependencies, and architecture
 - **senior-architect** — High-level system design and technical decision-making
-- **subagent-driven-development** — Orchestrate parallel agents for complex multi-part problems
-- **verification-before-completion** — Never mark tasks complete without proving they work
+- **audit-context-building** — Learn and document new patterns discovered during development
 
-### Apple Design System (3 skills)
+### Apple Design System (6 skills)
 
 - **apple-liquid-glass-design** — Apple's Liquid Glass design language for macOS
 - **macos-app-design** — macOS HIG compliance, native patterns
+- **macos-development** — macOS-specific development patterns
+- **ios-testing** — iOS/macOS testing strategies
 - **swiftui-components** — Reusable component library patterns
+- **swiftui-view-refactor** — View refactoring patterns
 
-### Project Management (8 skills)
+### Project-Specific Skills (6 skills)
 
-- **writing-plans** — Create detailed markdown implementation plans
-- **brainstorming** — Structured ideation for features and architecture
-- **finishing-a-development-branch** — Clean branch completion checklist
-- **using-git-worktrees** — Parallel branch development strategies
-- **audit-context-building** — Learn and document new patterns discovered during development
-- **claude-md-improver** — Enhance project's CLAUDE.md with learned patterns
-- **receiving-code-review** — Process code review feedback systematically
-- **requesting-code-review** — Structure code for effective peer review
+- **neuralforge-chat-sidebar** — NeuralForge project chat sidebar component
+- **neuralforge-main-content** — NeuralForge project main content area
+- **neuralforge-top-navbar** — NeuralForge project top navigation
+- **sidebar-liquid-glass-clone** — Sidebar Liquid Glass design clone
+- **scroll-experience** — Scroll interaction patterns
+- **xcodebuildmcp** / **xcodebuildmcp-cli** — Xcode build integration
 
 ## Key Commands
 
@@ -208,30 +222,17 @@ Fork this repository and modify:
 /review-ui
 ```
 
-### Test-Driven Development
+### Building & Testing
 
 ```bash
 # Run tests first
 /test
 
-# Write feature with TDD
-/feature-dev UserAuthentication
+# Build project
+/build
 
-# Fix failing tests
+# Fix failing builds
 /fix-build
-```
-
-### Planning & Execution
-
-```bash
-# Create implementation plan
-/write-plan docs/plans/feature-x.md
-
-# Execute the plan
-/execute-plan docs/plans/feature-x.md
-
-# Brainstorm solutions
-/brainstorm "How should we handle offline mode?"
 ```
 
 ### Code Quality
@@ -243,9 +244,15 @@ Fork this repository and modify:
 # Refactor a view
 /refactor-view Views/ContentView.swift
 
-# Systematic debugging
-# Trigger via: "Use systematic-debugging skill to fix this crash"
+# Analyze codebase
+# Trigger via: "Use code-analyzer skill to map the architecture"
 ```
+
+**Note**: For TDD, planning, debugging, and git workflows, use [obra/superpowers](https://github.com/obra/superpowers) skills:
+- `/brainstorm` — Ideation (requires obra/superpowers)
+- `test-driven-development` skill — TDD discipline (requires obra/superpowers)
+- `systematic-debugging` skill — Structured debugging (requires obra/superpowers)
+- `writing-plans` / `executing-plans` skills — Planning workflows (requires obra/superpowers)
 
 ## Integration with Kulpt
 
@@ -277,4 +284,4 @@ MIT License — use freely, attribute if you share publicly.
 
 ---
 
-**Status**: Production-ready. 49 skills, 11 agents, 22 commands, 5 hooks — battle-tested in real SwiftUI/macOS development.
+**Status**: Production-ready. 27 skills, 11 agents, 22 commands, 5 hooks — battle-tested in real SwiftUI/macOS development. Works best with [obra/superpowers](https://github.com/obra/superpowers) for complete workflow coverage.
