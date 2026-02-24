@@ -64,7 +64,7 @@ This toolkit works best alongside these recommended plugins:
 
 | Component Type | Count | Description |
 |---------------|-------|-------------|
-| **Skills** | 27 | SwiftUI API references, UI workflows, and domain-specific skills |
+| **Skills** | 20 | SwiftUI API references, UI workflows, and domain-specific skills |
 | **Agents** | 11 | Task-specific AI agents (architect, reviewer, iOS/macOS developers) |
 | **Commands** | 22 | Quick-access shortcuts for common workflows |
 | **Hooks** | 5 | Event-driven automation (Python scripts) |
@@ -91,7 +91,7 @@ Complete documentation coverage for macOS 26 SwiftUI development:
 - **senior-architect** — High-level system design and technical decision-making
 - **audit-context-building** — Learn and document new patterns discovered during development
 
-### Apple Design System (6 skills)
+### Apple Design System (8 skills)
 
 - **apple-liquid-glass-design** — Apple's Liquid Glass design language for macOS
 - **macos-app-design** — macOS HIG compliance, native patterns
@@ -99,14 +99,6 @@ Complete documentation coverage for macOS 26 SwiftUI development:
 - **ios-testing** — iOS/macOS testing strategies
 - **swiftui-components** — Reusable component library patterns
 - **swiftui-view-refactor** — View refactoring patterns
-
-### Project-Specific Skills (6 skills)
-
-- **neuralforge-chat-sidebar** — NeuralForge project chat sidebar component
-- **neuralforge-main-content** — NeuralForge project main content area
-- **neuralforge-top-navbar** — NeuralForge project top navigation
-- **sidebar-liquid-glass-clone** — Sidebar Liquid Glass design clone
-- **scroll-experience** — Scroll interaction patterns
 - **xcodebuildmcp** / **xcodebuildmcp-cli** — Xcode build integration
 
 ## Key Commands
@@ -284,4 +276,4 @@ MIT License — use freely, attribute if you share publicly.
 
 ---
 
-**Status**: Production-ready. 27 skills, 11 agents, 22 commands, 5 hooks — battle-tested in real SwiftUI/macOS development. Works best with [obra/superpowers](https://github.com/obra/superpowers) for complete workflow coverage.
+**Status**: Production-ready. 20 skills, 11 agents, 22 commands, 5 hooks — battle-tested in real SwiftUI/macOS development. Works best with [obra/superpowers](https://github.com/obra/superpowers) for complete workflow coverage.

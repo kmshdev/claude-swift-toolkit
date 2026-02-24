@@ -1,6 +1,6 @@
 {
   "name": "claude-swift-toolkit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Swift/macOS development toolkit for Claude Code — SwiftUI API references, Liquid Glass design, autonomous UI workflows, and specialized agents. Works best with obra/superpowers.",
   "author": {
     "name": "kmshdev"
