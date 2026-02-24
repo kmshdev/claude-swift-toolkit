@@ -1,6 +1,6 @@
 ---
 name: swiftui-input-api
-description: Use when implementing text fields, text editors, pickers, sliders, toggles, keyboard shortcuts, key press handlers, or form controls in SwiftUI - covers TextField, SecureField, TextEditor with AttributedString, autocorrection, and keyboard input handling
+description: This skill should be used when the user asks to "add TextField", "implement text input", "create pickers/sliders", "handle keyboard shortcuts", "use onKeyPress", or needs SwiftUI user input API reference. Provides TextField, SecureField, TextEditor, form controls, keyboard shortcuts, and key press handling patterns.
 ---
 
 # User Input API Reference

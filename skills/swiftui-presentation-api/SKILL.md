@@ -1,6 +1,6 @@
 ---
 name: swiftui-presentation-api
-description: Use when presenting sheets, popovers, full screen covers, alerts, confirmation dialogs, or inspectors in SwiftUI - covers presentation detents, drag indicators, background interaction, compact adaptation, and macOS window behaviors
+description: This skill should be used when the user asks to "present sheet", "show popover", "create alert", "add confirmation dialog", "configure presentation", or needs SwiftUI presentation API reference. Provides sheet, popover, fullScreenCover, alert, confirmation dialog, inspector modifiers, and macOS window behaviors.
 ---
 
 # Presentation Modifiers API Reference

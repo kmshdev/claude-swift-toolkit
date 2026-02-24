@@ -1,6 +1,6 @@
 ---
 name: swiftui-iconography-api
-description: Use when working with SF Symbols, symbol rendering modes, symbol effects, variable values, or custom icon images in SwiftUI - covers monochrome, hierarchical, multicolor, palette rendering and bounce, pulse, appear effects
+description: This skill should be used when the user asks to "add SF Symbols", "animate icons", "use symbol effects", "apply symbol rendering mode", "add bounce/pulse effect", or needs SwiftUI iconography API reference. Provides SF Symbols usage, rendering modes (monochrome, hierarchical, multicolor, palette), symbol effects, and variable values.
 ---
 
 # SF Symbols & Iconography API Reference

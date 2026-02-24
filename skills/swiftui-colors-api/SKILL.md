@@ -1,6 +1,6 @@
 ---
 name: swiftui-colors-api
-description: Use when styling foreground, background, or tint colors in SwiftUI - covers Color, ShapeStyle protocol, foregroundStyle with hierarchical levels, gradients (linear, radial, angular, mesh), system colors, accent color, and custom ShapeStyle conformance
+description: This skill should be used when the user asks to "style with colors", "apply gradients", "use foregroundStyle", "add linear/radial gradient", "set tint color", or needs SwiftUI color and ShapeStyle API reference. Provides Color usage, foregroundStyle with hierarchical levels, gradients, system colors, and custom ShapeStyle patterns.
 ---
 
 # Colors & ShapeStyle API Reference

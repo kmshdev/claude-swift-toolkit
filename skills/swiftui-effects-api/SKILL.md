@@ -1,6 +1,6 @@
 ---
 name: swiftui-effects-api
-description: Use when applying visual effects like blur, shadow, opacity, brightness, contrast, saturation, grayscale, or blend modes in SwiftUI - covers view graphical modifiers, VisualEffect protocol for geometry-safe effects, GraphicsContext blend modes, and Canvas drawing
+description: This skill should be used when the user asks to "add blur effect", "apply shadow", "adjust opacity/brightness", "use blend modes", "create visual effects", or needs SwiftUI visual effects API reference. Provides view modifiers (blur, shadow, opacity), VisualEffect protocol, blend modes, and Canvas drawing.
 ---
 
 # Visual Effects API Reference

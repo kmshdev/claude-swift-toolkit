@@ -1,6 +1,6 @@
 ---
 name: swiftui-liquid-glass-api
-description: Use when implementing Liquid Glass effects on custom SwiftUI views - covers glassEffect modifier, GlassEffectContainer for combining shapes, morph transitions with glassEffectID, glass button styles, tint, interactive mode, and performance optimization
+description: This skill should be used when the user asks to "add glass effects", "implement Liquid Glass", "use .glassEffect modifier", "create glass buttons", "morph glass shapes", or needs SwiftUI Liquid Glass API reference for macOS 26. Provides glass effect patterns, GlassEffectContainer usage, morph transitions, and performance optimization.
 ---
 
 # Liquid Glass API Reference

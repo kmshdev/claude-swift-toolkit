@@ -1,6 +1,6 @@
 ---
 name: swiftui-material-api
-description: Use when applying translucent material backgrounds, choosing material thickness levels, or working with SwiftUI shape types and layout structure - covers ultraThin through ultraThick materials, bar material, and MaterialActiveAppearance on macOS
+description: This skill should be used when the user asks to "add material background", "apply translucent overlay", "use .regularMaterial", "choose material thickness", "work with shapes", or needs SwiftUI material and structure API reference. Provides material types (ultraThin to ultraThick), shapes (Rectangle, Capsule, Circle), and layout containers.
 ---
 
 # Material & Structure API Reference

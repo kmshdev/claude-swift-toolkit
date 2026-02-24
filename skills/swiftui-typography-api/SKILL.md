@@ -1,6 +1,6 @@
 ---
 name: swiftui-typography-api
-description: Use when setting fonts, text styles, weights, custom fonts, or Dynamic Type in SwiftUI - covers Font.TextStyle, Font.Design (serif, rounded, monospaced), Font.Weight, custom font registration, and ScaledMetric for adaptive sizing
+description: This skill should be used when the user asks to "set font", "use text styles", "apply font weight", "use custom fonts", "implement Dynamic Type", or needs SwiftUI typography API reference. Provides Font.TextStyle, Font.Design (serif, rounded, monospaced), Font.Weight, custom font usage, and ScaledMetric for adaptive sizing.
 ---
 
 # Typography API Reference
