@@ -1,6 +1,6 @@
 ---
 name: macos-development
-description: Comprehensive macOS development guidance including Swift 6+, SwiftUI, SwiftData, architecture patterns, AppKit bridging, and macOS 26 Tahoe APIs. Use for macOS code review, best practices, UI review, or platform-specific features.
+description: This skill should be used when the user asks about "macOS development", "Swift 6 patterns", "SwiftData best practices", "AppKit bridging", "macOS 26 APIs", "Tahoe features", or needs comprehensive macOS development guidance. Covers coding practices, architecture, SwiftData, sandboxing, and Tahoe APIs with detailed reference modules.
 allowed-tools: [Read, Glob, Grep, WebFetch]
 ---
 
@@ -24,40 +24,40 @@ Read relevant module files based on the user's needs:
 
 ### coding-best-practices/
 Swift 6+ code quality and modern idioms.
-- `swift-language.md` - Modern Swift patterns
-- `modern-concurrency.md` - async/await, actors, Sendable
-- `data-persistence.md` - SwiftData, UserDefaults, Keychain
-- `code-organization.md` - Project structure and modularity
-- `architecture-principles.md` - Clean architecture patterns
+- **`coding-best-practices/swift-language.md`** - Modern Swift patterns
+- **`coding-best-practices/modern-concurrency.md`** - async/await, actors, Sendable
+- **`coding-best-practices/data-persistence.md`** - SwiftData, UserDefaults, Keychain
+- **`coding-best-practices/code-organization.md`** - Project structure and modularity
+- **`coding-best-practices/architecture-principles.md`** - Clean architecture patterns
 
 ### architecture-patterns/
 Software design and architecture.
-- `solid-detailed.md` - SOLID principles with Swift examples
-- `design-patterns.md` - Common design patterns
-- `modular-design.md` - Modular architecture approaches
+- **`architecture-patterns/solid-detailed.md`** - SOLID principles with Swift examples
+- **`architecture-patterns/design-patterns.md`** - Common design patterns
+- **`architecture-patterns/modular-design.md`** - Modular architecture approaches
 
 ### swiftdata-architecture/
 SwiftData deep dive.
-- `schema-design.md` - Model design and relationships
-- `query-patterns.md` - Efficient queries and predicates
-- `performance.md` - Optimization techniques
+- **`swiftdata-architecture/schema-design.md`** - Model design and relationships
+- **`swiftdata-architecture/query-patterns.md`** - Efficient queries and predicates
+- **`swiftdata-architecture/performance.md`** - Optimization techniques
 
 ### macos-tahoe-apis/
 macOS 26 specific features.
-- `tahoe-features.md` - New macOS 26 capabilities
-- `apple-intelligence.md` - AI/ML integration
-- `mlx-framework.md` - On-device ML with MLX
-- `continuity.md` - Cross-device features
-- `xcode16.md` - Xcode 16 tools and features
+- **`macos-tahoe-apis/tahoe-features.md`** - New macOS 26 capabilities
+- **`macos-tahoe-apis/apple-intelligence.md`** - AI/ML integration
+- **`macos-tahoe-apis/mlx-framework.md`** - On-device ML with MLX
+- **`macos-tahoe-apis/continuity.md`** - Cross-device features
+- **`macos-tahoe-apis/xcode16.md`** - Xcode 16 tools and features
 
 ### macos-capabilities/
 Platform integration.
-- `sandboxing.md` - App Sandbox and entitlements
+- **`macos-capabilities/sandboxing.md`** - App Sandbox and entitlements
 - System integration features
 
 ### appkit-swiftui-bridge/
 Hybrid development.
-- `nsviewrepresentable.md` - Wrapping AppKit views
+- **`appkit-swiftui-bridge/nsviewrepresentable.md`** - Wrapping AppKit views
 - State management between frameworks
 
 ### ui-review-tahoe/
@@ -81,6 +81,6 @@ Project planning and analysis.
 ## Example Workflow
 
 **User asks about SwiftData performance:**
-1. Read `swiftdata-architecture/performance.md`
-2. Read `swiftdata-architecture/query-patterns.md` if relevant
+1. Read **`swiftdata-architecture/performance.md`**
+2. Read **`swiftdata-architecture/query-patterns.md`** if relevant
 3. Apply recommendations to their code
