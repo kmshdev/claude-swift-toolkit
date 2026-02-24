@@ -9,16 +9,17 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ## Workflow
 
 1. **Read the spec** — understand what to build (from /design-ui output or direct description)
-2. **Read existing patterns** — check similar views in `Kulpt/Views/` for consistency
+2. **Read existing patterns** — check similar views in the project's Views directory for consistency
 3. **Implement:**
-   - Create/modify Swift files in appropriate `Kulpt/Views/` subdirectory
-   - Use `@Environment(AppState.self)` + `@Bindable var appState = appState`
+   - Create/modify Swift files in appropriate Views subdirectory
+   - Use the project's state management pattern (check existing files)
    - Include `#Preview` block
-   - Follow Kulpt coding standards (Swift 6, @Observable, guard for early exits)
+   - Follow project coding standards (check CLAUDE.md for conventions)
 4. **Build:**
    ```bash
-   xcodebuild -project Kulpt.xcodeproj -scheme Kulpt -destination 'platform=macOS' build
+   xcodebuild -project *.xcodeproj -scheme <SchemeName> -destination 'platform=macOS' build
    ```
+   (The toolkit auto-detects the .xcodeproj file in the working directory)
 5. **Validate:** Check build output for success. If errors, fix and rebuild.
 6. **Report:** List created/modified files and build status.
 

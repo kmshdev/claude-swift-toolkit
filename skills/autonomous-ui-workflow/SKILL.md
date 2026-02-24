@@ -39,25 +39,24 @@ Also load project skills: `swiftui-components`, `macos-app-design`, `apple-liqui
 ## Phase 3: Design
 
 Before writing code:
-1. Read existing similar views in `Kulpt/Views/` for patterns
+1. Read existing similar views in the project's Views directory for patterns
 2. Decide view hierarchy and component breakdown
-3. Plan state: `@State` for local, `@Environment(AppState.self)` for shared
-4. Plan Liquid Glass: ONLY on floating controls, toolbars, status pills (see CLAUDE.md rules)
+3. Plan state: `@State` for local, shared state via project's pattern (check existing code)
+4. Plan design system usage: check CLAUDE.md for project-specific design rules
 5. Document the design before implementing
 
 ## Phase 4: Implement
 
-Follow Kulpt conventions:
-- `@Environment(AppState.self)` + `@Bindable var appState = appState`
+Follow project conventions (check CLAUDE.md and existing code):
+- Use the project's state management pattern
 - `#Preview` block at bottom
 - Extract views > 100 lines
-- `.scrollEdgeEffectStyle(.soft, for: .top)` on form ScrollViews
-- NO glass on form elements (HIG violation)
+- Follow project-specific coding standards
 
 ## Phase 5: Build
 
 ```bash
-xcodebuild -project Kulpt.xcodeproj -scheme Kulpt -destination 'platform=macOS' build
+xcodebuild -project *.xcodeproj -scheme <SchemeName> -destination 'platform=macOS' build
 ```
 
 Or via Xcode MCP: `BuildProject`
@@ -73,11 +72,11 @@ Use Xcode MCP `RenderPreview` to capture the view. Read the PNG to verify:
 
 ## Phase 7: Validate
 
-Check against CLAUDE.md rules:
-- [ ] No wholesale glass styles on forms
-- [ ] No lagoonReveal on always-visible content
-- [ ] Form buttons use `.buttonStyle(.plain)`
-- [ ] Delete buttons: red icon only
+Check against project rules (see CLAUDE.md for project-specific guidelines):
+- [ ] Follows project design system conventions
+- [ ] Meets accessibility requirements
+- [ ] Consistent with existing views
+- [ ] No force unwrapping without justification
 - [ ] GeometryReader guarded with `> 0` AND `.isFinite`
 
 ## Phase 8: Iterate
