@@ -15,26 +15,33 @@ This plugin provides a complete development environment for Swift/macOS projects
 
 ## Installation
 
-### Via Claude Code CLI
+### Via GitHub (Recommended)
 
 ```bash
-# From any directory
-claude --plugin /Users/kmsh/Developer/claude-swift-toolkit
+# Clone the plugin
+git clone https://github.com/kmshdev/claude-swift-toolkit.git
 
-# Or add to your project's .claude/settings.json
+# Use with Claude Code
+claude --plugin ./claude-swift-toolkit
+```
+
+### Via Project Settings
+
+Add to your project's `.claude/settings.json`:
+
+```json
 {
   "plugins": [
-    "/Users/kmsh/Developer/claude-swift-toolkit"
+    "../claude-swift-toolkit"
   ]
 }
 ```
 
-### Via Claude Code Settings
+### Via npx (if published to skills.sh)
 
-1. Open Claude Code settings
-2. Navigate to Plugins
-3. Add plugin path: `/Users/kmsh/Developer/claude-swift-toolkit`
-4. Restart Claude Code
+```bash
+npx skills add kmshdev/claude-swift-toolkit
+```
 
 ## Component Inventory
 
