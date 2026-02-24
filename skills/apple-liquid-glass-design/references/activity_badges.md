@@ -1,0 +1,106 @@
+# Apple-Liquid-Glass-Design - Activity Badges
+
+**Pages:** 1
+
+---
+
+## Landmarks: Displaying custom activity badges
+
+**URL:** https://sosumi.ai/documentation/swiftui/landmarks-displaying-custom-activity-badges?.md
+
+**Contents:**
+- Overview
+- Add a modifier to show badges in other views
+- Apply Liquid Glass to the toggle button
+- Add Liquid Glass to the badges
+- Animate the badges using the morph effect
+- App features
+
+---
+title: Landmarks: Displaying custom activity badges
+description: Provide people with a way to mark their adventures by displaying animated custom activity badges.
+source: https://developer.apple.com/documentation/swiftui/landmarks-displaying-custom-activity-badges
+timestamp: 2026-02-13T00:18:27.758Z
+---
+
+**Navigation:** [Swiftui](/documentation/swiftui)
+
+**Available on:** iOS 26.0+, iPadOS 26.0+, macOS 26.0+, Xcode 26.0+
+
+> Provide people with a way to mark their adventures by displaying animated custom activity badges.
+
+The Landmarks app lets people track their adventures as they explore sites around the world. Whether it’s a national park near their home or a far-flung location on a different continent, the app provides a way for people to mark their adventures and receive custom activity badges along the way.
+
+This sample displays the badges in a vertical view that includes a toggle button for showing or hiding the badges. The Landmarks app includes a custom modifier that makes it easier for other views to adopt the badge view. By configuring the badges to use Liquid Glass, the badges gain the advantage of using the morphing animation when you show or hide the badges.
+
+To make the badges available in other views, like `CollectionsView`, the sample uses a custom modifier, `ShowBadgesViewModifier`, as a [View Modifier](/documentation/swiftui/viewmodifier). The sample layers the badges over another view using a [ZStack](/documentation/swiftui/zstack), and positions the badge view in the lower trailing corner:
+
+The sample extends [View](/documentation/swiftui/view) by adding the `showBadges` modifier:
+
+To create the toggle button, the sample configures a [Button](/documentation/swiftui/button) using `ToggleBadgesLabel` which has different system images for the Show and Hide toggle states. To apply Liquid Glass, style the button with the [glass](/documentation/swiftui/primitivebuttonstyle/glass) modifier:
+
+To add Liquid Glass to each badge, the sample uses the [glassEffect(_:in:)](/documentation/swiftui/view/glasseffect(_:in:)) modifier. To make a custom glass view appearance, the sample specifies a rectangular option with a corner radius:
+
+The morph effect is an animation for Liquid Glass views. During this animation, the toggle button and each badge start as a combined view. Then, the button and badges change shape like a liquid as they separate and move from one location to another. In reverse, the toggle button and badges change shape and combine back into one view.
+
+To achieve the Liquid Glass morph effect, the app:
+
+- organizes the badges and toggle button into a [Glass Effect Container](/documentation/swiftui/glasseffectcontainer)
+- adds [glassEffectID(_:in:)](/documentation/swiftui/view/glasseffectid(_:in:)) to each badge
+- adds [glassEffectID(_:in:)](/documentation/swiftui/view/glasseffectid(_:in:)) to the toggle button
+- wraps the command that toggles the `isExpanded` property in [withAnimation(_:_:)](/documentation/swiftui/withanimation(_:_:))
+
+- [Landmarks: Applying a background extension effect](/documentation/swiftui/landmarks-applying-a-background-extension-effect)
+- [Landmarks: Extending horizontal scrolling under a sidebar or inspector](/documentation/swiftui/landmarks-extending-horizontal-scrolling-under-a-sidebar-or-inspector)
+- [Landmarks: Refining the system provided Liquid Glass effect in toolbars](/documentation/swiftui/landmarks-refining-the-system-provided-glass-effect-in-toolbars)
+
+*Extracted by [sosumi.ai](https://sosumi.ai) - Making Apple docs AI-readable.*
+*This is unofficial content. All documentation belongs to Apple Inc.*
+
+**Examples:**
+
+Example 1 (swift):
+```swift
+private struct ShowsBadgesViewModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+            HStack {
+                Spacer()
+                VStack {
+                    Spacer()
+                    BadgesView()
+                        .padding()
+                }
+            }
+        }
+    }
+}
+```
+
+Example 2 (swift):
+```swift
+extension View {
+    func showsBadges() -> some View {
+        modifier(ShowsBadgesViewModifier())
+    }
+}
+```
+
+Example 3 (swift):
+```swift
+Button {
+    //...
+} label: {
+    //...
+}
+.buttonStyle(.glass)
+```
+
+Example 4 (swift):
+```swift
+BadgeLabel(badge: $0)
+    .glassEffect(.regular, in: .rect(cornerRadius: Constants.badgeCornerRadius))
+```
+
+---

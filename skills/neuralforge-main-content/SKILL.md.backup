@@ -1,0 +1,111 @@
+---
+name: neuralforge-main-content
+description: Use this skill when building a SwiftUI issue/ticket detail view with title headers, status dependency links, rich description blocks, horizontal tag pill strips (Active, UX, owners, priority), work item card grids (2-column LazyVGrid), and status indicator badges. Covers LazyVGrid, card components, tag/chip views, priority indicators, date formatting, and dark-themed project management detail layouts with Liquid Glass effects for macOS Tahoe and iOS 26.
+---
+
+# Neuralforge-Main-Content Skill
+
+Use this skill when building a swiftui issue/ticket detail view with title headers, status dependency links, rich description blocks, horizontal tag pill strips (active, ux, owners, priority), work item card grids (2-column lazyvgrid), and status indicator badges. covers lazyvgrid, card components, tag/chip views, priority indicators, date formatting, and dark-themed project management detail layouts with liquid glass effects for macos tahoe and ios 26., generated from official documentation.
+
+## When to Use This Skill
+
+This skill should be triggered when:
+- Working with neuralforge-main-content
+- Asking about neuralforge-main-content features or APIs
+- Implementing neuralforge-main-content solutions
+- Debugging neuralforge-main-content code
+- Learning neuralforge-main-content best practices
+
+## Quick Reference
+
+### Common Patterns
+
+*Quick reference patterns will be added as you use the skill.*
+
+### Example Code Patterns
+
+**Example 1** (swift):
+```swift
+nonisolated func fixedSize(horizontal: Bool, vertical: Bool) -> some View
+```
+
+**Example 2** (swift):
+```swift
+Text("A single line of text, too long to fit in a box.")
+    .fixedSize(horizontal: true, vertical: false)
+    .frame(width: 200, height: 200)
+    .border(Color.gray)
+```
+
+**Example 3** (swift):
+```swift
+@frozen struct Spacer
+```
+
+**Example 4** (swift):
+```swift
+struct LazyHGrid<Content> where Content : View
+```
+
+**Example 5** (swift):
+```swift
+@frozen struct AnyLayout
+```
+
+## Reference Files
+
+This skill includes comprehensive documentation in `references/`:
+
+- **adaptive_layout.md** - Adaptive Layout documentation
+- **buttons_and_menus.md** - Buttons And Menus documentation
+- **card_component.md** - Card Component documentation
+- **color_and_theming.md** - Color And Theming documentation
+- **grid_and_layout.md** - Grid And Layout documentation
+- **icons_and_images.md** - Icons And Images documentation
+- **liquid_glass.md** - Liquid Glass documentation
+- **navigation_context.md** - Navigation Context documentation
+- **other.md** - Other documentation
+- **scrolling.md** - Scrolling documentation
+- **tags_and_pills.md** - Tags And Pills documentation
+- **typography.md** - Typography documentation
+
+Use `view` to read specific reference files when detailed information is needed.
+
+## Working with This Skill
+
+### For Beginners
+Start with the getting_started or tutorials reference files for foundational concepts.
+
+### For Specific Features
+Use the appropriate category reference file (api, guides, etc.) for detailed information.
+
+### For Code Examples
+The quick reference section above contains common patterns extracted from the official docs.
+
+## Resources
+
+### references/
+Organized documentation extracted from official sources. These files contain:
+- Detailed explanations
+- Code examples with language annotations
+- Links to original documentation
+- Table of contents for quick navigation
+
+### scripts/
+Add helper scripts here for common automation tasks.
+
+### assets/
+Add templates, boilerplate, or example projects here.
+
+## Notes
+
+- This skill was automatically generated from official documentation
+- Reference files preserve the structure and examples from source docs
+- Code examples include language detection for better syntax highlighting
+- Quick reference patterns are extracted from common usage examples in the docs
+
+## Updating
+
+To refresh this skill with updated documentation:
+1. Re-run the scraper with the same configuration
+2. The skill will be rebuilt with the latest information

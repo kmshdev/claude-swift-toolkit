@@ -1,0 +1,8 @@
+{
+  "name": "claude-swift-toolkit",
+  "version": "1.0.0",
+  "description": "Comprehensive Swift/macOS development toolkit for Claude Code — skills, agents, hooks, and commands for SwiftUI, Liquid Glass, TDD, and project management.",
+  "author": {
+    "name": "kmshdev"
+  }
+}
