@@ -1,22 +1,23 @@
 ---
 name: xcodebuildmcp-cli
-description: Official skill for the XcodeBuildMCP CLI. Use when doing iOS/macOS/watchOS/tvOS/visionOS work (build, test, run, debug, log, UI automation).
+description: This skill should be used when the user asks to "build via CLI", "run tests from terminal", "debug from command line", or needs xcodebuildmcp CLI as alternative to MCP tool calls for iOS/macOS/watchOS/tvOS/visionOS development. Provides CLI command reference for build, test, run, debug, log, and UI automation workflows.
 ---
 
 # XcodeBuildMCP CLI
 
-This skill is for AI agents. It positions the XcodeBuildMCP CLI as a low‑overhead alternative to MCP tool calls: agents can already run shell commands, and the CLI exposes the same tool surface without the schema‑exchange cost. Prefer the CLI over raw `xcodebuild`, `xcrun`, or `simctl`.
+This skill positions the XcodeBuildMCP CLI as a low-overhead alternative to MCP tool calls: agents can run shell commands directly, and the CLI exposes the same tool surface without schema-exchange cost. Prefer the CLI over raw `xcodebuild`, `xcrun`, or `simctl` commands.
 
 ## When To Use This CLI (Capabilities And Workflows)
 
-- When you need build/test/run/debugging/logging/UI automation capabilities.
-- When you want simulator/device management capabilities.
-- When you want AI optimized tools and tool responses.
-- When you need project discovery capabilities (schemes, bundle IDs, app paths).
+Use this CLI when:
+- Build/test/run/debugging/logging/UI automation capabilities are needed
+- Simulator/device management capabilities are needed
+- AI-optimized tools and tool responses are required
+- Project discovery capabilities are needed (schemes, bundle IDs, app paths)
 
 ## Command Discovery
 
-Use `--help` to discover workflows, tools, and arguments.
+Discover workflows, tools, and arguments with `--help`:
 
 ```bash
 xcodebuildmcp --help
@@ -36,7 +37,7 @@ Notes:
 1. List simulators and pick a device name or UDID.
 2. Build and run.
 
-If app and project details are not known:
+When project details are unknown, discover them:
 ```bash
 xcodebuildmcp simulator discover-projs --workspace-root .
 xcodebuildmcp simulator list-schemes --project-path ./MyApp.xcodeproj
