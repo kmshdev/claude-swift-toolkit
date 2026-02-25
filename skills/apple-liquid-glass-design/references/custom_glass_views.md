@@ -1293,3 +1293,120 @@ Example 1 (swift):
 ```
 
 ---
+
+## Complete Examples
+
+### Toolbar with Glass Buttons
+
+```swift
+struct GlassToolbar: View {
+    var body: some View {
+        if #available(iOS 26, *) {
+            GlassEffectContainer(spacing: 16) {
+                HStack(spacing: 16) {
+                    ToolbarButton(icon: "pencil", action: { })
+                    ToolbarButton(icon: "eraser", action: { })
+                    ToolbarButton(icon: "scissors", action: { })
+                    Spacer()
+                    ToolbarButton(icon: "square.and.arrow.up", action: { })
+                }
+                .padding(.horizontal)
+            }
+        } else {
+            HStack(spacing: 16) {
+                // ... fallback implementation
+            }
+        }
+    }
+}
+
+struct ToolbarButton: View {
+    let icon: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .font(.title2)
+                .frame(width: 44, height: 44)
+        }
+        .glassEffect(.regular.interactive(), in: .circle)
+    }
+}
+```
+
+### Card with Glass Effect
+
+```swift
+struct GlassCard: View {
+    let title: String
+    let subtitle: String
+
+    var body: some View {
+        if #available(iOS 26, *) {
+            cardContent
+                .glassEffect(.regular, in: .rect(cornerRadius: 20))
+        } else {
+            cardContent
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+        }
+    }
+
+    private var cardContent: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.headline)
+            Text(subtitle)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+```
+
+### Segmented Control
+
+```swift
+struct GlassSegmentedControl: View {
+    @Binding var selection: Int
+    let options: [String]
+    @Namespace private var animation
+
+    var body: some View {
+        if #available(iOS 26, *) {
+            GlassEffectContainer(spacing: 4) {
+                HStack(spacing: 4) {
+                    ForEach(options.indices, id: \.self) { index in
+                        Button(options[index]) {
+                            withAnimation(.smooth) {
+                                selection = index
+                            }
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .glassEffect(
+                            selection == index ? .regular.tint(.accentColor).interactive() : .regular.interactive(),
+                            in: .capsule
+                        )
+                        .glassEffectID(selection == index ? "selected" : "option\(index)", in: animation)
+                    }
+                }
+                .padding(4)
+            }
+        } else {
+            Picker("Options", selection: $selection) {
+                ForEach(options.indices, id: \.self) { index in
+                    Text(options[index]).tag(index)
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+}
+```
+
+## Fallback Strategies
+
+For complete fallback guidance including material options and the `glassEffectWithFallback` modifier extension, see the "Availability & Fallbacks" section in the main `apple-liquid-glass-design` SKILL.md.

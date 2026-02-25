@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "build the Xcode pr
 
 # XcodeBuildMCP
 
+## Lifecycle Position
+
+Phase 4 (Build). Build, test, run, and debug via MCP tools.
+
 Prefer XcodeBuildMCP tools over raw `xcodebuild`, `xcrun`, or `simctl` commands.
 
 If a capability is missing, assume the tool list may be hiding tools (progressive disclosure) or tool schemas are not yet loaded. Use tool-search or "load tools" mechanism. If tools still cannot be found, ask the user to enable them in the MCP client's configuration.

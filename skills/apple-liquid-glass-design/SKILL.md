@@ -5,6 +5,10 @@ description: Use when building UI with Apple's Liquid Glass material for iOS 26,
 
 # Apple Liquid Glass Design
 
+## Lifecycle Position
+
+Phases 2-3 (Design → Implement). Related: `swiftui-components` (glass templates), `swiftui-material-api` (material backgrounds).
+
 Reference for Apple's Liquid Glass design system introduced in iOS 26, iPadOS 26, and macOS 26. Liquid Glass is a dynamic material that combines optical properties of glass with fluidity, forming a functional layer for controls and navigation elements.
 
 ## When to Use This Skill
@@ -27,6 +31,83 @@ Reference for Apple's Liquid Glass design system introduced in iOS 26, iPadOS 26
 **Do NOT use when:**
 - Working with pre-iOS 26 glass effects (visionOS `glassBackgroundEffect` is a separate API)
 - General SwiftUI layout questions unrelated to Liquid Glass
+
+## Workflow Decision Tree
+
+Choose the path that matches the request:
+
+### 1) Review an existing feature
+- Inspect where Liquid Glass should be used and where it should not.
+- Verify correct modifier order, shape usage, and container placement.
+- Check for iOS 26+ availability handling and sensible fallbacks.
+
+### 2) Improve a feature using Liquid Glass
+- Identify target components for glass treatment (surfaces, chips, buttons, cards).
+- Refactor to use `GlassEffectContainer` where multiple glass elements appear.
+- Introduce interactive glass only for tappable or focusable elements.
+
+### 3) Implement a new feature using Liquid Glass
+- Design the glass surfaces and interactions first (shape, prominence, grouping).
+- Add glass modifiers after layout/appearance modifiers.
+- Add morphing transitions only when the view hierarchy changes with animation.
+
+## Review Checklist
+- **Availability**: `#available(iOS 26, *)` present with fallback UI.
+- **Composition**: Multiple glass views wrapped in `GlassEffectContainer`.
+- **Modifier order**: `glassEffect` applied after layout/appearance modifiers.
+- **Interactivity**: `interactive()` only where user interaction exists.
+- **Transitions**: `glassEffectID` used with `@Namespace` for morphing.
+- **Consistency**: Shapes, tinting, and spacing align across the feature.
+
+## Implementation Checklist
+- Define target elements and desired glass prominence.
+- Wrap grouped glass elements in `GlassEffectContainer` and tune spacing.
+- Use `.glassEffect(.regular.tint(...).interactive(), in: .rect(cornerRadius: ...))` as needed.
+- Use `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)` for actions.
+- Add morphing transitions with `glassEffectID` when hierarchy changes.
+- Provide fallback materials and visuals for earlier iOS versions.
+
+## Availability & Fallbacks
+
+All Liquid Glass APIs require iOS 26 or later. Always provide fallbacks:
+
+```swift
+if #available(iOS 26, *) {
+    content
+        .padding()
+        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 16))
+} else {
+    content
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+}
+```
+
+### Fallback Materials
+- `.ultraThinMaterial` — Closest to glass appearance
+- `.thinMaterial` — Slightly more opaque
+- `.regularMaterial` — Standard blur
+- `.thickMaterial` — More opaque
+- `.ultraThickMaterial` — Most opaque
+
+### Conditional Modifier Extension
+
+```swift
+extension View {
+    @ViewBuilder
+    func glassEffectWithFallback(
+        _ style: Glass = .regular,
+        in shape: some Shape = .rect,
+        fallbackMaterial: Material = .ultraThinMaterial
+    ) -> some View {
+        if #available(iOS 26, *) {
+            self.glassEffect(style, in: shape)
+        } else {
+            self.background(fallbackMaterial, in: shape)
+        }
+    }
+}
+```
 
 ## Key Concepts
 

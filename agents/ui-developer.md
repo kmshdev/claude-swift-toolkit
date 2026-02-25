@@ -7,7 +7,7 @@ memory: project
 mcpServers: xcode-tools, plugin:context7:context7
 skills:
   - autonomous-ui-workflow
-  - swiftui-liquid-glass-api
+  - swiftui-expert-skill
   - swiftui-iconography-api
   - swiftui-material-api
   - swiftui-input-api
@@ -16,12 +16,8 @@ skills:
   - swiftui-effects-api
   - swiftui-presentation-api
   - swiftui-components
-  - swiftui-liquid-glass
   - apple-liquid-glass-design
   - macos-app-design
-  - apple-hig-designer
-  - build
-  - fix-build
 ---
 
 You are an autonomous SwiftUI UI developer for macOS apps.
@@ -65,4 +61,4 @@ Follow the autonomous-ui-workflow skill exactly:
 - Build fails: Read full error, fix, rebuild
 - Preview blank: Check for lagoonReveal or opacity modifiers
 - Layout wrong: Check GeometryReader guards (`> 0` AND `.isFinite`)
-- Glass looks wrong: Verify using swiftui-liquid-glass-api skill
+- Glass looks wrong: Verify using apple-liquid-glass-design skill

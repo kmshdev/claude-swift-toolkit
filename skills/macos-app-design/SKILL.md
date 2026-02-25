@@ -5,6 +5,10 @@ description: Use when designing or building native macOS applications with Swift
 
 # macOS App Design & Development
 
+## Lifecycle Position
+
+Phases 1-2 (Architecture → Design). After `macos-development` for system design. Next: load `apple-liquid-glass-design` for Liquid Glass adoption, then `autonomous-ui-workflow` for implementation.
+
 Guide for designing and implementing native-feeling, "good Mac citizen" apps: fast, elegant, accessible, and deeply integrated with macOS workflows.
 
 ## Two Rules That Beat Everything Else

@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "build via CLI", "r
 
 # XcodeBuildMCP CLI
 
+## Lifecycle Position
+
+Phase 4 (Build). CLI alternative to MCP tool calls for build, test, and automation.
+
 This skill positions the XcodeBuildMCP CLI as a low-overhead alternative to MCP tool calls: agents can run shell commands directly, and the CLI exposes the same tool surface without schema-exchange cost. Prefer the CLI over raw `xcodebuild`, `xcrun`, or `simctl` commands.
 
 ## When To Use This CLI (Capabilities And Workflows)

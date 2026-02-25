@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "present sheet", "s
 
 # Presentation Modifiers API Reference
 
+## Lifecycle Position
+
+Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+
 ## Sheet / Cover / Popover
 
 ```swift

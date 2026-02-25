@@ -6,6 +6,10 @@ allowed-tools: [Read, Glob, Grep, WebFetch]
 
 # macOS Development Expert
 
+## Lifecycle Position
+
+Phases 0-1 (Scaffold → Architecture). Start here for new apps (`app-planner/` module) and system design (`architecture-patterns/` module). Next: load `macos-app-design` for UI design.
+
 Comprehensive guidance for macOS app development. This skill aggregates specialized modules for different aspects of macOS development.
 
 ## When This Skill Activates

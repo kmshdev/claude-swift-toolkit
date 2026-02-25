@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "audit this code", 
 
 # Deep Context Builder Skill (Ultra-Granular Pure Context Mode)
 
+## Lifecycle Position
+
+Phase 5 (Review — optional deep-dive). For security audit or deep architectural review. Load after `code-analyzer` for targeted analysis.
+
 ## 1. Purpose
 
 This skill governs **how Claude thinks** during the context-building phase of an audit.

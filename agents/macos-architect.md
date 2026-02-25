@@ -6,21 +6,12 @@ tools: Read, Grep, Glob, Edit, Bash
 memory: project
 mcpServers: plugin:context7:context7, xcodebuildmcp,xcode-tools
 skills:
-  - apple-hig-designer
-  - axiom-sf-symbols-ref
-  - ios-glass-ui-designer
-  - swiftui-liquid-glass
-  - ui-extractor
   - apple-liquid-glass-design
-  - build
-  - create-view
-  - fix-build
   - macos-app-design
   - macos-development
-  - neuralforge-*
-  - scroll-experience 
-  - run-app 
-  - systematic-debugging
+  - swiftui-expert-skill
+  - swiftui-components
+  - xcodebuildmcp
 ---
 
 You are an expert macOS architect specializing in Swift 6, SwiftUI, and AppKit for macOS Tahoe (26).

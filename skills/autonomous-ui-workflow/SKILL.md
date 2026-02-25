@@ -5,6 +5,10 @@ description: Use when building or modifying SwiftUI views autonomously - orchest
 
 # Autonomous UI Development Workflow
 
+## Lifecycle Position
+
+Phases 2-4 (Design → Implement → Build). The inner UI development loop. After build is green, proceed to Phase 5 — load `swiftui-view-refactor` and `code-analyzer` for review.
+
 ## The Loop
 
 ```
@@ -25,7 +29,7 @@ Load documentation skills based on what the UI needs:
 
 | Need | Skill to Load |
 |------|---------------|
-| Glass effects, floating controls | `swiftui-liquid-glass-api` |
+| Glass effects, floating controls | `apple-liquid-glass-design` |
 | Icons, SF Symbols | `swiftui-iconography-api` |
 | Background materials, shapes | `swiftui-material-api` |
 | Text fields, pickers, forms | `swiftui-input-api` |

@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "style with colors"
 
 # Colors & ShapeStyle API Reference
 
+## Lifecycle Position
+
+Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+
 ## Foreground Styling
 
 ```swift

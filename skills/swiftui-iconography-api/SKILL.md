@@ -5,6 +5,10 @@ description: This skill should be used when the user asks to "add SF Symbols", "
 
 # SF Symbols & Iconography API Reference
 
+## Lifecycle Position
+
+Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+
 ## Quick Reference
 
 | API | Purpose |

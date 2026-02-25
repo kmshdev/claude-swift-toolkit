@@ -14,10 +14,6 @@
 **File:** `layout_system.md`
 **Pages:** 14
 
-### Liquid Glass
-**File:** `liquid_glass.md`
-**Pages:** 3
-
 ### Modifiers Interaction
 **File:** `modifiers_interaction.md`
 **Pages:** 1

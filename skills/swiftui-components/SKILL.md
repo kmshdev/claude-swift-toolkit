@@ -5,6 +5,10 @@ description: SwiftUI component expert for building reusable views, custom modifi
 
 # SwiftUI Components
 
+## Lifecycle Position
+
+Phase 3 (Implement). After design from `macos-app-design`. Use templates and patterns during implementation. Next: `swiftui-view-refactor` for Phase 5 review.
+
 ## Quick Start
 
 For standard patterns, see [PATTERNS.md](PATTERNS.md).
@@ -84,7 +88,6 @@ When applying Liquid Glass to custom components:
 │   ├── data_flow.md
 │   ├── presentations.md
 │   ├── navigation.md
-│   ├── liquid_glass.md
 │   ├── platform_bridging.md
 │   ├── app_structure.md
 │   └── index.md
