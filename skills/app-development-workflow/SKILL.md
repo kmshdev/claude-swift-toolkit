@@ -87,7 +87,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 2. Apply templates from `swiftui-components/templates/`
 3. Follow `swiftui-expert-skill` core guidelines for state, APIs, composition
 4. Use `#Preview` blocks for every view
-5. Run `/implement-component` or `/create-view` for scaffolding
+5. Run `/implement-component` for scaffolding
 
 **Next phase →** Build and verify in Phase 4.
 

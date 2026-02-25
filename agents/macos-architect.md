@@ -2,9 +2,9 @@
 name: macos-architect
 description: macOS Tahoe architecture expert for system design, Liquid Glass adoption, and production-ready patterns
 model: sonnet
-tools: Read, Grep, Glob, Edit, Bash
+tools: Read, Grep, Glob
 memory: project
-mcpServers: plugin:context7:context7, xcodebuildmcp,xcode-tools
+mcpServers: plugin:context7:context7, xcodebuildmcp
 skills:
   - apple-liquid-glass-design
   - macos-app-design

@@ -1,7 +1,7 @@
 ---
 description: Run comprehensive code review with parallel Swift-specific and general quality agents
 argument-hint: [file paths or "all"]
-allowed-tools: Read, Grep, Glob
+allowed-tools: Read, Grep, Glob, Task, Bash(git diff *)
 ---
 
 # Code Review: $ARGUMENTS

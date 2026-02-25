@@ -1,10 +1,10 @@
 ---
 name: ui-developer
-description: Autonomous SwiftUI UI developer that takes specs and produces build-verified, HIG-compliant views for the Kulpt macOS app
+description: Autonomous SwiftUI UI developer that takes specs and produces build-verified, HIG-compliant views
 model: sonnet
 tools: Read, Write, Edit, Bash, Glob, Grep
 memory: project
-mcpServers: xcode-tools, plugin:context7:context7
+mcpServers: xcodebuildmcp, plugin:context7:context7
 skills:
   - autonomous-ui-workflow
   - swiftui-expert-skill
