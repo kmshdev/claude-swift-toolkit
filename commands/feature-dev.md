@@ -79,6 +79,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
 3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
 4. **Ask user which approach they prefer**
+5. **Architecture Validation Gate:** Dispatch `macos-architect` agent to validate the selected approach against macOS patterns — check navigation pattern, state management, concurrency safety (Swift 6), Liquid Glass fit. If BLOCKER issues → return to step 1 with revised constraints. If WARNINGs only → note them and proceed.
 
 ---
 
@@ -100,13 +101,17 @@ If the user says "whatever you think is best", provide your recommendation and g
 
 ## Phase 6: Quality Review
 
-**Goal**: Ensure code is simple, DRY, elegant, easy to read, and functionally correct
+**Goal**: Ensure code meets the A- quality bar before completion
 
 **Actions**:
-1. Launch 3 code-reviewer agents in parallel with different focuses: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
-2. Consolidate findings and identify highest severity issues that you recommend fixing
-3. **Present findings to user and ask what they want to do** (fix now, fix later, or proceed as-is)
-4. Address issues based on user decision
+1. Run `/review` command — dispatches `swift-reviewer` + `code-reviewer` in parallel
+2. Review the merged, graded output
+3. If grade is below A- (has CRITICAL findings or FAIL sections):
+   - Fix CRITICAL and MAJOR findings
+   - Rebuild with `/build`
+   - Re-run `/review` — repeat until A- grade achieved
+4. **Present final review grade to user**
+5. Address any remaining MINOR/SUGGESTION issues based on user decision
 
 ---
 

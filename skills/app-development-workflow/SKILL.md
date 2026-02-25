@@ -24,6 +24,11 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 2. Use `/brainstorm` to explore approaches and constraints
 3. Use `/write-plan` to create a detailed implementation plan
 4. Identify app archetype (document-based, library+editor, utility, menu-bar, pro tool)
+5. **Scaffold the project:**
+   - If XcodeBuildMCP available: use `scaffold_macos_project` or `scaffold_ios_project` tool
+   - If CLI: use `xcodebuildmcp-cli` skill scaffolding patterns
+   - If Swift Package: create `Package.swift` with appropriate platform target
+   - Load `swift-app-lifecycle` for scene structure (`WindowGroup`, `Settings`, `MenuBarExtra`, `DocumentGroup`)
 
 **Next phase →** Load `macos-development` architecture-patterns module for Phase 1.
 
@@ -82,7 +87,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 2. Apply templates from `swiftui-components/templates/`
 3. Follow `swiftui-expert-skill` core guidelines for state, APIs, composition
 4. Use `#Preview` blocks for every view
-5. Run `/implement-component` or `/create-view` for scaffolding
+5. Run `/implement-component` for scaffolding
 
 **Next phase →** Build and verify in Phase 4.
 
@@ -102,21 +107,33 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **Next phase →** When build is green, proceed to Phase 5. Load `swiftui-view-refactor`.
 
-## Phase 5 — Review
+## Phase 5 — Review (iterative)
 
 **When:** Build is green, code needs quality review and refactoring.
 
-**Load:** `code-analyzer`, `swiftui-expert-skill` (review checklist), `swiftui-view-refactor`
+**Exit criterion:** No CRITICAL or MAJOR findings remain. Grade A- or better (0 FAIL sections in code-analyzer output, 0 CRITICAL findings from swift-reviewer).
+
+**Load:** `code-analyzer`, `swiftui-expert-skill` (review checklist), `swiftui-view-refactor`, `swift-concurrency` (review checklist)
 **Optional deep-dive:** `audit-context-building` for security audit or architectural review
+**Agents:** `swift-reviewer`, `code-reviewer` (dispatched via `/review` command)
 
 **Steps:**
-1. Run `code-analyzer` for architectural overview and quality assessment
-2. Walk through `swiftui-expert-skill` review checklist (state, APIs, performance, animations)
-3. Apply `swiftui-view-refactor` for consistent view structure and ordering
-4. Use `/refactor-view` and `/swift-style` commands
-5. For deep analysis, load `audit-context-building`
+1. **Run review swarm:** `/review` dispatches `swift-reviewer` + `code-reviewer` in parallel
+2. **Triage findings:** Classify each as CRITICAL (fix now), MAJOR (fix now), MINOR (fix later), SUGGESTION (backlog)
+3. **Fix CRITICAL and MAJOR findings** — apply fixes one category at a time (security → concurrency → API → accessibility)
+4. **Rebuild:** `/build` to verify fixes compile
+5. **Re-run review swarm** — repeat steps 1-4 until exit criterion met
+6. **Apply optional polish:** `/refactor-view` for view structure, `/swift-style` for conventions
+7. **Grade check:** 0 FAIL + 0 CRITICAL = A- (proceed). Otherwise loop back to step 2.
 
-**Next phase →** Proceed to Phase 6 for testing.
+**Grading scale:**
+| Grade | Criteria | Action |
+|-------|----------|--------|
+| A- or better | 0 FAIL, 0 CRITICAL | Proceed to Phase 6 |
+| B | 0 FAIL, 1-2 CRITICAL | Fix CRITICALs, re-review |
+| C or below | 1+ FAIL | Fix all FAILs and CRITICALs, re-review |
+
+**Next phase →** When review grade is A- or better, proceed to Phase 6. Load `ios-testing`.
 
 ## Phase 6 — Test
 

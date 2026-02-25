@@ -7,7 +7,7 @@ description: This skill should be used when the user asks to "add SF Symbols", "
 
 ## Lifecycle Position
 
-Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+Phase 3 API Reference — load during implementation when using SF Symbols or custom icons. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
 
 ## Quick Reference
 
@@ -51,3 +51,65 @@ Image(systemName: "bell").symbolEffect(.bounce, value: count)
 Image(systemName: "chart.bar.fill", variableValue: 0.3)  // partial
 Image(systemName: "chart.bar.fill", variableValue: 1.0)  // full
 ```
+
+## When to Use Which
+
+| Need | Use |
+|------|-----|
+| Standard system icon | `Image(systemName: "star.fill")` |
+| Icon with accessible label | `Label("Favorites", systemImage: "star.fill")` (preferred in buttons/toolbars) |
+| Icon matching adjacent text weight | `.fontWeight(.semibold)` on Image to match Text |
+| Animated symbol feedback | `.symbolEffect(.bounce, value: trigger)` |
+| Progress/level indicator | `Image(systemName: "wifi", variableValue: 0.5)` |
+| Multi-color system icon | `.symbolRenderingMode(.multicolor)` |
+| Icon tinted to match theme | `.symbolRenderingMode(.palette)` with `foregroundStyle(.red, .blue)` |
+| Custom app icon | Asset catalog → Symbol Image Set → export from SF Symbols app |
+
+## Common Mistakes
+
+1. `Image(systemName:)` without `Label` in buttons — no accessibility text for VoiceOver
+2. Mismatched symbol weight with adjacent text — icons look too thin/thick next to text. Match with `.fontWeight()` or `.imageScale()`
+3. Using `.resizable().frame()` for sizing instead of `.font()` — breaks alignment with text. Use `.font(.title)` to match text size
+4. Missing `.symbolRenderingMode()` — defaults to monochrome which may not match design intent
+5. Hardcoded symbol names without checking SF Symbols availability — some symbols require iOS 16+ or 17+
+
+**Before (incorrect):**
+```swift
+Button(action: addFavorite) {
+    Image(systemName: "star.fill")  // no label — VoiceOver reads nothing useful
+}
+```
+
+**After (correct):**
+```swift
+Button(action: addFavorite) {
+    Label("Add to Favorites", systemImage: "star.fill")
+}
+```
+
+**Before (incorrect):**
+```swift
+Image(systemName: "heart.fill")
+    .resizable()
+    .frame(width: 24, height: 24)  // disrupts text baseline alignment
+```
+
+**After (correct):**
+```swift
+Image(systemName: "heart.fill")
+    .font(.title2)  // scales with Dynamic Type and aligns with text
+```
+
+## Checklist
+
+- [ ] Buttons and toolbar items use `Label("text", systemImage:)` not bare `Image`
+- [ ] Icon weight matches adjacent text weight
+- [ ] Icon sizing uses `.font()` or `.imageScale()` not `.resizable().frame()`
+- [ ] Rendering mode explicitly set when multicolor or palette needed
+- [ ] Symbol availability checked for newer symbols (`@available`)
+
+## Cross-References
+
+- `swiftui-colors-api` — `foregroundStyle()` for symbol tinting
+- `swiftui-expert-skill` — review checklist includes accessibility label checks
+- `macos-app-design` — macOS toolbar icon conventions

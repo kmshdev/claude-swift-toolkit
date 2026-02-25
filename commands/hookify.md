@@ -1,7 +1,7 @@
 ---
 description: Create hooks to prevent unwanted behaviors from conversation analysis or explicit instructions
 argument-hint: Optional specific behavior to address
-allowed-tools: ["Read", "Write", "AskUserQuestion", "Task", "Grep", "TodoWrite", "Skill"]
+allowed-tools: ["Read", "Write", "AskUserQuestion", "Task", "Grep", "TodoWrite", "Skill", "Bash", "Glob"]
 ---
 
 # Hookify - Create Hooks from Unwanted Behaviors
@@ -30,7 +30,7 @@ You will help the user create hookify rules to prevent unwanted behaviors. Follo
 Use the Task tool to launch conversation-analyzer agent:
 ```
 {
-  "subagent_type": "general-purpose",
+  "subagent_type": "conversation-analyzer",
   "description": "Analyze conversation for unwanted behaviors",
   "prompt": "You are analyzing a Claude Code conversation to find behaviors the user wants to prevent.
 

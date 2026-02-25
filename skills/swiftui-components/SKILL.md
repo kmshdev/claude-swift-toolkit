@@ -87,9 +87,6 @@ When applying Liquid Glass to custom components:
 │   ├── animation_and_transitions.md
 │   ├── data_flow.md
 │   ├── presentations.md
-│   ├── navigation.md
-│   ├── platform_bridging.md
-│   ├── app_structure.md
 │   └── index.md
 └── templates/            ← Copy-paste-ready Swift templates
     ├── view-template.swift

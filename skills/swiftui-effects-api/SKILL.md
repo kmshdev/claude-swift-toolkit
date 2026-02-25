@@ -7,7 +7,7 @@ description: This skill should be used when the user asks to "add blur effect", 
 
 ## Lifecycle Position
 
-Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+Phase 3 API Reference — load during implementation when adding visual effects. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
 
 ## View Modifiers
 
@@ -54,3 +54,76 @@ Canvas { context, size in
     context.addFilter(.shadow(color: .black, radius: 3))
 }
 ```
+
+## When to Use Which
+
+| Need | Use |
+|------|-----|
+| Frosted glass look | `.ultraThinMaterial` (see `swiftui-material-api`) or `.blur(radius:)` on background |
+| Drop shadow on card/element | `.shadow(color:radius:x:y:)` |
+| Inner glow/shadow | `overlay` with blurred shape |
+| Complex custom drawing | `Canvas { context, size in }` with `drawingGroup()` |
+| Animated visual effect | `.visualEffect { content, proxy in }` for geometry-aware transforms |
+| GPU shader effects | `.colorEffect()`, `.distortionEffect()`, `.layerEffect()` |
+| Compositing/blending | `.blendMode(.overlay)`, `.compositingGroup()` |
+
+## Performance Cost Ranking
+
+```
+Cheapest → Most Expensive:
+opacity → shadow → blur(small radius) → Canvas → blur(large radius) → Metal shaders
+```
+
+- Blur at radius > 20 is expensive — avoid in ScrollView rows
+- Shadow on every list cell adds up — consider `drawingGroup()` for complex cells
+- Canvas is faster than equivalent modifier stacks for 10+ shapes
+- Always use `drawingGroup()` before Metal shader modifiers
+
+## Common Mistakes
+
+1. `.blur(radius: 50)` on every list row — kills scroll performance. Use sparingly or cache
+2. Shadow on every cell without `drawingGroup()` — each shadow is a separate render pass
+3. Canvas without `drawingGroup()` — doesn't rasterize to offscreen buffer, loses performance benefit
+4. `.visualEffect` with layout-changing transforms — only use for visual transforms (scale, offset, opacity), not frame changes
+5. Applying `.blendMode()` without `.compositingGroup()` — blend mode leaks to parent unless grouped
+
+**Before (incorrect):**
+```swift
+// In a List or ScrollView row:
+CardView()
+    .blur(radius: 30)  // expensive, applied every frame per cell
+```
+
+**After (correct):**
+```swift
+// Apply blur outside ScrollView, or use material instead:
+CardView()
+    .background(.ultraThinMaterial)  // system-optimized frosted glass
+```
+
+**Before (incorrect):**
+```swift
+Text("Overlay")
+    .blendMode(.overlay)  // leaks blend mode to parent layer
+```
+
+**After (correct):**
+```swift
+Text("Overlay")
+    .blendMode(.overlay)
+    .compositingGroup()  // isolates blend to this view's layer
+```
+
+## Checklist
+
+- [ ] No blur in ScrollView/List row views (or explicitly justified)
+- [ ] Canvas views use `drawingGroup()` for complex drawing
+- [ ] `visualEffect` only uses visual transforms (not layout)
+- [ ] `.compositingGroup()` wraps views using `.blendMode()`
+- [ ] Metal shader effects gated with `#available` check
+
+## Cross-References
+
+- `swiftui-material-api` — material backgrounds (preferred over manual blur for frosted glass)
+- `swiftui-colors-api` — colors used in gradients and Canvas drawing
+- `apple-liquid-glass-design` — Liquid Glass effects (separate from standard SwiftUI effects)
