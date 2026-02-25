@@ -7,7 +7,7 @@ description: This skill should be used when the user asks to "style with colors"
 
 ## Lifecycle Position
 
-Phase 3 API Reference — load during implementation. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
+Phase 3 API Reference — load during implementation when working with colors, gradients, or tints. Dispatched from `autonomous-ui-workflow` Phase 2 research table.
 
 ## Foreground Styling
 
@@ -62,3 +62,59 @@ struct MyStyle: ShapeStyle {
     }
 }
 ```
+
+## When to Use Which
+
+| Need | Use |
+|------|-----|
+| Text, icons that adapt to dark mode | `foregroundStyle(.primary)`, `.secondary`, `.tertiary` |
+| Brand colors shared across views | Asset catalog `Color("BrandRed")` |
+| Tinting interactive elements | `.tint(.accentColor)` |
+| Multi-color text/icon styling | `foregroundStyle(.red, .blue, .green)` (primary, secondary, tertiary) |
+| Gradient backgrounds | `LinearGradient`, `RadialGradient`, `AngularGradient`, or `.gradient` suffix |
+| Platform-bridged colors | `Color(nsColor:)` for macOS, `Color(uiColor:)` for iOS |
+| Dynamic color based on scheme | `@Environment(\.colorScheme)` with conditional |
+
+## Common Mistakes
+
+1. Using `Color.black`/`Color.white` instead of `.primary`/semantic colors — breaks in dark mode
+2. Hardcoding hex colors instead of asset catalog — no dark mode variant, no accessibility
+3. Using `foregroundColor()` instead of `foregroundStyle()` — deprecated API
+4. Applying `.tint()` and `.foregroundStyle()` together — tint overrides foregroundStyle on controls
+5. Missing `.opacity()` consideration — semantic colors already have built-in opacity levels
+
+**Before (incorrect):**
+```swift
+Text("Hello")
+    .foregroundColor(.black)  // deprecated, breaks dark mode
+```
+
+**After (correct):**
+```swift
+Text("Hello")
+    .foregroundStyle(.primary)  // adapts to dark mode automatically
+```
+
+**Before (incorrect):**
+```swift
+Color(hex: "#FF3B30")  // hardcoded, no dark mode variant
+```
+
+**After (correct):**
+```swift
+Color("BrandRed")  // defined in asset catalog with Light/Dark variants
+```
+
+## Checklist
+
+- [ ] No hardcoded `Color.black`/`Color.white` for text or backgrounds
+- [ ] Using `foregroundStyle()` not `foregroundColor()`
+- [ ] Brand colors defined in asset catalog with dark mode variants
+- [ ] Gradient direction matches reading direction (leading → trailing)
+- [ ] Color contrast meets WCAG AA (4.5:1 for normal text, 3:1 for large text)
+
+## Cross-References
+
+- `swiftui-effects-api` — blur, shadow, opacity effects that interact with colors
+- `swiftui-material-api` — material backgrounds that adapt to underlying colors
+- `swiftui-expert-skill` — modern API checklist includes `foregroundStyle()` migration

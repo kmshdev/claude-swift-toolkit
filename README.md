@@ -1,6 +1,6 @@
 # Claude Swift Toolkit
 
-**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with Liquid Glass design, SwiftUI API references, and specialized agents.
+**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 24 skills, 11 agents, and 20 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, and localization.
 
 ## Development Lifecycle
 
@@ -10,12 +10,12 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 | Phase | Skills | Agent | Commands |
 |-------|--------|-------|----------|
-| **0 — Scaffold** | `macos-development`, `app-development-workflow` | — | `/write-plan`, `/brainstorm` |
-| **1 — Architecture** | `macos-development` (architecture-patterns) | `macos-architect` | — |
+| **0 — Scaffold** | `macos-development`, `app-development-workflow`, `swift-app-lifecycle` | — | `/write-plan`, `/brainstorm` |
+| **1 — Architecture** | `macos-development` (architecture-patterns), `swift-app-lifecycle` | `macos-architect` | — |
 | **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
-| **3 — Implement** | `swiftui-components`, `swiftui-expert-skill`, 7 API refs | `ui-developer` | `/implement-component`, `/create-view` |
+| **3 — Implement** | `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-localization`, 7 API refs | `ui-developer` | `/implement-component` |
 | **4 — Build** | `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
-| **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/refactor-view`, `/swift-style` |
+| **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
 
 ## Quick Start
@@ -93,17 +93,26 @@ npx skills add kmshdev/claude-swift-toolkit
 | `swiftui-components` | 3 | Reusable view patterns, templates, component library |
 | `swiftui-expert-skill` | 3, 5 | Best practices + review checklist |
 
+### Swift Core (Phases 0-3)
+
+| Skill | Phase | Purpose |
+|-------|-------|---------|
+| `swift-networking` | 3 | URLSession async/await, API clients, error handling, retry |
+| `swift-concurrency` | 3, 5 | Actors, Sendable, structured concurrency, Swift 6 migration |
+| `swift-app-lifecycle` | 0-1 | App entry point, scenes, deep links, notifications |
+| `swift-localization` | 3 | String Catalogs, plurals, RTL layout, locale-aware formatting |
+
 ### API Reference (Phase 3)
 
 | Skill | Covers |
 |-------|--------|
-| `swiftui-material-api` | Material backgrounds, shapes, blur |
-| `swiftui-iconography-api` | SF Symbols, rendering modes, effects |
-| `swiftui-colors-api` | Semantic colors, gradients, tints |
-| `swiftui-typography-api` | Fonts, text styles, Dynamic Type |
-| `swiftui-input-api` | Text fields, pickers, keyboard shortcuts |
-| `swiftui-effects-api` | Blur, shadow, opacity, Canvas |
-| `swiftui-presentation-api` | Sheets, popovers, alerts, navigation |
+| `swiftui-material-api` | Material backgrounds, shapes, stroke patterns |
+| `swiftui-iconography-api` | SF Symbols, rendering modes, symbol effects |
+| `swiftui-colors-api` | Semantic colors, gradients, tints, dark mode |
+| `swiftui-typography-api` | Fonts, text styles, Dynamic Type, text layout |
+| `swiftui-input-api` | Text fields, focus management, forms, pickers |
+| `swiftui-effects-api` | Blur, shadow, opacity, Canvas, Metal shaders |
+| `swiftui-presentation-api` | Sheets, popovers, alerts, detents, inspectors |
 
 ### Tooling (Phase 4)
 
@@ -132,9 +141,8 @@ npx skills add kmshdev/claude-swift-toolkit
 |-------|-------|----------|
 | **ui-developer** | Read/Write/Edit/Bash | Autonomous UI development with build verification |
 | **macos-architect** | Read/Grep/Glob/Edit/Bash | Architecture review and system design |
-| **swift-expert** | General-purpose | Swift language expertise |
 | **code-reviewer** | Read-only | Code review and quality assessment |
-| **ios-developer** | General-purpose | iOS/iPadOS development |
+| **ios-developer** | Read/Write/Edit/Bash | iOS/iPadOS development with UIKit bridging |
 | **swift-reviewer** | Read-only | Swift code style review |
 | **code-architect** | General-purpose | Technical architecture decisions |
 | **code-explorer** | Read-only | Codebase exploration and analysis |
@@ -145,16 +153,15 @@ npx skills add kmshdev/claude-swift-toolkit
 ## Commands
 
 ### Development
-- `/build` — Build the Xcode project
-- `/test` — Run unit and integration tests
-- `/run-app` — Build and launch the macOS app
-- `/fix-build` — Diagnose and fix build errors
+- `/build` — Build the Xcode project with error categorization
+- `/test` — Run unit and integration tests with failure analysis
+- `/run-app` — Build and launch on simulator or Mac
+- `/fix-build` — Diagnose and fix build errors systematically
 
 ### UI Development
 - `/design-ui` — Launch autonomous UI workflow
 - `/implement-component` — Create or modify a SwiftUI view
 - `/review-ui` — Visual validation of implemented UI
-- `/create-view` — Scaffold a new SwiftUI view
 
 ### Planning & Architecture
 - `/write-plan` — Create a detailed implementation plan
@@ -163,15 +170,17 @@ npx skills add kmshdev/claude-swift-toolkit
 - `/feature-dev` — Full feature development workflow
 
 ### Code Quality
-- `/swift-style` — Apply Swift style guide
-- `/refactor-view` — Refactor a view for clarity
+- `/swift-style` — Check Swift style, conventions, and modern API usage
+- `/refactor-view` — Analyze and refactor a SwiftUI view
 
 ### Project Management
-- `/help`, `/list`, `/skills`, `/prompts`, `/configure`
+- `/skills`, `/prompts`, `/revise-claude-md`
 
-### Utilities
-- `/hookify` — Create a new hook
-- `/revise-claude-md` — Update CLAUDE.md with new patterns
+### Utilities (Hook Management)
+- `/hookify` — Create a new hook rule
+- `/help` — Hookify documentation
+- `/list` — List active hook rules
+- `/configure` — Configure hookify settings
 
 ## Hooks
 
