@@ -124,4 +124,4 @@ Text("Label")
 
 - `swiftui-colors-api` — `foregroundStyle()` for text color
 - `swiftui-iconography-api` — matching icon weight with text weight
-- `swiftui-expert-skill` — modern text formatting patterns
+- `swiftui-ui-patterns` — modern text formatting patterns

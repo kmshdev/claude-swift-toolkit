@@ -161,5 +161,5 @@ ScrollView {
 
 - `swiftui-presentation-api` — sheets and alerts that contain forms
 - `swiftui-typography-api` — text styles for form labels
-- `swiftui-expert-skill` — state management for form data (`@Observable` view model pattern)
+- `swiftui-ui-patterns` — state management for form data (`@Observable` view model pattern)
 - `swiftui-26-api` — iOS 26 rich text: `AttributedTextSelection`, `AttributedTextFormattingDefinition`, `FindContext`

@@ -117,4 +117,4 @@ Color("BrandRed")  // defined in asset catalog with Light/Dark variants
 
 - `swiftui-effects-api` — blur, shadow, opacity effects that interact with colors
 - `swiftui-material-api` — material backgrounds that adapt to underlying colors
-- `swiftui-expert-skill` — modern API checklist includes `foregroundStyle()` migration
+- `swiftui-ui-patterns` — modern API checklist includes `foregroundStyle()` migration

@@ -7,7 +7,7 @@ memory: project
 mcpServers: xcodebuildmcp, plugin:context7:context7
 skills:
   - autonomous-ui-workflow
-  - swiftui-expert-skill
+  - swiftui-ui-patterns
   - swiftui-iconography-api
   - swiftui-material-api
   - swiftui-input-api

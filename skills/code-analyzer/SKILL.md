@@ -129,6 +129,6 @@ For each section, provide:
 
 ## Cross-References
 
-- For SwiftUI-specific review, use the `swiftui-expert-skill` review checklist
+- For SwiftUI-specific review, use the `swiftui-ui-patterns` review checklist
 - For view structure refactoring, load `swiftui-view-refactor`
 - For deep line-by-line analysis, load `audit-context-building`

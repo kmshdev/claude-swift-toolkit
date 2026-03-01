@@ -25,7 +25,7 @@ macOS HIG compliance, Liquid Glass adoption, app archetype selection.
 
 ### Phase 3 — Implement
 Write SwiftUI views, apply API references, build components, add networking and localization.
-- **Skills:** `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API reference skills
+- **Skills:** `swiftui-components`, `swiftui-ui-patterns`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API reference skills
 - **Agent:** `ui-developer`
 - **Commands:** `/implement-component`
 - **API References:** `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`, `swiftui-26-api`
@@ -37,7 +37,7 @@ Compile, verify, iterate on build errors.
 
 ### Phase 5 — Review (iterative)
 Run review swarm, fix findings, re-review until grade A- (0 FAIL, 0 CRITICAL).
-- **Skills:** `swiftui-view-refactor`, `swiftui-expert-skill` (review checklist), `swift-concurrency` (review checklist), `code-analyzer`, `audit-context-building`
+- **Skills:** `swiftui-view-refactor`, `swiftui-ui-patterns` (review checklist), `swift-concurrency` (review checklist), `code-analyzer`, `audit-context-building`
 - **Agents:** `swift-reviewer`, `code-reviewer` (dispatched via `/review`)
 - **Commands:** `/review`, `/refactor-view`, `/swift-style`
 
@@ -52,7 +52,7 @@ Unit tests, UI tests, coverage analysis.
 
 **New feature in existing app:** `/feature-dev` → `autonomous-ui-workflow` → `/test`
 
-**Code review:** Load `code-analyzer` → `swiftui-expert-skill` (review checklist) → `swiftui-view-refactor`
+**Code review:** Load `code-analyzer` → `swiftui-ui-patterns` (review checklist) → `swiftui-view-refactor`
 
 ## Skill Taxonomy
 
@@ -60,7 +60,7 @@ Unit tests, UI tests, coverage analysis.
 |----------|--------|
 | **Workflow** | `app-development-workflow`, `autonomous-ui-workflow`, `macos-development` |
 | **Design** | `macos-app-design`, `apple-liquid-glass-design` |
-| **Implementation** | `swiftui-components`, `swiftui-expert-skill` |
+| **Implementation** | `swiftui-components`, `swiftui-ui-patterns` |
 | **API Reference** | `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`, `swiftui-26-api` |
 | **Swift Core** | `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-app-lifecycle`, `swift-localization` |
 | **Tooling** | `xcodebuildmcp`, `xcodebuildmcp-cli` |

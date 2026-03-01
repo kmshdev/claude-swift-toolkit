@@ -324,3 +324,44 @@ struct ThreePropertyModifier: ViewModifier, Animatable {
 - Forget `animatableData` implementation (silent failure)
 - Use inline blur/opacity instead of proper transitions
 - Expect property animation when view identity changes
+
+## iOS 26+ Hero Transitions
+
+### matchedTransitionSource + navigationTransition(.zoom)
+
+Cross-screen hero transition that zooms from a source view to a pushed destination:
+
+```swift
+@Namespace private var namespace
+
+NavigationStack {
+    ScrollView {
+        ForEach(items) { item in
+            NavigationLink(value: item) {
+                ItemCard(item: item)
+                    .matchedTransitionSource(id: item.id, in: namespace)
+            }
+        }
+    }
+    .navigationDestination(for: Item.self) { item in
+        ItemDetailView(item: item)
+            .navigationTransition(.zoom(sourceID: item.id, in: namespace))
+    }
+}
+```
+
+### Source-to-Sheet Zoom
+
+```swift
+@State private var selected: Item?
+
+ItemCard(item: item)
+    .matchedTransitionSource(id: item.id, in: namespace)
+    .onTapGesture { selected = item }
+    .sheet(item: $selected) { item in
+        ItemDetailView(item: item)
+            .navigationTransition(.zoom(sourceID: item.id, in: namespace))
+    }
+```
+
+**Requires iOS 26+.** Use `matchedGeometryEffect` for pre-iOS 26 fallbacks.

@@ -111,5 +111,5 @@ Image(systemName: "heart.fill")
 ## Cross-References
 
 - `swiftui-colors-api` — `foregroundStyle()` for symbol tinting
-- `swiftui-expert-skill` — review checklist includes accessibility label checks
+- `swiftui-ui-patterns` — review checklist includes accessibility label checks
 - `macos-app-design` — macOS toolbar icon conventions

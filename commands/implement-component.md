@@ -12,8 +12,8 @@ Before implementing, determine the target platform:
 1. Check `.xcodeproj` or `Package.swift` for deployment target (macOS vs iOS)
 2. Check existing imports: `AppKit`/`NSApplication` = macOS, `UIKit`/`UIApplication` = iOS
 3. Dispatch the appropriate agent:
-   - **macOS target:** `ui-developer` agent (loads swiftui-expert-skill, swiftui-components, macos-app-design)
-   - **iOS target:** `ios-developer` agent (loads ios-testing, swiftui-expert-skill, swiftui-presentation-api)
+   - **macOS target:** `ui-developer` agent (loads swiftui-ui-patterns, swiftui-components, macos-app-design)
+   - **iOS target:** `ios-developer` agent (loads ios-testing, swiftui-ui-patterns, swiftui-presentation-api)
    - **Universal:** Both agents in parallel, each handling their platform layer
    - **Unknown:** Ask the user which platform to target
 

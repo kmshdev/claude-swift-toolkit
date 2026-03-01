@@ -156,5 +156,5 @@ Button("Open") { openWindow(id: "detail") }
 ## Cross-References
 
 - `swiftui-input-api` — forms presented inside sheets
-- `swiftui-expert-skill` — sheet/navigation patterns in review checklist
+- `swiftui-ui-patterns` — sheet/navigation patterns in review checklist
 - `swiftui-material-api` — material backgrounds in presented content

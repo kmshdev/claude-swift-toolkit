@@ -13,7 +13,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | **0 — Scaffold** | `macos-development`, `app-development-workflow`, `swift-app-lifecycle` | — | `/write-plan`, `/brainstorm` |
 | **1 — Architecture** | `macos-development` (architecture-patterns), `swift-app-lifecycle` | `macos-architect` | — |
 | **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
-| **3 — Implement** | `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
+| **3 — Implement** | `swiftui-components`, `swiftui-ui-patterns`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
 | **4 — Build** | `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
 | **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
@@ -24,7 +24,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **New feature:** `/feature-dev` → `autonomous-ui-workflow` → `/test`
 
-**Code review:** `code-analyzer` → `swiftui-expert-skill` (checklist) → `swiftui-view-refactor`
+**Code review:** `code-analyzer` → `swiftui-ui-patterns` (checklist) → `swiftui-view-refactor`
 
 ## Installation
 
@@ -91,7 +91,7 @@ npx skills add kmshdev/claude-swift-toolkit
 | Skill | Phase | Purpose |
 |-------|-------|---------|
 | `swiftui-components` | 3 | Reusable view patterns, templates, component library |
-| `swiftui-expert-skill` | 3, 5 | Best practices + review checklist |
+| `swiftui-ui-patterns` | 3, 5 | Best practices + review checklist |
 
 ### Swift Core (Phases 0-3)
 

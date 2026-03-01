@@ -23,7 +23,7 @@ Read each error and classify:
 **Swift Compiler:**
 - Type mismatches, missing members, ambiguous references
 - Fix: check API availability (`#available`), add missing imports, fix type signatures
-- For deprecation warnings: load `swiftui-expert-skill` for modern API replacements
+- For deprecation warnings: load `swiftui-ui-patterns` for modern API replacements
 
 **Linker:**
 - "undefined symbol", "framework not found", "library not found"
@@ -40,7 +40,7 @@ Read each error and classify:
 **Swift Concurrency (Swift 6):**
 - "sending", "non-sendable", "actor-isolated", "data race"
 - Fix: add `@MainActor`, conform to `Sendable`, use `@unchecked Sendable` (last resort)
-- Load `swiftui-expert-skill` for concurrency patterns
+- Load `swiftui-ui-patterns` for concurrency patterns
 
 ### 3. Fix Errors
 - Fix one category at a time, starting with the most upstream (SPM → compiler → linker → signing)

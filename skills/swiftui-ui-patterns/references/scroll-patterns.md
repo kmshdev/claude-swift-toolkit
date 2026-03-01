@@ -303,3 +303,43 @@ struct SnapScrollView: View {
 - [ ] Use `.scrollTargetBehavior(.viewAligned)` for snap-to-item behavior
 - [ ] Gate frequent scroll position updates by thresholds
 - [ ] Use preference keys for custom scroll position tracking
+
+## App-Level Patterns
+
+### Chat View with Bottom Anchor
+
+```swift
+ScrollViewReader { proxy in
+    ScrollView {
+        LazyVStack {
+            ForEach(messages) { message in
+                MessageRow(message: message).id(message.id)
+            }
+            Color.clear.frame(height: 1).id("bottom")
+        }
+    }
+    .safeAreaInset(edge: .bottom) {
+        MessageInputBar()
+    }
+    .onAppear { proxy.scrollTo("bottom", anchor: .bottom) }
+}
+```
+
+### Horizontal Chip Strip
+
+```swift
+ScrollView(.horizontal, showsIndicators: false) {
+    LazyHStack(spacing: 8) {
+        ForEach(chips) { chip in ChipView(chip: chip) }
+    }
+}
+```
+
+### When to Use What
+
+| Pattern | Use When |
+|---------|---------|
+| `List` | Feed rows, settings, selection semantics |
+| `ScrollView` + `LazyVStack` | Custom feed layouts, chat, mixed content |
+| `ScrollView(.horizontal)` + `LazyHStack` | Chips, tags, media strips |
+| `LazyVGrid` | Icon pickers, media galleries |

@@ -1,6 +1,6 @@
 ---
 name: swiftui-26-api
-description: "Non-glass SwiftUI APIs from WWDC 2025 (iOS 26, macOS 26, visionOS 26). Covers @Animatable macro, TextEditor with AttributedString/AttributedTextSelection/AttributedTextFormattingDefinition, FindContext, WebView/WebPage, UIHostingSceneDelegate, ToolbarSpacer, Slider ticks, windowResizeAnchor, dragContainer, draggable(containerItemID:), scrollEdgeEffectStyle, tabBarMinimizeBehavior. Use when building rich text editors, embedding web content, bridging UIKit scenes to SwiftUI, or configuring scroll edge effects and tab bar minimization. DO NOT use for Liquid Glass design patterns (use apple-liquid-glass-design), general Swift or pre-iOS 26 SwiftUI (use swiftui-expert-skill)."
+description: "Non-glass SwiftUI APIs from WWDC 2025 (iOS 26, macOS 26, visionOS 26). Covers @Animatable macro, TextEditor with AttributedString/AttributedTextSelection/AttributedTextFormattingDefinition, FindContext, WebView/WebPage, UIHostingSceneDelegate, ToolbarSpacer, Slider ticks, windowResizeAnchor, dragContainer, draggable(containerItemID:), scrollEdgeEffectStyle, tabBarMinimizeBehavior. Use when building rich text editors, embedding web content, bridging UIKit scenes to SwiftUI, or configuring scroll edge effects and tab bar minimization. DO NOT use for Liquid Glass design patterns (use apple-liquid-glass-design), general Swift or pre-iOS 26 SwiftUI (use swiftui-ui-patterns)."
 ---
 
 # SwiftUI 26 API Reference

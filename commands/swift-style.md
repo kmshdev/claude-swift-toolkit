@@ -26,7 +26,7 @@ allowed-tools: Bash(swiftlint *), Bash(swift-format *), Bash(which *), Read, Gre
 Report remaining violations grouped by rule with file:line references.
 
 ### 3. Manual Style Checks (always run)
-Load `swiftui-expert-skill` modern API checklist and check for:
+Load `swiftui-ui-patterns` modern API checklist and check for:
 
 **Modern API Usage:**
 - [ ] `foregroundStyle()` instead of `foregroundColor()`

@@ -75,6 +75,11 @@ Project planning and analysis.
 - New app architecture planning
 - Existing app audits
 
+### references/
+macOS-specific UI patterns and integration points.
+- **`references/menu-bar.md`** - Menu bar commands, `CommandMenu`, `CommandGroup`, focused menu state
+- **`references/macos-settings.md`** - Settings scene, tabbed `SettingsView`, `@AppStorage`, `OpenSettingsAction`
+
 ## How to Use
 
 1. Identify user's need from their question

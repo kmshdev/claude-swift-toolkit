@@ -284,3 +284,50 @@ if let uiImage = renderer.uiImage {
 - [ ] Use `ImageRenderer` for rendering SwiftUI views to images
 
 **Performance Note**: Image downsampling is an optional optimization. Only suggest it when you encounter `UIImage(data:)` usage in performance-sensitive contexts like scrollable lists or grids.
+
+## Media Viewer Architecture
+
+### Shared QuickLook Viewer
+
+Use a shared environment object for a global media viewer accessible from any view:
+
+```swift
+@MainActor @Observable
+final class QuickLookState {
+    var selectedURL: URL?
+
+    func prepareFor(url: URL) {
+        selectedURL = url
+    }
+}
+```
+
+Inject at root and consume from any view:
+
+```swift
+// Root
+ContentView()
+    .environment(QuickLookState())
+
+// Child
+@Environment(QuickLookState.self) private var quickLook
+
+Button("View Image") {
+    quickLook.prepareFor(url: imageURL)
+}
+```
+
+### openWindow vs Sheet for Media
+
+| Platform | Preference |
+|----------|-----------|
+| iOS | `.sheet` or `.fullScreenCover` |
+| macOS | `openWindow(value:)` for separate window |
+| visionOS | `openWindow(value:)` for spatial placement |
+
+### LazyImage vs AsyncImage
+
+| Library | Use When |
+|---------|---------|
+| `AsyncImage` | Simple cases, no caching needed |
+| `LazyImage` (Nuke) | Production apps, disk/memory caching, transformations |

@@ -61,13 +61,13 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 4. Define accessibility plan (VoiceOver, keyboard nav, Reduce Motion)
 5. Produce deliverables: app archetype, IA, command map, state model, a11y plan
 
-**Next phase →** Load `swiftui-components` + `swiftui-expert-skill` for Phase 3. For autonomous UI loop, load `autonomous-ui-workflow`.
+**Next phase →** Load `swiftui-components` + `swiftui-ui-patterns` for Phase 3. For autonomous UI loop, load `autonomous-ui-workflow`.
 
 ## Phase 3 — Implement
 
 **When:** Writing SwiftUI views and business logic.
 
-**Load:** `swiftui-components`, `swiftui-expert-skill`, `swift-actor-persistence` (if feature needs local storage)
+**Load:** `swiftui-components`, `swiftui-ui-patterns`, `swift-actor-persistence` (if feature needs local storage)
 **Agent:** `ui-developer` — autonomous implementation with build verification
 **API References:** Load as needed from the research table:
 
@@ -86,7 +86,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 **Steps:**
 1. Read existing similar views for pattern consistency
 2. Apply templates from `swiftui-components/templates/`
-3. Follow `swiftui-expert-skill` core guidelines for state, APIs, composition
+3. Follow `swiftui-ui-patterns` core guidelines for state, APIs, composition
 4. Use `#Preview` blocks for every view
 5. Run `/implement-component` for scaffolding
 
@@ -114,7 +114,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **Exit criterion:** No CRITICAL or MAJOR findings remain. Grade A- or better (0 FAIL sections in code-analyzer output, 0 CRITICAL findings from swift-reviewer).
 
-**Load:** `code-analyzer`, `swiftui-expert-skill` (review checklist), `swiftui-view-refactor`, `swift-concurrency` (review checklist)
+**Load:** `code-analyzer`, `swiftui-ui-patterns` (review checklist), `swiftui-view-refactor`, `swift-concurrency` (review checklist)
 **Optional deep-dive:** `audit-context-building` for security audit or architectural review
 **Agents:** `swift-reviewer`, `code-reviewer` (dispatched via `/review` command)
 

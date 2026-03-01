@@ -16,11 +16,11 @@ allowed-tools: Read, Write, Edit, Grep, Glob
 
 ### 2. Load Skills
 - Load `swiftui-view-refactor` skill for view ordering rules and MV patterns
-- Load `swiftui-expert-skill` review checklist for performance and composition checks
+- Load `swiftui-ui-patterns` review checklist for performance and composition checks
 - Check the project's CLAUDE.md for any project-specific view conventions
 
 ### 3. Apply Review Checklist
-Run through these checks (from `swiftui-expert-skill`):
+Run through these checks (from `swiftui-ui-patterns`):
 - [ ] `@State` and `@StateObject` properties are `private`
 - [ ] Using `@Observable` instead of `ObservableObject` for new view models
 - [ ] No passed values declared as `@State`

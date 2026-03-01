@@ -7,7 +7,7 @@ description: Refactor and review SwiftUI view files for consistent structure, de
 
 ## Lifecycle Position
 
-Phase 5 (Review). After build is green. Previous: `swiftui-expert-skill` review checklist, `code-analyzer` for architectural overview.
+Phase 5 (Review). After build is green. Previous: `swiftui-ui-patterns` review checklist, `code-analyzer` for architectural overview.
 
 ## Overview
 Apply a consistent structure and dependency pattern to SwiftUI views, with a focus on ordering, Model-View (MV) patterns, careful view model handling, and correct Observation usage.

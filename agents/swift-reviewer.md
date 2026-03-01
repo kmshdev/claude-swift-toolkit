@@ -7,7 +7,7 @@ mcpServers: xcodebuildmcp
 memory: project
 skills:
   - apple-liquid-glass-design
-  - swiftui-expert-skill
+  - swiftui-ui-patterns
   - swiftui-components
   - macos-app-design
   - macos-development

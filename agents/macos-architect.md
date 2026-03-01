@@ -9,7 +9,7 @@ skills:
   - apple-liquid-glass-design
   - macos-app-design
   - macos-development
-  - swiftui-expert-skill
+  - swiftui-ui-patterns
   - swiftui-components
   - xcodebuildmcp
   - swift-actor-persistence
