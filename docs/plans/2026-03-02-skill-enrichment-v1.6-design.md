@@ -1,4 +1,4 @@
-# v1.6 Skill Enrichment — Merge swiftui-expert-skill + swiftui-ui-patterns & Concurrency Update
+# v1.6 Skill Enrichment — Merge swiftui-ui-patterns + swiftui-ui-patterns & Concurrency Update
 
 ## Context
 
@@ -15,16 +15,16 @@ Two external skills from [Dimillian/Skills](https://github.com/Dimillian/Skills)
 
 ### Decision
 
-Full cherry-pick of all content. Merge `swiftui-expert-skill` + `swiftui-ui-patterns` into a single `swiftui-ui-patterns` skill. Cherry-pick concurrency into existing `swift-concurrency`. Cherry-pick macOS content into `macos-development`.
+Full cherry-pick of all content. Merge `swiftui-ui-patterns` + `swiftui-ui-patterns` into a single `swiftui-ui-patterns` skill. Cherry-pick concurrency into existing `swift-concurrency`. Cherry-pick macOS content into `macos-development`.
 
 ---
 
 ## Work Streams
 
-### Stream 1: Create `swiftui-ui-patterns` (Replace `swiftui-expert-skill`)
+### Stream 1: Create `swiftui-ui-patterns` (Replace `swiftui-ui-patterns`)
 
 **New skill:** `skills/swiftui-ui-patterns/`
-**Replaces:** `skills/swiftui-expert-skill/`
+**Replaces:** `skills/swiftui-ui-patterns/`
 **Lifecycle position:** Phase 3 (Implement) + Phase 5 (Review checklist)
 
 #### SKILL.md Design
@@ -34,7 +34,7 @@ Follow `writing-skills` guidelines:
 - Description starts with "Use when..."
 - Graphviz decision flowchart for "which reference to load?"
 - Quick reference table mapping UI need → reference file
-- Review checklist section (preserved from swiftui-expert-skill)
+- Review checklist section (preserved from swiftui-ui-patterns)
 - Cross-references to related skills
 
 #### Reference Files — Merged (7 files)
@@ -88,7 +88,7 @@ Copied from Dimillian, adapted for plugin conventions:
 
 #### Rename References Across Plugin
 
-All occurrences of `swiftui-expert-skill` renamed to `swiftui-ui-patterns`:
+All occurrences of `swiftui-ui-patterns` renamed to `swiftui-ui-patterns`:
 - `CLAUDE.md` (Phase 3, Phase 5, taxonomy)
 - `README.md` (lifecycle table, skill table)
 - `agents/ui-developer.md`
@@ -156,7 +156,7 @@ After all content is in place, add cross-references:
 
 ### Stream 5: Delete Old Skill
 
-Delete `skills/swiftui-expert-skill/` entirely after all content is merged and references renamed.
+Delete `skills/swiftui-ui-patterns/` entirely after all content is merged and references renamed.
 
 ---
 
@@ -164,14 +164,14 @@ Delete `skills/swiftui-expert-skill/` entirely after all content is merged and r
 
 1. **Stream 2** — Concurrency cherry-pick (independent, can be committed separately)
 2. **Stream 1** — Create `swiftui-ui-patterns` skill (main work)
-3. **Stream 5** — Delete `swiftui-expert-skill`
+3. **Stream 5** — Delete `swiftui-ui-patterns`
 4. **Stream 3** — macOS development cherry-pick
 5. **Stream 4** — Cross-reference wiring
-6. **Verification** — grep for stale `swiftui-expert-skill` references, validate all reading paths resolve
+6. **Verification** — grep for stale `swiftui-ui-patterns` references, validate all reading paths resolve
 
 ## Verification Checklist
 
-- [ ] `grep -r "swiftui-expert-skill" .` returns zero hits (fully renamed)
+- [ ] `grep -r "swiftui-ui-patterns" .` returns zero hits (fully renamed)
 - [ ] `swiftui-ui-patterns/SKILL.md` has graphviz flowchart and quick reference table
 - [ ] Review checklist from old skill preserved in new skill
 - [ ] `swift-concurrency/SKILL.md` has Swift 6.2 section with `@concurrent`
@@ -185,6 +185,6 @@ Delete `skills/swiftui-expert-skill/` entirely after all content is merged and r
 
 ## Risk Assessment
 
-- **Breaking change**: Renaming `swiftui-expert-skill` → `swiftui-ui-patterns` breaks any external project that references the old name. Mitigated by the rename being within our plugin only.
+- **Breaking change**: Renaming `swiftui-ui-patterns` → `swiftui-ui-patterns` breaks any external project that references the old name. Mitigated by the rename being within our plugin only.
 - **Skill size**: 22 reference files is large. The SKILL.md must have a clear routing table so agents don't need to read all files. The components-index pattern from Dimillian helps here.
 - **Quality**: Dimillian's content uses IceCubesApp-specific types. These need to be generalized or commented as "adapt to your project."
