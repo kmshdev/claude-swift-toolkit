@@ -8,6 +8,7 @@ skills:
   - swiftui-expert-skill
   - swiftui-components
   - swiftui-presentation-api
+  - swift-actor-persistence
 ---
 
 You are an iOS developer specializing in native iOS app development with Swift and SwiftUI.

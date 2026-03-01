@@ -24,6 +24,7 @@ Before implementing, determine the target platform:
 3. **Implement:**
    - Create/modify Swift files in appropriate Views subdirectory
    - Use the project's state management pattern (check existing files)
+   - If the component reads/writes persistent local data, load `swift-actor-persistence`
    - Include `#Preview` block
    - Follow project coding standards (check CLAUDE.md for conventions)
 4. **Build** (mandatory — no exceptions):

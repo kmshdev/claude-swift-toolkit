@@ -37,6 +37,7 @@ Load documentation skills based on what the UI needs:
 | Colors, gradients, tint | `swiftui-colors-api` |
 | Blur, shadow, opacity | `swiftui-effects-api` |
 | Sheets, popovers, alerts | `swiftui-presentation-api` |
+| Local data storage, offline cache | `swift-actor-persistence` |
 
 Also load project skills: `swiftui-components`, `macos-app-design`, `apple-liquid-glass-design`
 
@@ -45,7 +46,7 @@ Also load project skills: `swiftui-components`, `macos-app-design`, `apple-liqui
 Before writing code:
 1. Read existing similar views in the project's Views directory for patterns
 2. Decide view hierarchy and component breakdown
-3. Plan state: `@State` for local, shared state via project's pattern (check existing code)
+3. Plan state: `@State` for local, shared state via project's pattern; if data must survive app restart, load `swift-actor-persistence`
 4. Plan design system usage: check CLAUDE.md for project-specific design rules
 5. Document the design before implementing
 

@@ -18,6 +18,7 @@ skills:
   - swiftui-components
   - apple-liquid-glass-design
   - macos-app-design
+  - swift-actor-persistence
 ---
 
 You are an autonomous SwiftUI UI developer for macOS apps.

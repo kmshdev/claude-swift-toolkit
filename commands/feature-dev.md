@@ -93,7 +93,8 @@ If the user says "whatever you think is best", provide your recommendation and g
 1. Wait for explicit user approval
 2. Read all relevant files identified in previous phases
 3. Implement following chosen architecture
-4. Follow codebase conventions strictly
+4. If the feature requires local persistence, load `swift-actor-persistence` for actor-backed repository patterns
+5. Follow codebase conventions strictly
 5. Write clean, well-documented code
 6. Update todos as you progress
 

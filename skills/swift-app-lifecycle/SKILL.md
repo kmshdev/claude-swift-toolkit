@@ -93,6 +93,7 @@ struct MyApp: App {
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background {
+                // For actor-based persistence, see swift-actor-persistence skill
                 PersistenceController.shared.save()
             }
         }
@@ -293,3 +294,4 @@ var body: some Scene {
 - `swift-concurrency` — async/await in app delegate methods and background tasks
 - `swift-networking` — background transfer configuration for downloads
 - `app-development-workflow` — lifecycle Phase 0-1 context
+- `swift-actor-persistence` — actor-based repositories for implementing `save()` on `.background` scene phase

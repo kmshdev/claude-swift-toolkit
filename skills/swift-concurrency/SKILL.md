@@ -234,6 +234,9 @@ func modernFetch() async throws -> Data {
 ## Common Patterns
 
 ### Actor-Isolated Repository
+
+> For a complete actor-based persistence pattern with file backing, see `swift-actor-persistence`.
+
 ```swift
 actor UserRepository {
     private let api: any APIClientProtocol
@@ -280,3 +283,4 @@ struct UserView: View {
 - `swiftui-expert-skill` — `.task` modifier, `@MainActor` ViewModel pattern, `Sendable` checks
 - `ios-testing` — testing async code with Swift Testing (`#expect` with `await`)
 - `code-analyzer` — concurrency safety review section
+- `swift-actor-persistence` — actor-based persistence pattern with file backing (extends the Actor-Isolated Repository pattern above)

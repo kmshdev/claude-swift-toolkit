@@ -30,7 +30,7 @@ Read relevant module files based on the user's needs:
 Swift 6+ code quality and modern idioms.
 - **`coding-best-practices/swift-language.md`** - Modern Swift patterns
 - **`coding-best-practices/modern-concurrency.md`** - async/await, actors, Sendable
-- **`coding-best-practices/data-persistence.md`** - SwiftData, UserDefaults, Keychain
+- **`coding-best-practices/data-persistence.md`** - SwiftData, UserDefaults, Keychain, actor-based JSON persistence (`swift-actor-persistence`)
 - **`coding-best-practices/code-organization.md`** - Project structure and modularity
 - **`coding-best-practices/architecture-principles.md`** - Clean architecture patterns
 

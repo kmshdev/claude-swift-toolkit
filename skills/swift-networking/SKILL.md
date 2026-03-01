@@ -160,6 +160,8 @@ config.urlCache = URLCache(memoryCapacity: 10_000_000, diskCapacity: 50_000_000)
 // Server returns 304 Not Modified if unchanged
 ```
 
+**Note:** URLCache handles HTTP-level caching. For application-level persistence of fetched models (offline access, local repositories), use `swift-actor-persistence`.
+
 ## Common Mistakes
 
 1. Force-unwrapping decoded data — always use `try` with proper error handling
@@ -185,3 +187,4 @@ config.urlCache = URLCache(memoryCapacity: 10_000_000, diskCapacity: 50_000_000)
 - `swift-app-lifecycle` — background transfer configuration
 - `ios-testing` — mocking URLSession with protocol-based DI
 - `code-analyzer` — network error handling review section
+- `swift-actor-persistence` — actor-based local repositories for persisting fetched API data

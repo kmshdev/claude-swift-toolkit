@@ -43,7 +43,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 1. Choose navigation pattern (`NavigationSplitView`, `TabView`, etc.)
 2. Design state management (`@Observable`, SwiftData, actor isolation)
 3. Plan module boundaries (Swift Package Manager local packages)
-4. Define data model and persistence strategy
+4. Define data model and persistence strategy (`swift-actor-persistence` for lightweight JSON, SwiftData for relational/CloudKit)
 5. Map command structure (menus, keyboard shortcuts)
 
 **Next phase →** Load `macos-app-design` for UI design in Phase 2.
@@ -67,7 +67,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **When:** Writing SwiftUI views and business logic.
 
-**Load:** `swiftui-components`, `swiftui-expert-skill`
+**Load:** `swiftui-components`, `swiftui-expert-skill`, `swift-actor-persistence` (if feature needs local storage)
 **Agent:** `ui-developer` — autonomous implementation with build verification
 **API References:** Load as needed from the research table:
 
@@ -81,6 +81,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | Colors, gradients, tint | `swiftui-colors-api` |
 | Blur, shadow, opacity | `swiftui-effects-api` |
 | Sheets, popovers, alerts | `swiftui-presentation-api` |
+| Local storage, caching | `swift-actor-persistence` |
 
 **Steps:**
 1. Read existing similar views for pattern consistency
@@ -165,3 +166,4 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 - **`macos-development`** — Comprehensive macOS reference modules. Spans Phases 0-1.
 - **`macos-app-design`** — macOS HIG and design system. Phase 2.
 - **`apple-liquid-glass-design`** — Liquid Glass API reference. Phases 2-3.
+- **`swift-actor-persistence`** — Actor-based JSON persistence with in-memory cache. Phase 3.
