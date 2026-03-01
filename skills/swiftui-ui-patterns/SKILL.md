@@ -58,7 +58,15 @@ digraph when {
 | @Observable Theme, semantic colors | `references/theming.md` |
 | AsyncImage, QuickLook media viewer | `references/image-and-media.md` |
 | Haptic feedback, HapticManager | `references/haptics.md` |
-| Animations, matchedGeometryEffect, iOS 26+ zoom | `references/animation-transitions.md` |
+| withAnimation, .animation modifier, CustomAnimation | `references/state-based-animation.md` |
+| Keyframe animations, KeyframeTimeline | `references/keyframe-animation.md` |
+| View transitions, matchedTransitionSource, zoom | `references/view-transitions.md` |
+| Transaction control, TransactionKey | `references/transactions.md` |
+| matchedGeometryEffect, geometryGroup | `references/geometry-sync.md` |
+| Animatable protocol, VectorArithmetic | `references/animatable-data.md` |
+| TimelineView, scheduled updates | `references/timeline-view.md` |
+| PhaseAnimator, multi-step sequences | `references/phase-animation.md` |
+| Spring parameters, UnitCurve timing | `references/timing-and-curves.md` |
 | Deep links, URL dispatch, OpenURLAction | `references/deeplinks.md` |
 | ToolbarTitleMenu, principal title | `references/title-menus.md` |
 | NavigationSplitView vs manual split | `references/split-views.md` |
@@ -70,8 +78,6 @@ digraph when {
 | Performance optimization, body purity | `references/performance-patterns.md` |
 | Layout patterns, context-agnostic views | `references/layout-best-practices.md` |
 | Text formatting, localizedStandardContains | `references/text-formatting.md` |
-| Animation basics, implicit/explicit, timing | `references/animation-basics.md` |
-| Advanced animation, phase/keyframe (iOS 17+) | `references/animation-advanced.md` |
 
 ## Core Guidelines
 
@@ -198,7 +204,7 @@ digraph when {
 - [ ] Using relative layout (not hard-coded constants)
 - [ ] Views work in any context (context-agnostic)
 
-### Animations (see `references/animation-basics.md`, `references/animation-transitions.md`, `references/animation-advanced.md`)
+### Animations (see `references/state-based-animation.md`, `references/view-transitions.md`, `references/keyframe-animation.md`)
 - [ ] Using `.animation(_:value:)` with value parameter
 - [ ] Using `withAnimation` for event-driven animations
 - [ ] Transitions paired with animations outside conditional structure
