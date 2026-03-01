@@ -1,6 +1,6 @@
 ---
 name: swift-concurrency
-description: Write, review, or fix Swift concurrency code using actors, async/await, and structured concurrency. Use when implementing concurrent features, resolving data race warnings, migrating from GCD, or enabling Swift 6 strict concurrency mode.
+description: Write, review, or fix Swift concurrency code using actors, async/await, and structured concurrency. Use when implementing concurrent features, resolving data race warnings, migrating from GCD, enabling Swift 6 strict concurrency mode, or adopting Swift 6.2 approachable concurrency (@concurrent, main-actor-by-default, isolated conformances).
 ---
 
 # Swift Concurrency
@@ -17,7 +17,7 @@ Is it UI code (views, view models, UI state)?
 Does it manage shared mutable state?
   → Yes → Custom actor
 Is it pure computation with no shared state?
-  → Yes → nonisolated (or Task.detached for CPU-heavy work)
+  → Yes → nonisolated (Swift 6.2: @concurrent for CPU-heavy work)
 Is it a one-off async operation from synchronous code?
   → Yes → Task { } (inherits actor context)
 ```
@@ -230,6 +230,24 @@ func modernFetch() async throws -> Data {
 | "Non-sendable type captured by @Sendable closure" | Move to actor-isolated method or make type Sendable |
 | "Actor-isolated property cannot be mutated from nonisolated context" | Add `await` or annotate caller with same actor |
 | "Global variable is not concurrency-safe" | Make it `let`, move to actor, or use `nonisolated(unsafe)` (last resort) |
+| "Conformance of X to protocol Y crosses into main actor-isolated code" | Use isolated conformance: `extension X: @MainActor Y` (Swift 6.2+) |
+
+## Swift 6.2 Approachable Concurrency
+
+Swift 6.2 changes the default: async functions **stay on the calling actor** instead of hopping to the global concurrent executor. This eliminates entire categories of data race errors for UI-bound code.
+
+**Key changes:** See `references/swift-6-2-changes.md` for full details.
+
+| Feature | What It Does |
+|---------|-------------|
+| Async stays on caller's actor | No implicit background hop — eliminates "Sending X risks data races" errors |
+| `@concurrent` attribute | Explicit opt-in to run on concurrent pool (replaces `Task.detached` for this use case) |
+| Main-actor-by-default mode | Opt-in: all types in a target implicitly `@MainActor` |
+| Isolated conformances | `extension Foo: @MainActor Bar` — protocol conformance restricted to main actor |
+
+**SwiftUI-specific:** See `references/swiftui-concurrency.md` for off-main-thread APIs (`Shape`, `Layout`, `visualEffect`, `onGeometryChange`) and their `Sendable` closure requirements.
+
+**Project triage:** Before diagnosing concurrency errors, check Xcode Build Settings → Swift Compiler → Concurrency for language version and default actor isolation settings.
 
 ## Common Patterns
 
@@ -276,11 +294,14 @@ struct UserView: View {
 - [ ] `withCheckedContinuation` resumes exactly once (not zero, not twice)
 - [ ] State re-validated after suspension points in actors (reentrancy)
 - [ ] `@unchecked Sendable` justified in comment if used
+- [ ] Swift 6.2: Check project concurrency settings before diagnosing (language version, default actor isolation)
+- [ ] Swift 6.2: `@concurrent` used instead of `Task.detached` for explicit background work
+- [ ] SwiftUI: No `@MainActor` state accessed from `Sendable` closures (visualEffect, onGeometryChange) — use value copies
 
 ## Cross-References
 
 - `swift-networking` — async/await network patterns
-- `swiftui-expert-skill` — `.task` modifier, `@MainActor` ViewModel pattern, `Sendable` checks
+- `swiftui-ui-patterns` — `.task` modifier, `@MainActor` ViewModel pattern, `Sendable` checks
 - `ios-testing` — testing async code with Swift Testing (`#expect` with `await`)
 - `code-analyzer` — concurrency safety review section
 - `swift-actor-persistence` — actor-based persistence pattern with file backing (extends the Actor-Isolated Repository pattern above)
