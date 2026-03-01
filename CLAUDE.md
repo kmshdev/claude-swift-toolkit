@@ -1,6 +1,6 @@
 # Claude Swift Toolkit — Lifecycle Map
 
-End-to-end Apple app development toolkit with 25 skills, 10 agents, and 21 commands. Every component maps to a phase below.
+End-to-end Apple app development toolkit with 26 skills, 10 agents, and 21 commands. Every component maps to a phase below.
 
 ## Development Lifecycle
 
@@ -25,10 +25,10 @@ macOS HIG compliance, Liquid Glass adoption, app archetype selection.
 
 ### Phase 3 — Implement
 Write SwiftUI views, apply API references, build components, add networking and localization.
-- **Skills:** `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 7 API reference skills
+- **Skills:** `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API reference skills
 - **Agent:** `ui-developer`
 - **Commands:** `/implement-component`
-- **API References:** `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`
+- **API References:** `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`, `swiftui-26-api`
 
 ### Phase 4 — Build
 Compile, verify, iterate on build errors.
@@ -61,7 +61,7 @@ Unit tests, UI tests, coverage analysis.
 | **Workflow** | `app-development-workflow`, `autonomous-ui-workflow`, `macos-development` |
 | **Design** | `macos-app-design`, `apple-liquid-glass-design` |
 | **Implementation** | `swiftui-components`, `swiftui-expert-skill` |
-| **API Reference** | `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api` |
+| **API Reference** | `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`, `swiftui-26-api` |
 | **Swift Core** | `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-app-lifecycle`, `swift-localization` |
 | **Tooling** | `xcodebuildmcp`, `xcodebuildmcp-cli` |
 | **Review** | `swiftui-view-refactor`, `code-analyzer`, `audit-context-building` |
@@ -74,3 +74,12 @@ These commands manage hook rules and are separate from the development lifecycle
 - `/help` — Hookify documentation
 - `/list` — List active hook rules
 - `/configure` — Configure hookify settings
+
+# Skill Creation Guide
+Agent Skills are a lightweight, open format for extending AI agent capabilities with specialized knowledge and workflows. When asked to create a new skill or improve a skill, refer to the following guides:
+
+- [View the specification](/specification) to understand the full format.
+- [See example skills](https://github.com/anthropics/skills) on GitHub.
+- [Use the reference library](https://github.com/agentskills/agentskills/tree/main/skills-ref) to validate skills and generate prompt XML.
+
+Using the guides and follwing them by using the skill `writing skills` in the correct format ensures they can be easily integrated into agents and workflows, and that they function as intended when invoked.

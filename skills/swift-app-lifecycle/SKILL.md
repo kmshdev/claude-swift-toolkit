@@ -295,3 +295,4 @@ var body: some Scene {
 - `swift-networking` — background transfer configuration for downloads
 - `app-development-workflow` — lifecycle Phase 0-1 context
 - `swift-actor-persistence` — actor-based repositories for implementing `save()` on `.background` scene phase
+- `swiftui-26-api` — `UIHostingSceneDelegate` for bridging UIKit scene lifecycle to SwiftUI

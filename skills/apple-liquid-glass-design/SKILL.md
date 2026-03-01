@@ -386,3 +386,7 @@ Each topic has a dedicated reference file. For custom glass views and animations
 - All APIs require iOS 26.0+ / iPadOS 26.0+ / macOS 26.0+ unless otherwise noted
 - visionOS glass background APIs (`glassBackgroundEffect`, `FeatheredGlassBackgroundEffect`) are separate from the Liquid Glass system described here
 - watchOS and tvOS have limited Liquid Glass support; standard components adopt it automatically
+
+## Cross-References
+
+- `swiftui-26-api` — Non-glass iOS 26 APIs (WebView, TextEditor rich text, @Animatable macro, UIHostingSceneDelegate, dragContainer, windowResizeAnchor)

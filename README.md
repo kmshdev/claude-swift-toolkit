@@ -1,6 +1,6 @@
 # Claude Swift Toolkit
 
-**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 25 skills, 11 agents, and 20 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
+**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 26 skills, 11 agents, and 20 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
 
 ## Development Lifecycle
 
@@ -13,7 +13,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | **0 — Scaffold** | `macos-development`, `app-development-workflow`, `swift-app-lifecycle` | — | `/write-plan`, `/brainstorm` |
 | **1 — Architecture** | `macos-development` (architecture-patterns), `swift-app-lifecycle` | `macos-architect` | — |
 | **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
-| **3 — Implement** | `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 7 API refs | `ui-developer` | `/implement-component` |
+| **3 — Implement** | `swiftui-components`, `swiftui-expert-skill`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
 | **4 — Build** | `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
 | **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
@@ -114,6 +114,7 @@ npx skills add kmshdev/claude-swift-toolkit
 | `swiftui-input-api` | Text fields, focus management, forms, pickers |
 | `swiftui-effects-api` | Blur, shadow, opacity, Canvas, Metal shaders |
 | `swiftui-presentation-api` | Sheets, popovers, alerts, detents, inspectors |
+| `swiftui-26-api` | iOS 26 non-glass APIs: WebView, rich text, @Animatable, UIKit bridge |
 
 ### Tooling (Phase 4)
 
