@@ -1,6 +1,6 @@
 # Claude Swift Toolkit
 
-**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 26 skills, 11 agents, and 20 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
+**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 26 skills, 10 agents, and 21 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
 
 ## Development Lifecycle
 

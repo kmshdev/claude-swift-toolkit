@@ -1,6 +1,6 @@
 ---
 name: swiftui-ui-patterns
-description: "Use when writing, reviewing, or refactoring SwiftUI views. Covers state management, view composition, performance, modern APIs, navigation routing, sheet architecture, theming, haptics, deep links, loading states, and iOS 26+ patterns. Replaces swiftui-ui-patterns with added UI architecture patterns from production apps."
+description: "Use when writing, reviewing, or refactoring SwiftUI views. Covers state management, view composition, performance, modern APIs, navigation routing, sheet architecture, theming, haptics, deep links, loading states, and iOS 26+ patterns. Merged from swiftui-expert-skill with added UI architecture patterns from production apps (IceCubesApp)."
 allowed-tools: [Read, Glob, Grep, WebFetch]
 ---
 
