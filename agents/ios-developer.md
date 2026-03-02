@@ -1,8 +1,37 @@
 ---
 name: ios-developer
-description: Build iOS and iPadOS features using SwiftUI and UIKit. Use when implementing iOS-specific views, handling device capabilities, or bridging UIKit components into SwiftUI.
-tools: Read, Write, Edit, Bash, Grep, Glob
+description: Use this agent when implementing iOS or iPadOS features using SwiftUI or UIKit. It handles device-specific views, adaptive layouts, UIKit bridging, and platform-specific capabilities autonomously. Examples:
+
+<example>
+Context: User is building a new iOS app and needs a settings screen.
+user: "Build a settings screen with SwiftUI that includes account, notifications, and appearance sections."
+assistant: "I'll use the ios-developer agent to scaffold the settings view with proper NavigationStack structure, section groupings, and SwiftUI form patterns."
+<commentary>
+The request is for a standalone iOS UI component — ios-developer is the right agent for SwiftUI-first implementation with iOS-specific conventions.
+</commentary>
+</example>
+
+<example>
+Context: User is adding iPad support to an existing iPhone app.
+user: "Implement tab-based navigation for iPad that collapses into a sidebar on large screens."
+assistant: "I'll dispatch the ios-developer agent to implement NavigationSplitView with size-class-aware layout and proper iPad multitasking support."
+<commentary>
+iPad-specific adaptive navigation requires ios-developer's knowledge of size classes, NavigationSplitView, and Split View/Slide Over handling.
+</commentary>
+</example>
+
+<example>
+Context: User needs camera access in their SwiftUI app.
+user: "Add a photo capture screen using the camera — SwiftUI doesn't seem to have a native API for this."
+assistant: "I'll use the ios-developer agent to bridge AVCaptureSession via UIViewControllerRepresentable with a Coordinator for delegate callbacks."
+<commentary>
+UIKit bridging for system capabilities like camera is a core ios-developer responsibility — it knows exactly when and how to bridge UIKit into SwiftUI.
+</commentary>
+</example>
+
+tools: Read, Write, Edit, Bash(swift *), Bash(xcodebuild *), Bash(xcrun *), Grep, Glob
 model: sonnet
+color: green
 skills:
   - ios-testing
   - swiftui-ui-patterns

@@ -1,7 +1,36 @@
 ---
 name: macos-architect
-description: macOS Tahoe architecture expert for system design, Liquid Glass adoption, and production-ready patterns
+description: |
+  macOS Tahoe architecture expert for system design, Liquid Glass adoption, and production-ready patterns. Use this agent when designing the architecture for a new macOS app, planning navigation structure, selecting state management strategies, or evaluating Liquid Glass compatibility in an existing codebase.
+
+  <example>
+  Context: The user is starting a new macOS menu bar utility and needs architectural guidance before writing any code.
+  user: "Design the architecture for a macOS menu bar app that syncs data in the background"
+  assistant: "I'll engage the macos-architect agent to design the architecture — covering MenuBarExtra scene setup, actor-isolated background sync, @Observable state management, and data persistence strategy using swift-actor-persistence."
+  <commentary>
+  New app architecture planning is a primary use case for macos-architect; it knows MenuBarExtra, Swift concurrency patterns, and macOS-specific scene lifecycle.
+  </commentary>
+  </example>
+
+  <example>
+  Context: The user is building a document-based macOS app and needs help choosing the right navigation structure.
+  user: "Plan the navigation structure for a document-based macOS app with an inspector panel"
+  assistant: "I'll use the macos-architect agent to plan the navigation — recommending NavigationSplitView three-column layout, .inspector(isPresented:) for the trailing panel, document scene configuration, and Liquid Glass compatibility for toolbars and sidebars."
+  <commentary>
+  Navigation pattern selection for macOS involves multiple interrelated decisions (split view, inspector, toolbar) that macos-architect handles holistically.
+  </commentary>
+  </example>
+
+  <example>
+  Context: The user has an existing macOS app and wants to know what changes are needed to adopt Liquid Glass for macOS Tahoe.
+  user: "Evaluate our app's codebase for Liquid Glass readiness"
+  assistant: "I'll dispatch the macos-architect agent to audit the codebase for Liquid Glass compatibility — identifying custom toolbar backgrounds that block glass, missing GlassEffectContainer groupings, views requiring backgroundExtensionEffect(), and a phased migration plan."
+  <commentary>
+  Liquid Glass adoption assessment requires deep knowledge of both the design system and SwiftUI/AppKit APIs, making macos-architect the right agent for this task.
+  </commentary>
+  </example>
 model: sonnet
+color: blue
 tools: Read, Grep, Glob
 memory: project
 mcpServers: plugin:context7:context7, xcodebuildmcp

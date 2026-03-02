@@ -1,8 +1,37 @@
 ---
 name: ui-developer
-description: Autonomous SwiftUI UI developer that takes specs and produces build-verified, HIG-compliant views
+description: Use this agent when building or iterating on SwiftUI views for macOS apps. It takes a design spec or user description and produces build-verified, HIG-compliant views with Liquid Glass support. Examples:
+
+<example>
+Context: User has a Figma spec for a new content view and wants it implemented.
+user: "Build this view from the spec — it's a card grid with a filter bar at the top and a detail panel on the right."
+assistant: "I'll dispatch the ui-developer agent to implement the layout using the spec, validate it builds cleanly, and verify the visual output with RenderPreview."
+<commentary>
+ui-developer is designed for spec-to-implementation work: it reads the project structure, picks the right state management pattern, and iterates until the build passes.
+</commentary>
+</example>
+
+<example>
+Context: User wants to add a sidebar to their macOS app using Liquid Glass styling.
+user: "Implement the sidebar with Liquid Glass — it should have nav items, a search field, and a floating toolbar at the bottom."
+assistant: "I'll use the ui-developer agent to build the sidebar, apply glass only on appropriate surfaces (toolbar, floating overlays), and skip glass on form elements per the glass rules."
+<commentary>
+Liquid Glass placement requires deep knowledge of the apple-liquid-glass-design skill and macOS HIG — ui-developer carries both as loaded skills.
+</commentary>
+</example>
+
+<example>
+Context: User's existing view has layout bugs on smaller window sizes.
+user: "The detail view breaks when the window is narrow — fix the layout so it adapts gracefully."
+assistant: "I'll send this to the ui-developer agent to inspect the view, add GeometryReader guards, and use ViewThatFits or conditional layouts to fix the narrow-window behavior."
+<commentary>
+Adaptive layout fixes on macOS require build-verify cycles — ui-developer handles the full loop autonomously without needing hand-holding.
+</commentary>
+</example>
+
 model: sonnet
-tools: Read, Write, Edit, Bash, Glob, Grep
+tools: Read, Write, Edit, Bash(swift *), Bash(xcodebuild *), Bash(xcrun *), Glob, Grep
+color: magenta
 memory: project
 mcpServers: xcodebuildmcp, plugin:context7:context7
 skills:

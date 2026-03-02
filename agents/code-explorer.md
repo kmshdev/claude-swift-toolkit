@@ -1,7 +1,26 @@
 ---
 name: code-explorer
-description: Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, understanding patterns and abstractions, and documenting dependencies to inform new development
-tools: Glob, Grep, LS, Read, NotebookRead, WebFetch, TodoWrite, WebSearch, Bash
+description: Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, understanding patterns and abstractions, and documenting dependencies to inform new development. Use this agent when the user wants to understand how something works in an existing codebase. Examples:
+
+<example>
+Context: The user is working on an iOS app and wants to understand how authentication is implemented before adding a new auth provider.
+user: "Analyze how auth works in this app"
+assistant: "I'll use the code-explorer agent to trace the authentication implementation — entry points, data flow, and all dependencies."
+<commentary>
+The user wants to understand an existing feature before modifying it. code-explorer is purpose-built for tracing execution paths and mapping architecture layers without making any changes.
+</commentary>
+</example>
+
+<example>
+Context: The user is about to add a new data model and wants to understand the persistence layer first.
+user: "Trace how data flows through the app from the UI down to storage"
+assistant: "I'll launch the code-explorer agent to map the full data flow — from view layer through business logic to persistence."
+<commentary>
+Understanding an end-to-end data path across multiple layers is exactly what code-explorer specializes in. No writes are needed, only deep read-only analysis.
+</commentary>
+</example>
+
+tools: Glob, Grep, Read, WebFetch, WebSearch
 model: sonnet
 color: yellow
 ---
