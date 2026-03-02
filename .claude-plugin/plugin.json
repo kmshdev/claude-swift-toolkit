@@ -1,6 +1,6 @@
 {
   "name": "claude-swift-toolkit",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "End-to-end Apple app development toolkit — 26 skills covering lifecycle workflow (Scaffold → Architecture → Design → Implement → Build → Review → Test), Liquid Glass design, SwiftUI API references (including iOS 26 non-glass APIs), Swift concurrency, actor persistence, networking, localization, and specialized agents.",
   "author": {
     "name": "kmshdev"
