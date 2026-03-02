@@ -158,7 +158,7 @@ All invariants, assumptions, and data dependencies must propagate across calls.
 
 ### 5.3 Complete Analysis Example
 
-See [FUNCTION_MICRO_ANALYSIS_EXAMPLE.md](resources/FUNCTION_MICRO_ANALYSIS_EXAMPLE.md) for a complete walkthrough demonstrating:
+See [FUNCTION_MICRO_ANALYSIS_EXAMPLE.md](references/FUNCTION_MICRO_ANALYSIS_EXAMPLE.md) for a complete walkthrough demonstrating:
 - Full micro-analysis of a DEX swap function
 - Application of First Principles, 5 Whys, and 5 Hows
 - Block-by-block analysis with invariants and assumptions
@@ -171,7 +171,7 @@ This example demonstrates the level of depth and structure required for all anal
 
 ### 5.4 Output Requirements
 
-When performing ultra-granular analysis, Claude MUST structure output following the format defined in [OUTPUT_REQUIREMENTS.md](resources/OUTPUT_REQUIREMENTS.md).
+When performing ultra-granular analysis, Claude MUST structure output following the format defined in [OUTPUT_REQUIREMENTS.md](references/OUTPUT_REQUIREMENTS.md).
 
 Key requirements:
 - **Purpose** (2-3 sentences minimum)
@@ -191,7 +191,7 @@ Quality thresholds:
 
 ### 5.5 Completeness Checklist
 
-Before concluding micro-analysis of a function, verify against the [COMPLETENESS_CHECKLIST.md](resources/COMPLETENESS_CHECKLIST.md):
+Before concluding micro-analysis of a function, verify against the [COMPLETENESS_CHECKLIST.md](references/COMPLETENESS_CHECKLIST.md):
 
 - **Structural Completeness**: All required sections present (Purpose, Inputs, Outputs, Block-by-Block, Dependencies)
 - **Content Depth**: Minimum thresholds met (invariants, assumptions, risk analysis, First Principles)

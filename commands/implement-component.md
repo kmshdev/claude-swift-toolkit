@@ -1,7 +1,7 @@
 ---
 description: Implement a SwiftUI component from a spec — creates files, builds, validates
 argument-hint: <spec or description>
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep
+allowed-tools: Read, Write, Edit, Bash(xcodebuild *), Bash(swift *), Bash(swiftc *), Glob, Grep, mcp__xcodebuildmcp__*
 ---
 
 # Implement Component: $ARGUMENTS

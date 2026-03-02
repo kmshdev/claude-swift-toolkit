@@ -10,7 +10,7 @@ allowed-tools: Read, Glob, Grep
 
 1. **Parse the request** — identify what UI component is needed
 2. **Research existing patterns** — read similar views in `Kulpt/Views/` for consistency
-3. **Load documentation** — use relevant swiftui-*-api skills for API reference
+3. **Load documentation** — **Load relevant `claude-swift-toolkit:swiftui-*-api` skills** using the Skill tool for API reference
 4. **Design the component:**
    - View hierarchy breakdown
    - State management plan (@State vs @Environment)

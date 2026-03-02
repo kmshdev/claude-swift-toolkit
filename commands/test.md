@@ -11,14 +11,14 @@ allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *), Read, G
 - Check for test targets in the Xcode project: `mcp__xcodebuildmcp__list_schemes` or `xcodebuild -list`
 - Look for schemes ending in `Tests` or `UITests`
 - For Swift packages: check `Package.swift` for `.testTarget` entries
-- If no test targets → suggest creating tests using the `ios-testing` skill
+- If no test targets → suggest creating tests using the **`claude-swift-toolkit:ios-testing` skill** using the Skill tool
 
 ### 2. Select Framework
 Identify which test framework the project uses:
 - **Swift Testing** (`@Test`, `#expect`, `@Suite`) — preferred for new code
 - **XCTest** (`XCTestCase`, `XCTAssert*`) — legacy but widely used
 - Both can coexist in the same target
-- Load `ios-testing` skill for framework patterns and best practices
+- **Load `claude-swift-toolkit:ios-testing` skill** using the Skill tool for framework patterns and best practices
 
 ### 3. Run Tests
 - **Xcode project (MCP):** `mcp__xcodebuildmcp__test_sim_name_proj` with scheme and simulator

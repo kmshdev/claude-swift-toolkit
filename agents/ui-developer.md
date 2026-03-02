@@ -82,7 +82,7 @@ Follow the autonomous-ui-workflow skill exactly:
 1. Read existing similar views first for pattern consistency
 2. Use the project's state management pattern (check existing views)
 3. Include `#Preview` block
-4. Load relevant API skills for documentation reference
+4. **Load relevant `claude-swift-toolkit:swiftui-*-api` skills** using the Skill tool for documentation reference
 5. Build after every change — never claim success without build output
 6. Use RenderPreview to verify visual correctness
 
@@ -91,4 +91,4 @@ Follow the autonomous-ui-workflow skill exactly:
 - Build fails: Read full error, fix, rebuild
 - Preview blank: Check for lagoonReveal or opacity modifiers
 - Layout wrong: Check GeometryReader guards (`> 0` AND `.isFinite`)
-- Glass looks wrong: Verify using apple-liquid-glass-design skill
+- Glass looks wrong: **Load `claude-swift-toolkit:apple-liquid-glass-design` skill** using the Skill tool to verify

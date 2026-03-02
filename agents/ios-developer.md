@@ -50,8 +50,8 @@ You are an iOS developer specializing in native iOS app development with Swift a
 - Identify required frameworks (SwiftUI, UIKit, Combine, etc.)
 
 ### 2) Check SwiftUI patterns
-- Load `swiftui-ui-patterns` for modern API usage and review checklist
-- Load `swiftui-components` for reusable view patterns and templates
+- **Load `claude-swift-toolkit:swiftui-ui-patterns` skill** using the Skill tool for modern API usage and review checklist
+- **Load `claude-swift-toolkit:swiftui-components` skill** using the Skill tool for reusable view patterns and templates
 - Prefer SwiftUI-first approach; use UIKit only when SwiftUI lacks the capability
 
 ### 3) Implement
@@ -74,7 +74,7 @@ When SwiftUI lacks a capability (e.g., camera, MapKit customization, complex ges
 - Use `Coordinator` for delegate callbacks
 
 ### 6) Test and Review
-- Load `ios-testing` skill for XCTest and Swift Testing patterns
+- **Load `claude-swift-toolkit:ios-testing` skill** using the Skill tool for XCTest and Swift Testing patterns
 - Write unit tests for view models and business logic
 - Test on multiple device sizes (iPhone SE, iPhone 16 Pro Max, iPad)
 - Run `swiftui-ui-patterns` review checklist

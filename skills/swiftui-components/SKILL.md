@@ -11,8 +11,8 @@ Phase 3 (Implement). After design from `macos-app-design`. Use templates and pat
 
 ## Quick Start
 
-For standard patterns, see [PATTERNS.md](PATTERNS.md).
-For API reference, see [REFERENCE.md](REFERENCE.md).
+For standard patterns, see [PATTERNS.md](references/PATTERNS.md).
+For API reference, see [REFERENCE.md](references/REFERENCE.md).
 
 ## Instructions
 
@@ -74,11 +74,11 @@ When applying Liquid Glass to custom components:
 ## File Structure
 
 ```
-.claude/skills/swiftui-components/
+skills/swiftui-components/
 ├── SKILL.md              ← You are here (entry point)
-├── PATTERNS.md           ← ViewModifier, ViewBuilder, PreferenceKey, Layout, composition patterns
-├── REFERENCE.md          ← API quick-reference tables for SwiftUI protocols, wrappers, and modifiers
 ├── references/           ← Deep documentation by category (scraped from Apple docs)
+│   ├── PATTERNS.md       ← ViewModifier, ViewBuilder, PreferenceKey, Layout, composition patterns
+│   ├── REFERENCE.md      ← API quick-reference tables for SwiftUI protocols, wrappers, and modifiers
 │   ├── views_builtin.md
 │   ├── modifiers_styling.md
 │   ├── modifiers_interaction.md
@@ -109,8 +109,4 @@ This skill was generated from 170+ Apple documentation pages via:
 skill-seekers scrape --config configs/swiftui-components.json
 ```
 
-To refresh with updated documentation, re-run the scrape and rebuild script:
-
-```bash
-./scripts/build-swiftui-components-skill.sh
-```
+To refresh with updated documentation, re-run the scrape.

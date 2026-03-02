@@ -15,8 +15,8 @@ allowed-tools: Read, Write, Edit, Grep, Glob
 - Flag views over 100 lines or with nesting > 4 levels deep
 
 ### 2. Load Skills
-- Load `swiftui-view-refactor` skill for view ordering rules and MV patterns
-- Load `swiftui-ui-patterns` review checklist for performance and composition checks
+- **Load `claude-swift-toolkit:swiftui-view-refactor` skill** using the Skill tool for view ordering rules and MV patterns
+- **Load `claude-swift-toolkit:swiftui-ui-patterns` skill** using the Skill tool for the review checklist for performance and composition checks
 - Check the project's CLAUDE.md for any project-specific view conventions
 
 ### 3. Apply Review Checklist
