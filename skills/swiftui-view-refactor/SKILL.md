@@ -11,6 +11,10 @@ hooks:
           timeout: 30
 ---
 
+## Project Context
+
+- SwiftUI views: !`grep -rl "var body.*some View" --include="*.swift" . 2>/dev/null | head -20 || echo "none found"`
+
 # SwiftUI View Refactor
 
 ## Lifecycle Position

@@ -16,6 +16,11 @@ hooks:
           timeout: 30
 ---
 
+## Project Context
+
+- Xcode schemes: !`xcodebuild -list -json 2>/dev/null | jq -r '.project.schemes[]' 2>/dev/null || echo "no schemes found"`
+- Recent build errors: !`xcodebuild -list 2>&1 | grep -i error | head -5 || echo "none"`
+
 # Autonomous UI Development Workflow
 
 ## Lifecycle Position

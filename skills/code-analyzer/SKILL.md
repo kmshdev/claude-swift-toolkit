@@ -10,6 +10,12 @@ hooks:
           timeout: 30
 ---
 
+## Project Context
+
+- Recent changes: !`git diff --name-only HEAD~3 2>/dev/null || echo "no git history"`
+- Swift version: !`swift --version 2>&1 | head -1 || echo "swift not found"`
+- Build target: !`xcodebuild -list -json 2>/dev/null | jq -r '.project.schemes[0]' 2>/dev/null || echo "unknown"`
+
 # Code Analyzer (Read-Only)
 
 Structured Swift/macOS code analysis protocol. Read-only — no file modifications.

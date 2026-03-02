@@ -3,6 +3,11 @@ name: xcodebuildmcp-cli
 description: This skill should be used when the user asks to "build via CLI", "run tests from terminal", "debug from command line", or needs xcodebuildmcp CLI as alternative to MCP tool calls for iOS/macOS/watchOS/tvOS/visionOS development. Provides CLI command reference for build, test, run, debug, log, and UI automation workflows.
 ---
 
+## Project Context
+
+- Xcode version: !`xcodebuild -version 2>/dev/null | head -1 || echo "xcodebuild not found"`
+- Available schemes: !`xcodebuild -list -json 2>/dev/null | jq -r '.project.schemes[]' 2>/dev/null || echo "no schemes"`
+
 # XcodeBuildMCP CLI
 
 ## Lifecycle Position

@@ -10,6 +10,11 @@ hooks:
           once: true
 ---
 
+## Project Context
+
+- Recent commits: !`git log --oneline -5 2>/dev/null || echo "no git history"`
+- Project files: !`ls *.xcodeproj 2>/dev/null || ls Package.swift 2>/dev/null || echo "no project file found"`
+
 # App Development Workflow
 
 End-to-end lifecycle for building Apple apps with this toolkit. Each phase tells you what to do, which skills to load, and where to go next.
