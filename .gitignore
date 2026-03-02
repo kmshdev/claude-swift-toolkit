@@ -19,3 +19,9 @@ env/
 
 # Logs
 *.log
+
+# Internal session state
+tasks/
+
+# Plan documents (internal)
+docs/plans/
