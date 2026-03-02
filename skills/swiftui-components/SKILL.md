@@ -33,6 +33,8 @@ When creating or refactoring SwiftUI components:
    - `viewmodel-template.swift` — @Observable @MainActor ViewModel with repository DI pattern
    - `modifier-template.swift` — Custom ViewModifier with View extension and conditional application
    - `glass-component-template.swift` — Liquid Glass component with GlassEffectContainer, glassEffectID, morph transitions, backgroundExtensionEffect, and toolbar grouping
+   - `templates/onboarding/` — Complete paged onboarding flow with persistence and view modifier
+   - `templates/settings/` — Cross-platform settings screen (iOS + macOS) with `@Observable` model
 
 4. **Follow project styling conventions**
    - Use semantic colors (`.primary`, `.secondary`, `.tertiary`) over hardcoded colors
@@ -71,6 +73,30 @@ When applying Liquid Glass to custom components:
 7. **Use `.buttonStyle(.glass)`** instead of custom glass effects on buttons
 8. **Test with accessibility** — Reduce Transparency removes glass; ensure fallback looks good
 
+## Templates
+
+### Base Templates (`templates/`)
+- **`view-template.swift`** — Standard view with @Observable ViewModel, .task lifecycle, accessibility
+- **`viewmodel-template.swift`** — @Observable @MainActor ViewModel with repository DI pattern
+- **`modifier-template.swift`** — Custom ViewModifier with View extension and conditional application
+- **`glass-component-template.swift`** — Liquid Glass component with GlassEffectContainer, glassEffectID, morph transitions, backgroundExtensionEffect, and toolbar grouping
+
+### Onboarding Flow (`templates/onboarding/`)
+Complete paged onboarding with persistence and view modifier:
+- **`OnboardingView.swift`** — TabView-based paged flow with page indicators
+- **`OnboardingPage.swift`** — Data model for onboarding page content
+- **`OnboardingPageView.swift`** — Individual page layout (icon, title, description)
+- **`OnboardingStorage.swift`** — `@AppStorage`-backed completion tracking
+- **`OnboardingModifier.swift`** — `.onboarding()` view modifier for one-time display
+
+### Settings Screen (`templates/settings/`)
+Cross-platform settings with iOS + macOS support:
+- **`SettingsView.swift`** — Root settings view with platform-adaptive layout
+- **`AppSettings.swift`** — `@Observable` settings model with persistence
+- **`SettingsRow.swift`** — Reusable row component for settings sections
+- **`AboutSettingsView.swift`** — App info, version, credits
+- **`AccountSettingsView.swift`** — Account management section
+
 ## File Structure
 
 ```
@@ -92,7 +118,19 @@ skills/swiftui-components/
     ├── view-template.swift
     ├── viewmodel-template.swift
     ├── modifier-template.swift
-    └── glass-component-template.swift
+    ├── glass-component-template.swift
+    ├── onboarding/       ← Complete onboarding flow (5 files)
+    │   ├── OnboardingView.swift
+    │   ├── OnboardingPage.swift
+    │   ├── OnboardingPageView.swift
+    │   ├── OnboardingStorage.swift
+    │   └── OnboardingModifier.swift
+    └── settings/         ← Cross-platform settings screen (5 files)
+        ├── SettingsView.swift
+        ├── AppSettings.swift
+        ├── SettingsRow.swift
+        ├── AboutSettingsView.swift
+        └── AccountSettingsView.swift
 ```
 
 ## Companion Skills & Agents

@@ -174,3 +174,12 @@ private struct VersionedStore<T: Codable>: Codable {
 - `swift-concurrency` — General actor patterns, reentrancy, `@MainActor`, GCD migration
 - `swift-networking` — Async network calls that feed data into actor-based repositories
 - `swift-app-lifecycle` — Scene phase changes for triggering persistence saves
+
+## Templates
+
+SwiftData persistence layer in `templates/` — copy and adapt:
+
+- **`Repository.swift`** — Generic `Repository` protocol for CRUD operations
+- **`SwiftDataRepository.swift`** — `@MainActor` SwiftData implementation with batch operations and pagination
+- **`ExampleModel.swift`** — Sample `@Model` entity showing SwiftData patterns
+- **`PersistenceController.swift`** — `ModelContainer` setup with migration support

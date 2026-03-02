@@ -288,6 +288,13 @@ var body: some Scene {
 - [ ] Universal Links have apple-app-site-association file on server
 - [ ] `@main` App struct is the single entry point (no duplicate `@main`)
 
+## Templates
+
+App lifecycle helpers in `templates/` — copy and adapt:
+
+- **`ForceUpdateChecker.swift`** — Version comparison with remote config, hard-block vs soft-prompt UI, App Store redirect
+- **`StateRestorationManager.swift`** — `@MainActor @Observable` state restoration with `NavigationPath` persistence, debounced save, restore-behavior policies
+
 ## Cross-References
 
 - `macos-development` — macOS architecture patterns, SwiftData setup, AppKit bridging

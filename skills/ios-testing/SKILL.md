@@ -244,3 +244,10 @@ func updateTitle() {
 - [ ] Edge cases covered: empty input, nil values, boundary conditions
 - [ ] Tests are isolated — no shared mutable state between tests
 - [ ] Critical paths have 80%+ coverage
+
+## Templates
+
+Test scaffolding in `templates/` — copy and adapt:
+
+- **`ViewModelTestTemplate.swift`** — Swift Testing `@Suite` pattern with fresh state per test, parameterized `@Test`, async loading
+- **`MockRepositoryTemplate.swift`** — Protocol-conforming mock with `@unchecked Sendable` for actor-safe testing

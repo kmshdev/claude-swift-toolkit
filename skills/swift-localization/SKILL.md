@@ -201,3 +201,11 @@ Text("+1 (555) 123-4567")
 - `swiftui-input-api` — localized form labels and placeholder text
 - `swift-app-lifecycle` — app entry point where locale is determined
 - `code-analyzer` — checks for hardcoded strings in review
+
+## Templates
+
+Reusable Swift files in `templates/` — copy and adapt:
+
+- **`LocalizationManager.swift`** — `@MainActor @Observable` manager with runtime language switching, `EnvironmentKey` injection
+- **`LocalizedStrings.swift`** — Type-safe `L10n` enum for compile-time checked localization keys
+- **`LocalizedPreview.swift`** — SwiftUI preview helper for testing multiple locales

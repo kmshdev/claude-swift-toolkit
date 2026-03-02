@@ -181,6 +181,16 @@ config.urlCache = URLCache(memoryCapacity: 10_000_000, diskCapacity: 50_000_000)
 - [ ] Authentication tokens not hardcoded (use Keychain or environment)
 - [ ] Retry logic for transient failures (429, 5xx)
 
+## Templates
+
+Reusable Swift files in `templates/` — copy and adapt for your project:
+
+- **`APIClient.swift`** — Protocol-based API client with `URLSession`, typed endpoints, `Sendable` conformance
+- **`APIEndpoint.swift`** — Protocol for typed API endpoints with path, method, body
+- **`APIConfiguration.swift`** — Base URL and default headers configuration
+- **`MockAPIClient.swift`** — Testing double implementing the `APIClient` protocol
+- **`NetworkError.swift`** — Typed error enum for network failures
+
 ## Cross-References
 
 - `swift-concurrency` — async/await patterns, Task cancellation, actor isolation for network state

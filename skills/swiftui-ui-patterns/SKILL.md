@@ -79,6 +79,15 @@ digraph when {
 | Layout patterns, context-agnostic views | `references/layout-best-practices.md` |
 | Text formatting, localizedStandardContains | `references/text-formatting.md` |
 
+## Templates
+
+Deep linking and App Shortcuts in `templates/` — copy and adapt:
+
+- **`DeepLink.swift`** — URL-to-enum parser for typed deep link handling
+- **`DeepLinkRouter.swift`** — `@MainActor @Observable` navigation router with pending link support, `NavigationPath` integration, `EnvironmentKey` injection
+- **`AppShortcuts.swift`** — Siri App Intents / App Shortcuts for voice and Spotlight integration
+- **`apple-app-site-association`** — Universal Links JSON template for your domain
+
 ## Core Guidelines
 
 ### State Management
