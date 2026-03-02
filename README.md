@@ -1,4 +1,4 @@
-# Claude Swift Toolkit
+# Claude Swift Toolkit v1.8.0
 
 **End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 26 skills, 10 agents, and 21 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
 
@@ -15,7 +15,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
 | **3 — Implement** | `swiftui-components`, `swiftui-ui-patterns`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
 | **4 — Build** | `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
-| **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/refactor-view`, `/swift-style` |
+| **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/review`, `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
 
 ## Quick Start
@@ -172,6 +172,7 @@ npx skills add kmshdev/claude-swift-toolkit
 - `/feature-dev` — Full feature development workflow
 
 ### Code Quality
+- `/review` — Run parallel review swarm (swift-reviewer + code-reviewer) with unified grading
 - `/swift-style` — Check Swift style, conventions, and modern API usage
 - `/refactor-view` — Analyze and refactor a SwiftUI view
 
