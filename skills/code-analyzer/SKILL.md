@@ -2,6 +2,12 @@
 name: code-analyzer
 description: This skill should be used when the user asks to "review code", "analyze architecture", "assess code quality", "audit the codebase", "review PR", or needs read-only code analysis. Provides structured review checklist for organization, error handling, performance, security, and test coverage.
 allowed-tools: [Read, Grep, Glob]
+hooks:
+  Stop:
+    - hooks:
+        - type: prompt
+          prompt: "Evaluate if the code review is comprehensive. Check: 1) Were multiple review categories covered (organization, error handling, performance, security, testing)? 2) Were specific file:line references provided? 3) Were actionable recommendations given? Context: $ARGUMENTS. Respond {\"ok\": true} if thorough, or {\"ok\": false, \"reason\": \"gaps found\"} if not."
+          timeout: 30
 ---
 
 # Code Analyzer (Read-Only)

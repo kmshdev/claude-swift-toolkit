@@ -1,6 +1,14 @@
 ---
 name: swiftui-view-refactor
 description: Refactor and review SwiftUI view files for consistent structure, dependency injection, and Observation usage. Use when asked to clean up a SwiftUI view’s layout/ordering, handle view models safely (non-optional when possible), or standardize how dependencies and @Observable state are initialized and passed.
+hooks:
+  PostToolUse:
+    - matcher: "Edit|Write"
+      hooks:
+        - type: command
+          command: "jq -r ‘.tool_input.file_path // empty’ | xargs -I{} sh -c ‘case \"{}\" in *.swift) which swiftlint >/dev/null 2>&1 && swiftlint lint --fix --path \"{}\" --quiet 2>/dev/null || true ;; esac’"
+          async: true
+          timeout: 30
 ---
 
 # SwiftUI View Refactor

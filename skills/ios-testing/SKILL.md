@@ -2,6 +2,12 @@
 name: ios-testing
 description: This skill should be used when the user asks to "write tests", "add unit tests", "implement UI tests", "analyze test coverage", "use XCTest", "use Swift Testing", "test SwiftUI views", or needs iOS/macOS testing guidance. Provides testing strategies, XCTest and Swift Testing framework patterns, and SwiftUI-specific testing techniques.
 allowed-tools: [Read, Grep, Glob, mcp__xcodebuildmcp__test_*]
+hooks:
+  Stop:
+    - hooks:
+        - type: prompt
+          prompt: "Evaluate if the testing task is complete. Check: 1) Were test files actually created or modified? 2) Were tests run and results reported? 3) Are there any failing tests that need attention? Context: $ARGUMENTS. Respond {\"ok\": true} if complete, or {\"ok\": false, \"reason\": \"what remains\"} if not."
+          timeout: 30
 ---
 
 # iOS/macOS Testing

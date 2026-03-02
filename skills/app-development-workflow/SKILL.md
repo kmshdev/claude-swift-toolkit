@@ -1,6 +1,13 @@
 ---
 name: app-development-workflow
 description: Use when starting a new Apple app, planning a major feature, or orienting to the full development lifecycle. Maps 6 phases (Scaffold → Architecture → Design → Implement → Build → Review → Test) to specific skills, agents, and commands.
+hooks:
+  SessionStart:
+    - matcher: "startup"
+      hooks:
+        - type: command
+          command: "echo 'Claude-Swift-Toolkit active. Available commands: /build, /test, /review, /fix-build, /run-app, /design-ui, /refactor-view. Use Skill tool to load skills explicitly.'"
+          once: true
 ---
 
 # App Development Workflow

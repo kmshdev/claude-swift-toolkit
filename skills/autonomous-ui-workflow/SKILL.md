@@ -1,6 +1,19 @@
 ---
 name: autonomous-ui-workflow
 description: Use when building or modifying SwiftUI views autonomously - orchestrates the full UI development loop from spec through research, design, implementation, build verification, and visual validation using Xcode MCP and documentation skills
+hooks:
+  PostToolUse:
+    - matcher: "Edit|Write"
+      hooks:
+        - type: command
+          command: "jq -r '.tool_input.file_path // empty' | xargs -I{} sh -c 'case \"{}\" in *.swift) which swiftlint >/dev/null 2>&1 && swiftlint lint --fix --path \"{}\" --quiet 2>/dev/null || true ;; esac'"
+          async: true
+          timeout: 30
+  Stop:
+    - hooks:
+        - type: prompt
+          prompt: "Check if the SwiftUI view implementation is complete. Verify: 1) A build was attempted 2) The user's requirements were addressed 3) No obvious errors remain. Context: $ARGUMENTS. Respond {\"ok\": true} if complete, or {\"ok\": false, \"reason\": \"what remains\"} if not."
+          timeout: 30
 ---
 
 # Autonomous UI Development Workflow
