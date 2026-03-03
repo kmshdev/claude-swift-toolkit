@@ -111,6 +111,13 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 **Load:** `xcodebuildmcp` or `xcodebuildmcp-cli`
 **Also:** `autonomous-ui-workflow` covers phases 5-8 (Build → Preview → Validate → Iterate)
 
+**Xcode MCP (Primary Interface):**
+When XcodeBuildMCP MCP server is available, it is the primary interface for ALL file operations, builds, and tests. Load the `xcodebuildmcp` skill for:
+- File ops: `XcodeRead`/`XcodeUpdate`/`XcodeWrite` (not `Read`/`Edit`/`Write`)
+- Build: **BuildFix Loop** (max 5 iterations with Issue Navigator diagnostics)
+- Test: **TestFix Loop** (with crash detection and CLI fallback)
+- Preview: `RenderPreview` for visual verification
+
 **Steps:**
 1. Build via XcodeBuildMCP tools or CLI (`/build`)
 2. Fix build errors (`/fix-build`) — read full error, fix, rebuild
