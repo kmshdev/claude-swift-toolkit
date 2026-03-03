@@ -190,6 +190,62 @@ func cascadeDelete() throws {
 }
 ```
 
+### SwiftData Testing Safety
+
+Swift Testing runs `@Suite` tests **in parallel by default**. This causes crashes with SwiftData:
+
+**The Problem:** Multiple tests creating separate in-memory `ModelContainer` instances simultaneously leads to Core Data coordinator conflicts → `Fatal error: This model instance was destroyed by calling ModelContext.reset`.
+
+**Two Safe Patterns:**
+
+**Option 1 — Serialize the suite (recommended when tests share setup patterns):**
+```swift
+@MainActor
+@Suite("MyModel Tests", .serialized)  // Forces sequential execution
+struct MyModelTests {
+    private func makeContainer() throws -> ModelContainer {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        return try ModelContainer(for: MyModel.self, configurations: config)
+    }
+
+    @Test("insert persists")
+    func insert() throws {
+        let container = try makeContainer()
+        let context = container.mainContext
+        // container stays alive for the duration of this test
+        // ...
+    }
+}
+```
+
+**Option 2 — Fresh container per test (safe without `.serialized`):**
+```swift
+@Test("insert persists")
+func insert() throws {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try ModelContainer(for: MyModel.self, configurations: config)
+    let context = container.mainContext
+    // container is local to this test — no cross-test interference
+    // ...
+}
+```
+
+**Critical Rule:** `ModelContainer` must outlive any `ModelContext` or `@Model` objects derived from it. If a helper function creates a container and returns only a context or a model object, the container is ARC-deallocated when the helper returns — and all model instances become invalid.
+
+```swift
+// WRONG — container dies when helper returns
+func makeContext() throws -> ModelContext {
+    let container = try ModelContainer(...)  // local → deallocated on return
+    return container.mainContext  // orphaned context
+}
+
+// RIGHT — return the container (or have the owner retain it)
+func makeContainer() throws -> ModelContainer {
+    return try ModelContainer(for: MyModel.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+}
+```
+
 ## Mocking with Protocols
 
 ```swift
@@ -246,6 +302,8 @@ func updateTitle() {
 - [ ] Mocks use protocol-based dependency injection
 - [ ] No real network calls or file system access
 - [ ] SwiftData tests use `isStoredInMemoryOnly: true`
+- [ ] SwiftData test suites use `.serialized` or create fresh containers per `@Test`
+- [ ] `ModelContainer` is retained for the lifetime of any `ModelContext` using it
 - [ ] Async tests use `async throws` (Swift Testing) or expectations (XCTest)
 - [ ] Edge cases covered: empty input, nil values, boundary conditions
 - [ ] Tests are isolated — no shared mutable state between tests
