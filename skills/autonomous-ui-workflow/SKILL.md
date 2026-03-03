@@ -30,7 +30,7 @@ Phases 2-4 (Design → Implement → Build). The inner UI development loop. Afte
 ## The Loop
 
 ```
-Spec → Research → Design → Implement → Build → Preview → Validate → Iterate
+Spec → Research → Design → Implement → Build → Review Gate → Preview → Validate → Iterate
 ```
 
 ## Phase 1: Spec
@@ -71,6 +71,7 @@ Before writing code:
 ## Phase 4: Implement
 
 Follow project conventions (check CLAUDE.md and existing code):
+- Use Xcode MCP tools as primary file interface when available: `XcodeUpdate` for edits, `XcodeRead` for reading, `XcodeWrite` for new files. See `xcodebuildmcp` skill for the full tool mapping.
 - Use the project's state management pattern
 - `#Preview` block at bottom
 - Extract views > 100 lines
@@ -78,13 +79,30 @@ Follow project conventions (check CLAUDE.md and existing code):
 
 ## Phase 5: Build
 
+Via Xcode MCP: follow the **BuildFix Loop** from the `xcodebuildmcp` skill.
+
+If build fails → `XcodeListNavigatorIssues` → fix via `XcodeUpdate` → rebuild (max 5 iterations).
+Do NOT claim success without build evidence.
+
+CLI fallback (headless sessions only):
 ```bash
 xcodebuild -project *.xcodeproj -scheme <SchemeName> -destination 'platform=macOS' build
 ```
 
-Or via Xcode MCP: `BuildProject`
+## Phase 5b: Review Gate (Before Testing)
 
-If build fails → read errors → fix → rebuild. Do NOT claim success without build evidence.
+After build passes, BEFORE running any tests:
+
+1. Load `code-analyzer` skill
+2. Review all changed files for:
+   - ARC lifetime hazards (local containers passed as references that outlive their scope)
+   - Actor isolation correctness (`@MainActor`, `Sendable` conformance)
+   - SwiftData patterns (`ModelContainer` must be retained by the owner of `ModelContext`)
+   - Consistency with project patterns (check CLAUDE.md)
+3. If issues found → fix → rebuild (BuildFix Loop) → re-review
+4. If clean → proceed to Preview/Test
+
+This gate is mandatory. It catches architectural bugs before they reach the test runner and cause MCP tool hangs.
 
 ## Phase 6: Preview
 
