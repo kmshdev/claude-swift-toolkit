@@ -91,6 +91,37 @@ actor BankAccount {
 
 **Rule:** Always re-validate state after any `await` inside an actor.
 
+## SwiftData Concurrency
+
+`@Model` classes have specific concurrency constraints enforced by Swift 6:
+
+- **`@Model` is non-Sendable** — do not pass model instances across actor boundaries
+- **`ModelContext` is `@MainActor`-bound** — create and use on the main actor
+- **`ModelContainer` is Sendable** — safe to pass between actors
+
+### Cross-Actor Access Pattern
+
+```swift
+// WRONG — passing @Model across actors
+let item = context.fetch(...)  // on MainActor
+await backgroundActor.process(item)  // non-Sendable error
+
+// RIGHT — pass the identifier, re-fetch on the other side
+let itemID = item.persistentModelID
+await backgroundActor.process(itemID, container: container)
+
+// In the background actor:
+let bgContext = ModelContext(container)
+let item = bgContext.model(for: itemID) as? Item
+```
+
+### Testing Implications
+
+When writing tests for `@Observable @MainActor` models that use SwiftData:
+- Test suites must be `@MainActor` (matches the model's isolation)
+- Use `.serialized` on `@Suite` to prevent parallel container conflicts
+- See `ios-testing` skill for complete SwiftData testing patterns
+
 ## Sendability
 
 ### Sendable Protocol
