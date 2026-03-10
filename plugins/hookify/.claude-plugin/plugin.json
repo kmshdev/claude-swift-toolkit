@@ -1,0 +1,25 @@
+{
+  "name": "hookify",
+  "version": "1.0.0",
+  "description": "User-configurable hook rules for Claude Code — create, manage, and automate behavior rules from conversation analysis or explicit instructions. Generic rule engine that works with any codebase.",
+  "author": {
+    "name": "kmshdev"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "categories": [
+    "automation",
+    "hooks",
+    "workflow"
+  ],
+  "keywords": [
+    "hooks",
+    "automation",
+    "rules",
+    "hookify",
+    "workflow",
+    "claude-code"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

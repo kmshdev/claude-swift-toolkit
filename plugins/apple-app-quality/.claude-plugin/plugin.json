@@ -1,0 +1,27 @@
+{
+  "name": "apple-app-quality",
+  "version": "1.0.0",
+  "description": "Apple app quality gate — structured code review with PASS/WARN/FAIL grading, SwiftUI view refactoring, deep audit analysis, and iOS/macOS testing patterns. Covers Phase 5 (Review) and Phase 6 (Test) of the Apple app lifecycle.",
+  "author": {
+    "name": "kmshdev"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "categories": [
+    "swift",
+    "ios",
+    "macos",
+    "apple"
+  ],
+  "keywords": [
+    "swift",
+    "code-review",
+    "testing",
+    "swiftui",
+    "refactor",
+    "ios-testing",
+    "quality"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
