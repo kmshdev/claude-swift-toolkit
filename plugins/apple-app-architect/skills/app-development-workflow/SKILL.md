@@ -36,11 +36,12 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 2. Use `/brainstorm` to explore approaches and constraints
 3. Use `/write-plan` to create a detailed implementation plan
 4. Identify app archetype (document-based, library+editor, utility, menu-bar, pro tool)
-5. **Scaffold the project:**
-   - If XcodeBuildMCP available: use `scaffold_macos_project` or `scaffold_ios_project` tool
-   - If CLI: use `apple-app-builder:xcodebuildmcp-cli` skill scaffolding patterns
-   - If Swift Package: create `Package.swift` with appropriate platform target
-   - Load `apple-app-architect:swift-app-lifecycle` for scene structure (`WindowGroup`, `Settings`, `MenuBarExtra`, `DocumentGroup`)
+5. **Scaffold the project:** Use `/scaffold-project` command (preferred)
+   - Loads `apple-app-architect:swift-project-scaffold` skill automatically
+   - Detects XcodeGen (primary) or falls back to XcodeBuildMCP scaffold tools
+   - Creates `project.yml`, app entry point, ContentView, .gitignore
+   - Configures Swift 6.2, strict concurrency, correct deployment target
+   - Fallback: use `scaffold_macos_project` / `scaffold_ios_project` MCP tools directly, or `apple-app-builder:xcodebuildmcp-cli` skill
 
 **Next phase →** Load `apple-app-architect:macos-development` architecture-patterns module for Phase 1.
 

@@ -1,7 +1,7 @@
 {
   "name": "apple-app-architect",
-  "version": "1.0.0",
-  "description": "Apple app planning and architecture — lifecycle workflow orchestrator, macOS development patterns, Swift app lifecycle, and actor persistence. Entry point for new Apple apps covering Phase 0 (Scaffold) and Phase 1 (Architecture).",
+  "version": "1.1.0",
+  "description": "Apple app planning and architecture — lifecycle workflow orchestrator, macOS development patterns, Swift app lifecycle, actor persistence, and project scaffolding. Entry point for new Apple apps covering Phase 0 (Scaffold) and Phase 1 (Architecture).",
   "author": {
     "name": "kmshdev"
   },

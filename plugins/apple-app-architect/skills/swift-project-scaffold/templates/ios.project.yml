@@ -1,0 +1,42 @@
+name: __APP_NAME__
+options:
+  bundleIdPrefix: __BUNDLE_PREFIX__
+  deploymentTarget:
+    iOS: "__IOS_TARGET__"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.2"
+    SWIFT_STRICT_CONCURRENCY: complete
+    IPHONEOS_DEPLOYMENT_TARGET: "__IOS_TARGET__"
+    ENABLE_DEBUG_DYLIB: YES
+targets:
+  __APP_NAME__:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources/__APP_NAME__
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: __BUNDLE_ID__
+        PRODUCT_NAME: __APP_NAME__
+        CODE_SIGN_IDENTITY: "-"
+    info:
+      path: Sources/__APP_NAME__/Info.plist
+      properties:
+        CFBundleDisplayName: __APP_NAME__
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        MinimumOSVersion: $(IPHONEOS_DEPLOYMENT_TARGET)
+        UILaunchScreen: {}
+  __APP_NAME__Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/__APP_NAME__Tests
+    dependencies:
+      - target: __APP_NAME__
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: __BUNDLE_ID__.tests
