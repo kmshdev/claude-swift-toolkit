@@ -35,12 +35,8 @@ tools: Read, Grep, Glob
 memory: project
 mcpServers: plugin:context7:context7, xcodebuildmcp
 skills:
-  - apple-liquid-glass-design
-  - macos-app-design
   - macos-development
-  - swiftui-ui-patterns
-  - swiftui-components
-  - xcodebuildmcp
+  - swift-app-lifecycle
   - swift-actor-persistence
 ---
 
@@ -210,3 +206,12 @@ skill-seekers enhance output/macos-architect/
 The config scrapes 100 Apple documentation pages covering Liquid Glass (28 APIs), app lifecycle (7), navigation (5), toolbar/commands (10), AppKit bridging (7), state management (8), SwiftData (3), Swift Concurrency (4), Foundation Models (1), and macOS Tahoe platform docs (3) — all via sosumi.ai markdown proxy.
 
 Focus on practical, production-ready advice for shipping macOS Tahoe applications.
+
+## Cross-Plugin Skills
+
+Load these skills using the Skill tool when needed for architecture decisions:
+- `apple-design-system:apple-liquid-glass-design` — Liquid Glass API and adoption rules
+- `apple-design-system:macos-app-design` — macOS HIG compliance and app archetypes
+- `apple-design-system:swiftui-ui-patterns` — UI architecture patterns and review checklist
+- `apple-design-system:swiftui-components` — reusable view patterns and templates
+- `apple-app-builder:xcodebuildmcp` — Xcode build tool reference

@@ -35,13 +35,6 @@ tools: Read, Grep, Glob
 mcpServers: xcodebuildmcp
 memory: project
 skills:
-  - apple-liquid-glass-design
-  - swiftui-ui-patterns
-  - swiftui-components
-  - macos-app-design
-  - macos-development
-  - swiftui-iconography-api
-  - xcodebuildmcp
   - code-analyzer
 ---
 
@@ -440,3 +433,14 @@ print\(                      → debug print in production code
 - If code is genuinely good, say so — positive feedback reinforces good habits
 - When suggesting alternatives, acknowledge tradeoffs — "This is simpler but trades off X"
 - Use "we" language — "We should add a `[weak self]` here" not "You forgot `[weak self]`"
+
+## Cross-Plugin Skills
+
+Load these skills using the Skill tool before starting review:
+- `apple-design-system:apple-liquid-glass-design` — Liquid Glass API and adoption rules
+- `apple-design-system:swiftui-ui-patterns` — UI architecture patterns and review checklist
+- `apple-design-system:swiftui-components` — reusable view patterns
+- `apple-design-system:macos-app-design` — macOS HIG compliance
+- `apple-design-system:swiftui-iconography-api` — SF Symbols reference
+- `apple-app-architect:macos-development` — macOS architecture patterns
+- `apple-app-builder:xcodebuildmcp` — Xcode build tool reference

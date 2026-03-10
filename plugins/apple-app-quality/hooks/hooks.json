@@ -1,0 +1,16 @@
+{
+  "description": "Apple App Quality hooks — agent context injection for reviewers",
+  "hooks": {
+    "SubagentStart": [
+      {
+        "matcher": "swift-reviewer|code-reviewer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SubagentStart\",\"additionalContext\":\"Project targets: Swift 6.2, macOS .v26, iOS 26. Enforce @MainActor isolation on UI code. Prefer @Observable over ObservableObject. Use Liquid Glass APIs where applicable.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -29,7 +29,7 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **When:** Starting a new app or major feature from scratch.
 
-**Load:** `macos-development` (read `app-planner/` module)
+**Load:** `apple-app-architect:macos-development` (read `app-planner/` module)
 
 **Steps:**
 1. Define the app's purpose, target users, and core features
@@ -38,67 +38,67 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 4. Identify app archetype (document-based, library+editor, utility, menu-bar, pro tool)
 5. **Scaffold the project:**
    - If XcodeBuildMCP available: use `scaffold_macos_project` or `scaffold_ios_project` tool
-   - If CLI: use `xcodebuildmcp-cli` skill scaffolding patterns
+   - If CLI: use `apple-app-builder:xcodebuildmcp-cli` skill scaffolding patterns
    - If Swift Package: create `Package.swift` with appropriate platform target
-   - Load `swift-app-lifecycle` for scene structure (`WindowGroup`, `Settings`, `MenuBarExtra`, `DocumentGroup`)
+   - Load `apple-app-architect:swift-app-lifecycle` for scene structure (`WindowGroup`, `Settings`, `MenuBarExtra`, `DocumentGroup`)
 
-**Next phase →** Load `macos-development` architecture-patterns module for Phase 1.
+**Next phase →** Load `apple-app-architect:macos-development` architecture-patterns module for Phase 1.
 
 ## Phase 1 — Architecture
 
 **When:** Designing system structure, navigation, state management, data model.
 
-**Load:** `macos-development` (read `architecture-patterns/` module)
+**Load:** `apple-app-architect:macos-development` (read `architecture-patterns/` module)
 **Agent:** `macos-architect` — consult for architecture decisions
 
 **Steps:**
 1. Choose navigation pattern (`NavigationSplitView`, `TabView`, etc.)
 2. Design state management (`@Observable`, SwiftData, actor isolation)
 3. Plan module boundaries (Swift Package Manager local packages)
-4. Define data model and persistence strategy (`swift-actor-persistence` for lightweight JSON, SwiftData for relational/CloudKit)
+4. Define data model and persistence strategy (`apple-app-architect:swift-actor-persistence` for lightweight JSON, SwiftData for relational/CloudKit)
 5. Map command structure (menus, keyboard shortcuts)
 
-**Next phase →** Load `macos-app-design` for UI design in Phase 2.
+**Next phase →** Load `apple-design-system:macos-app-design` for UI design in Phase 2.
 
 ## Phase 2 — Design
 
 **When:** Designing the UI layer — HIG compliance, Liquid Glass, layout decisions.
 
-**Load:** `macos-app-design`, `apple-liquid-glass-design`
+**Load:** `apple-design-system:macos-app-design`, `apple-design-system:apple-liquid-glass-design`
 
 **Steps:**
-1. Review Mac Citizen Checklist from `macos-app-design`
+1. Review Mac Citizen Checklist from `apple-design-system:macos-app-design`
 2. Identify which surfaces get Liquid Glass treatment
 3. Plan information architecture (sidebar structure, toolbar groups)
 4. Define accessibility plan (VoiceOver, keyboard nav, Reduce Motion)
 5. Produce deliverables: app archetype, IA, command map, state model, a11y plan
 
-**Next phase →** Load `swiftui-components` + `swiftui-ui-patterns` for Phase 3. For autonomous UI loop, load `autonomous-ui-workflow`.
+**Next phase →** Load `apple-design-system:swiftui-components` + `apple-design-system:swiftui-ui-patterns` for Phase 3. For autonomous UI loop, load `apple-app-builder:autonomous-ui-workflow`.
 
 ## Phase 3 — Implement
 
 **When:** Writing SwiftUI views and business logic.
 
-**Load:** `swiftui-components`, `swiftui-ui-patterns`, `swift-actor-persistence` (if feature needs local storage)
+**Load:** `apple-design-system:swiftui-components`, `apple-design-system:swiftui-ui-patterns`, `apple-app-architect:swift-actor-persistence` (if feature needs local storage)
 **Agent:** `ui-developer` — autonomous implementation with build verification
 **API References:** Load as needed from the research table:
 
 | Need | Skill |
 |------|-------|
-| Glass effects, floating controls | `apple-liquid-glass-design` |
-| Icons, SF Symbols | `swiftui-iconography-api` |
-| Background materials, shapes | `swiftui-material-api` |
-| Text fields, pickers, forms | `swiftui-input-api` |
-| Font choices, text styling | `swiftui-typography-api` |
-| Colors, gradients, tint | `swiftui-colors-api` |
-| Blur, shadow, opacity | `swiftui-effects-api` |
-| Sheets, popovers, alerts | `swiftui-presentation-api` |
-| Local storage, caching | `swift-actor-persistence` |
+| Glass effects, floating controls | `apple-design-system:apple-liquid-glass-design` |
+| Icons, SF Symbols | `apple-design-system:swiftui-iconography-api` |
+| Background materials, shapes | `apple-design-system:swiftui-material-api` |
+| Text fields, pickers, forms | `apple-design-system:swiftui-input-api` |
+| Font choices, text styling | `apple-design-system:swiftui-typography-api` |
+| Colors, gradients, tint | `apple-design-system:swiftui-colors-api` |
+| Blur, shadow, opacity | `apple-design-system:swiftui-effects-api` |
+| Sheets, popovers, alerts | `apple-design-system:swiftui-presentation-api` |
+| Local storage, caching | `apple-app-architect:swift-actor-persistence` |
 
 **Steps:**
 1. Read existing similar views for pattern consistency
-2. Apply templates from `swiftui-components/templates/`
-3. Follow `swiftui-ui-patterns` core guidelines for state, APIs, composition
+2. Apply templates from `apple-design-system:swiftui-components/templates/`
+3. Follow `apple-design-system:swiftui-ui-patterns` core guidelines for state, APIs, composition
 4. Use `#Preview` blocks for every view
 5. Run `/implement-component` for scaffolding
 
@@ -108,11 +108,11 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **When:** Compiling, verifying builds, iterating on errors.
 
-**Load:** `xcodebuildmcp` or `xcodebuildmcp-cli`
-**Also:** `autonomous-ui-workflow` covers phases 5-8 (Build → Preview → Validate → Iterate)
+**Load:** `apple-app-builder:xcodebuildmcp` or `apple-app-builder:xcodebuildmcp-cli`
+**Also:** `apple-app-builder:autonomous-ui-workflow` covers phases 5-8 (Build → Preview → Validate → Iterate)
 
 **Xcode MCP (Primary Interface):**
-When XcodeBuildMCP MCP server is available, it is the primary interface for ALL file operations, builds, and tests. Load the `xcodebuildmcp` skill for:
+When XcodeBuildMCP MCP server is available, it is the primary interface for ALL file operations, builds, and tests. Load the `apple-app-builder:xcodebuildmcp` skill for:
 - File ops: `XcodeRead`/`XcodeUpdate`/`XcodeWrite` (not `Read`/`Edit`/`Write`)
 - Build: **BuildFix Loop** (max 5 iterations with Issue Navigator diagnostics)
 - Test: **TestFix Loop** (with crash detection and CLI fallback)
@@ -122,10 +122,10 @@ When XcodeBuildMCP MCP server is available, it is the primary interface for ALL 
 1. Build via XcodeBuildMCP tools or CLI (`/build`)
 2. Fix build errors (`/fix-build`) — read full error, fix, rebuild
 3. Preview with `RenderPreview` to verify visual correctness
-4. Validate against project rules (see `autonomous-ui-workflow` Phase 7)
+4. Validate against project rules (see `apple-app-builder:autonomous-ui-workflow` Phase 7)
 5. Iterate until build is green and preview matches intent
 
-**Next phase →** When build is green, proceed to Phase 5. Load `swiftui-view-refactor`.
+**Next phase →** When build is green, proceed to Phase 5. Load `apple-app-quality:swiftui-view-refactor`.
 
 ## Phase 5 — Review (iterative)
 
@@ -133,8 +133,8 @@ When XcodeBuildMCP MCP server is available, it is the primary interface for ALL 
 
 **Exit criterion:** No CRITICAL or MAJOR findings remain. Grade A- or better (0 FAIL sections in code-analyzer output, 0 CRITICAL findings from swift-reviewer).
 
-**Load:** `code-analyzer`, `swiftui-ui-patterns` (review checklist), `swiftui-view-refactor`, `swift-concurrency` (review checklist)
-**Optional deep-dive:** `audit-context-building` for security audit or architectural review
+**Load:** `apple-app-quality:code-analyzer`, `apple-design-system:swiftui-ui-patterns` (review checklist), `apple-app-quality:swiftui-view-refactor`, `apple-app-builder:swift-concurrency` (review checklist)
+**Optional deep-dive:** `apple-app-quality:audit-context-building` for security audit or architectural review
 **Agents:** `swift-reviewer`, `code-reviewer` (dispatched via `/review` command)
 
 **Steps:**
@@ -153,13 +153,13 @@ When XcodeBuildMCP MCP server is available, it is the primary interface for ALL 
 | B | 0 FAIL, 1-2 CRITICAL | Fix CRITICALs, re-review |
 | C or below | 1+ FAIL | Fix all FAILs and CRITICALs, re-review |
 
-**Next phase →** When review grade is A- or better, proceed to Phase 6. Load `ios-testing`.
+**Next phase →** When review grade is A- or better, proceed to Phase 6. Load `apple-app-quality:ios-testing`.
 
 ## Phase 6 — Test
 
 **When:** Code is reviewed, ready for test coverage.
 
-**Load:** `ios-testing`
+**Load:** `apple-app-quality:ios-testing`
 
 **Steps:**
 1. Write unit tests with XCTest or Swift Testing framework
@@ -174,15 +174,15 @@ When XcodeBuildMCP MCP server is available, it is the primary interface for ALL 
 |-----------|----------|
 | Brand new app | Phase 0 (Scaffold) |
 | New feature in existing app | Phase 1 or 2 |
-| Building a specific view | Phase 3 (load `autonomous-ui-workflow`) |
+| Building a specific view | Phase 3 (load `apple-app-builder:autonomous-ui-workflow`) |
 | Build is broken | Phase 4 |
 | Code review | Phase 5 |
 | Adding tests | Phase 6 |
 
 ## Related Skills
 
-- **`autonomous-ui-workflow`** — The inner UI development loop (Spec → Build → Validate). Lives within Phases 2-4.
-- **`macos-development`** — Comprehensive macOS reference modules. Spans Phases 0-1.
-- **`macos-app-design`** — macOS HIG and design system. Phase 2.
-- **`apple-liquid-glass-design`** — Liquid Glass API reference. Phases 2-3.
-- **`swift-actor-persistence`** — Actor-based JSON persistence with in-memory cache. Phase 3.
+- **`apple-app-builder:autonomous-ui-workflow`** — The inner UI development loop (Spec → Build → Validate). Lives within Phases 2-4.
+- **`apple-app-architect:macos-development`** — Comprehensive macOS reference modules. Spans Phases 0-1.
+- **`apple-design-system:macos-app-design`** — macOS HIG and design system. Phase 2.
+- **`apple-design-system:apple-liquid-glass-design`** — Liquid Glass API reference. Phases 2-3.
+- **`apple-app-architect:swift-actor-persistence`** — Actor-based JSON persistence with in-memory cache. Phase 3.

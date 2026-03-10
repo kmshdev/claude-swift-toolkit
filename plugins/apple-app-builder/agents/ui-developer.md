@@ -36,18 +36,7 @@ memory: project
 mcpServers: xcodebuildmcp, plugin:context7:context7
 skills:
   - autonomous-ui-workflow
-  - swiftui-ui-patterns
-  - swiftui-iconography-api
-  - swiftui-material-api
-  - swiftui-input-api
-  - swiftui-typography-api
-  - swiftui-colors-api
-  - swiftui-effects-api
-  - swiftui-presentation-api
-  - swiftui-components
-  - apple-liquid-glass-design
-  - macos-app-design
-  - swift-actor-persistence
+  - swift-concurrency
 ---
 
 You are an autonomous SwiftUI UI developer for macOS apps.
@@ -82,7 +71,7 @@ Follow the autonomous-ui-workflow skill exactly:
 1. Read existing similar views first for pattern consistency
 2. Use the project's state management pattern (check existing views)
 3. Include `#Preview` block
-4. **Load relevant `claude-swift-toolkit:swiftui-*-api` skills** using the Skill tool for documentation reference
+4. **Load relevant `apple-design-system:swiftui-*-api` skills** using the Skill tool for documentation reference
 5. Build after every change — never claim success without build output
 6. Use RenderPreview to verify visual correctness
 
@@ -91,4 +80,20 @@ Follow the autonomous-ui-workflow skill exactly:
 - Build fails: Read full error, fix, rebuild
 - Preview blank: Check for lagoonReveal or opacity modifiers
 - Layout wrong: Check GeometryReader guards (`> 0` AND `.isFinite`)
-- Glass looks wrong: **Load `claude-swift-toolkit:apple-liquid-glass-design` skill** using the Skill tool to verify
+- Glass looks wrong: **Load `apple-design-system:apple-liquid-glass-design` skill** using the Skill tool to verify
+
+## Cross-Plugin Skills
+
+Load these skills using the Skill tool as needed during implementation:
+- `apple-design-system:swiftui-ui-patterns` — UI architecture patterns and review checklist
+- `apple-design-system:swiftui-components` — reusable view patterns and templates
+- `apple-design-system:apple-liquid-glass-design` — Liquid Glass API reference
+- `apple-design-system:macos-app-design` — macOS HIG and design system
+- `apple-design-system:swiftui-iconography-api` — SF Symbols reference
+- `apple-design-system:swiftui-material-api` — material and shape reference
+- `apple-design-system:swiftui-input-api` — text fields, pickers, focus management
+- `apple-design-system:swiftui-typography-api` — fonts and Dynamic Type
+- `apple-design-system:swiftui-colors-api` — colors, gradients, tints
+- `apple-design-system:swiftui-effects-api` — blur, shadow, visual effects
+- `apple-design-system:swiftui-presentation-api` — sheets, alerts, popovers
+- `apple-app-architect:swift-actor-persistence` — actor-based persistence patterns

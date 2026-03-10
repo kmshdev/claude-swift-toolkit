@@ -1,0 +1,41 @@
+{
+  "description": "Apple App Builder hooks — Swift command validation, SwiftLint auto-fix, and agent context injection",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-swift-commands.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I{} sh -c 'case \"{}\" in *.swift) which swiftlint >/dev/null 2>&1 && swiftlint lint --fix --path \"{}\" --quiet 2>/dev/null || true ;; esac'",
+            "async": true,
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "ui-developer|ios-developer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SubagentStart\",\"additionalContext\":\"Project targets: Swift 6.2, macOS .v26, iOS 26. Enforce @MainActor isolation on UI code. Prefer @Observable over ObservableObject. Use Liquid Glass APIs where applicable.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}

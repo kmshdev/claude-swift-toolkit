@@ -1,0 +1,27 @@
+{
+  "description": "Apple App Architect hooks — session reminders and agent context injection",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Toolkit reminder: apple-app-architect active. Load app-development-workflow to start. Available: /brainstorm, /write-plan, /execute-plan, /feature-dev. Target: Swift 6.2, iOS 26, macOS .v26.'"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "matcher": "macos-architect",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SubagentStart\",\"additionalContext\":\"Project targets: Swift 6.2, macOS .v26, iOS 26. Enforce @MainActor isolation on UI code. Prefer @Observable over ObservableObject. Use Liquid Glass APIs where applicable.\"}}'"
+          }
+        ]
+      }
+    ]
+  }
+}
