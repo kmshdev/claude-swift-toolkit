@@ -52,7 +52,7 @@ macOS 26 specific features.
 - **`macos-tahoe-apis/apple-intelligence.md`** - AI/ML integration
 - **`macos-tahoe-apis/mlx-framework.md`** - On-device ML with MLX
 - **`macos-tahoe-apis/continuity.md`** - Cross-device features
-- **`macos-tahoe-apis/xcode16.md`** - Xcode 16 tools and features
+- **`macos-tahoe-apis/xcode26.md`** - Xcode 26 tools, agentic coding, and MCP support
 
 ### macos-capabilities/
 Platform integration.

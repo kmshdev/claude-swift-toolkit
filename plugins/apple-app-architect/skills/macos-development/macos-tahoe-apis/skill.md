@@ -18,7 +18,7 @@ Guide developers in using macOS 26 (Tahoe) specific features and APIs effectivel
 2. **Apple Intelligence** - Foundation Models, on-device AI, MCP support
 3. **MLX Framework** - Machine learning with M5 chip optimization
 4. **Continuity** - Cross-device features and integration
-5. **Xcode 16** - Modern development tools and optimizations
+5. **Xcode 26** - Modern development tools, agentic coding, and MCP support
 
 ## Module References
 
@@ -26,7 +26,7 @@ Guide developers in using macOS 26 (Tahoe) specific features and APIs effectivel
 2. **Apple Intelligence**: `skills/macos-tahoe-apis/apple-intelligence.md`
 3. **MLX Framework**: `skills/macos-tahoe-apis/mlx-framework.md`
 4. **Continuity**: `skills/macos-tahoe-apis/continuity.md`
-5. **Xcode 16**: `skills/macos-tahoe-apis/xcode16.md`
+5. **Xcode 26**: `skills/macos-tahoe-apis/xcode26.md`
 
 ## Review Approach
 
