@@ -19,8 +19,8 @@ Phase 0: Scaffold  →  Phase 1: Architecture  →  Phase 2: Design  →  Phase 
 ### Phase 0 — Scaffold
 Plan the app, define scope, write implementation plan.
 - **Plugin:** `apple-app-architect`
-- **Skills:** `macos-development` (app-planner module), `app-development-workflow`, `swift-app-lifecycle`
-- **Commands:** `/write-plan`, `/brainstorm`, `/feature-dev`
+- **Skills:** `macos-development` (app-planner module), `app-development-workflow`, `swift-app-lifecycle`, `swift-project-scaffold`
+- **Commands:** `/write-plan`, `/brainstorm`, `/feature-dev`, `/scaffold-project`
 
 ### Phase 1 — Architecture
 System design, navigation patterns, state management, data modeling.

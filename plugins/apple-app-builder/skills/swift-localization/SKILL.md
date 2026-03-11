@@ -9,7 +9,7 @@ description: Implement localization using modern String Catalogs and LocalizedSt
 
 Phase 3 (Implement). Load when adding user-facing text to ensure localization-readiness from the start.
 
-## Modern API (Xcode 15+, iOS 16+)
+## Modern API (String Catalogs)
 
 ### String(localized:)
 ```swift
@@ -44,7 +44,7 @@ Text(notification.title)
 
 ## String Catalogs (.xcstrings)
 
-Xcode 15+ introduces String Catalogs — a visual editor replacing `.strings` and `.stringsdict` files.
+Xcode provides String Catalogs — a visual editor replacing `.strings` and `.stringsdict` files.
 
 ### Setup
 1. File → New → File → String Catalog
