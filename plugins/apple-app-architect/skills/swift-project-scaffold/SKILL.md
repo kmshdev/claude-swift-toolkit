@@ -12,7 +12,6 @@ description: Use when creating a new iOS or macOS Xcode project. Provides XcodeG
 | `__BUNDLE_ID__` | Full bundle ID (`__BUNDLE_PREFIX__.__APP_NAME__`) |
 | `__MACOS_TARGET__` | macOS deployment target (default: `26.0`) |
 | `__IOS_TARGET__` | iOS deployment target (default: `26.0`) |
-| `__PLATFORM__` | `macOS` or `iOS` |
 
 ## 2. XcodeGen Path (Primary)
 

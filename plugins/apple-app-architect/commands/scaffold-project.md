@@ -18,7 +18,7 @@ Ask the user these questions (use defaults if `$ARGUMENTS` provides app name):
 
 1. **App name** — default: `$ARGUMENTS` or current directory name
 2. **Bundle ID prefix** — default: `com.developer`
-3. **Platform** — `[1] macOS  [2] iOS  [3] Multiplatform` — default: 1 (macOS)
+3. **Platform** — `[1] macOS  [2] iOS` — default: 1 (macOS)
 4. **Deployment target** — default: macOS 26.0 / iOS 26.0
 5. **Archetype** — `[1] Standard (WindowGroup)  [2] Document-based  [3] Menu bar extra  [4] Utility` — default: 1
 6. **Include test target?** — default: yes

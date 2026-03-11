@@ -3,7 +3,6 @@ options:
   bundleIdPrefix: __BUNDLE_PREFIX__
   deploymentTarget:
     iOS: "__IOS_TARGET__"
-  xcodeVersion: "16.0"
   createIntermediateGroups: true
 settings:
   base:
