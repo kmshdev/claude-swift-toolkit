@@ -32,7 +32,7 @@ description: |
 model: sonnet
 color: blue
 tools: Read, Grep, Glob
-mcpServers: xcodebuildmcp
+mcpServers: xcode
 memory: project
 skills:
   - code-analyzer
@@ -443,4 +443,4 @@ Load these skills using the Skill tool before starting review:
 - `apple-design-system:macos-app-design` — macOS HIG compliance
 - `apple-design-system:swiftui-iconography-api` — SF Symbols reference
 - `apple-app-architect:macos-development` — macOS architecture patterns
-- `apple-app-builder:xcodebuildmcp` — Xcode build tool reference
+- `apple-app-builder:xcode-mcp` — Xcode build, diagnostics, preview, and test reference

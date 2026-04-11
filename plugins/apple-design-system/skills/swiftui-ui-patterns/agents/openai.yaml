@@ -1,0 +1,3 @@
+interface:
+  display_name: "SwiftUI UI Patterns"
+  short_description: "State, composition, navigation, and performance guidance for SwiftUI views"

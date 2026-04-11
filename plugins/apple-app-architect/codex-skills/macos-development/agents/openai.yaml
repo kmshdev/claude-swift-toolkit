@@ -1,0 +1,3 @@
+interface:
+  display_name: "macOS Development"
+  short_description: "Planning and architecture guidance for SwiftUI and AppKit-based macOS apps"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Xcode MCP"
+  short_description: "Build, inspect, preview, and test Xcode projects through the official Xcode MCP bridge"
+  default_prompt: "Use $xcode-mcp to connect through the official Xcode MCP bridge, inspect the active Xcode workspace, and run the needed preview, build, or targeted test workflow."

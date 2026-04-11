@@ -1,7 +1,7 @@
 {
   "name": "apple-app-builder",
   "version": "1.0.0",
-  "description": "Apple app implementation and build — autonomous SwiftUI development workflow, Swift concurrency, networking, localization, and Xcode build tooling. Covers Phase 3 (Implement) and Phase 4 (Build) of the Apple app lifecycle.",
+  "description": "Apple app implementation and build \u2014 autonomous SwiftUI development workflow, Swift concurrency, networking, localization, and Xcode build tooling. Covers Phase 3 (Implement) and Phase 4 (Build) of the Apple app lifecycle.",
   "author": {
     "name": "kmshdev"
   },
@@ -17,10 +17,10 @@
   "keywords": [
     "swift",
     "swiftui",
-    "xcodebuild",
+    "xcode",
+    "mcp",
     "concurrency",
     "networking",
-    "xcodebuildmcp",
     "build"
   ],
   "hooks": "./hooks/hooks.json"

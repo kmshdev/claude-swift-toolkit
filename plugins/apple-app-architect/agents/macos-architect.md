@@ -33,7 +33,7 @@ model: sonnet
 color: blue
 tools: Read, Grep, Glob
 memory: project
-mcpServers: plugin:context7:context7, xcodebuildmcp
+mcpServers: plugin:context7:context7, xcode
 skills:
   - macos-development
   - swift-app-lifecycle
@@ -214,4 +214,4 @@ Load these skills using the Skill tool when needed for architecture decisions:
 - `apple-design-system:macos-app-design` — macOS HIG compliance and app archetypes
 - `apple-design-system:swiftui-ui-patterns` — UI architecture patterns and review checklist
 - `apple-design-system:swiftui-components` — reusable view patterns and templates
-- `apple-app-builder:xcodebuildmcp` — Xcode build tool reference
+- `apple-app-builder:xcode-mcp` — Xcode build, diagnostics, preview, and test reference

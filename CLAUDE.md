@@ -46,7 +46,7 @@ Write SwiftUI views, apply API references, build components, add networking and 
 ### Phase 4 — Build
 Compile, verify, iterate on build errors.
 - **Plugin:** `apple-app-builder`
-- **Skills:** `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` (phases 5-8)
+- **Skills:** `xcode-mcp`, `autonomous-ui-workflow` (phases 5-8)
 - **Commands:** `/build`, `/fix-build`, `/run-app`
 
 ### Phase 5 — Review (iterative)
@@ -79,7 +79,7 @@ Unit tests, UI tests, coverage analysis.
 | **Design** | `apple-design-system` | `macos-app-design`, `apple-liquid-glass-design` |
 | **UI Components** | `apple-design-system` | `swiftui-components`, `swiftui-ui-patterns` |
 | **API Reference** | `apple-design-system` | `swiftui-material-api`, `swiftui-iconography-api`, `swiftui-colors-api`, `swiftui-typography-api`, `swiftui-input-api`, `swiftui-effects-api`, `swiftui-presentation-api`, `swiftui-26-api` |
-| **Build + Tooling** | `apple-app-builder` | `autonomous-ui-workflow`, `xcodebuildmcp`, `xcodebuildmcp-cli` |
+| **Build + Tooling** | `apple-app-builder` | `autonomous-ui-workflow`, `xcode-mcp` |
 | **Swift Core** | `apple-app-builder` | `swift-networking`, `swift-concurrency`, `swift-localization` |
 | **Review** | `apple-app-quality` | `swiftui-view-refactor`, `code-analyzer`, `audit-context-building` |
 | **Testing** | `apple-app-quality` | `ios-testing` |

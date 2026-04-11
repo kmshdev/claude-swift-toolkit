@@ -1,6 +1,6 @@
 ---
 description: Build the Xcode project or Swift package
-allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *)
+allowed-tools: mcp__xcode__*, Bash(swift *), Bash(xcodebuild *)
 ---
 
 # Build Project
@@ -8,38 +8,38 @@ allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *)
 ## Steps
 
 ### 1. Discover Project
-- Search for `.xcworkspace` first (takes priority over `.xcodeproj` when both exist)
-- If no workspace, search for `.xcodeproj`
-- If neither, check for `Package.swift` (Swift Package)
-- If nothing found → stop and ask the user for the project path
+- Prefer the active Xcode window when the official Xcode MCP bridge is
+  available: start with `XcodeListWindows` and build the selected tab.
+- If the project is not open in Xcode, search for `.xcworkspace` first, then
+  `.xcodeproj`, then `Package.swift`.
+- If nothing is found, stop and ask the user for the project path.
 
-### 2. Load Build Skill
-- If `mcp__xcodebuildmcp__*` tools are available → use `xcodebuildmcp` skill patterns
-- If not → use `xcodebuildmcp-cli` skill for direct `xcodebuild` CLI commands
-- For Swift packages → use `swift build` directly
+### 2. Choose the Build Path
+- **Official Xcode MCP available:** load `xcode-mcp` and use `BuildProject`.
+- **Swift package:** use `swift build` directly.
+- **No Xcode MCP bridge:** use `xcodebuild` CLI against the discovered project
+  or workspace.
 
 ### 3. Identify Scheme and Destination
-- List available schemes: `mcp__xcodebuildmcp__list_schemes` or `xcodebuild -list`
-- Prefer the main app scheme (not test schemes or extension schemes)
-- Default destination: macOS for macOS apps, iOS Simulator for iOS apps
-- If multiple schemes match → ask the user which to build
+- For Xcode MCP builds, rely on the active scheme from the selected Xcode tab.
+- For CLI builds, list schemes with `xcodebuild -list` and prefer the main app
+  scheme over test or extension schemes.
+- Default to Debug configuration unless the user explicitly asks for Release.
 
 ### 4. Build
-- Use Debug configuration for development builds (faster, includes debug symbols)
-- Use Release configuration only when the user explicitly asks
-- For workspaces: specify both `-workspace` and `-scheme`
-- Capture full build output for error parsing
+- Use `BuildProject` for the MCP path.
+- For CLI fallback, use `xcodebuild build` with the discovered project or
+  workspace and chosen scheme.
+- For Swift packages, use `swift build`.
 
 ### 5. Parse Results
-Categorize any build errors:
-
-| Category | Indicators | Typical Fix |
-|----------|-----------|-------------|
-| **SPM Resolution** | "package resolution failed", "dependency not found" | Clean package caches, check minimum deployment target |
-| **Swift Compiler** | type mismatches, missing imports, API availability | Fix types, add `import`, wrap in `#available` |
-| **Linker** | "undefined symbol", "framework not found" | Check framework search paths, verify linking |
-| **Signing** | "no provisioning profile", "code signing" | Verify team, bundle ID, entitlements |
+- For the MCP path, inspect `XcodeListNavigatorIssues` first and `GetBuildLog`
+  second.
+- For CLI fallback, categorize failures from the shell output.
+- Typical categories: package resolution, compiler errors, linker failures,
+  code-signing issues, and API availability.
 
 ### 6. Report
-- On success → report build succeeded with scheme and destination
-- On failure → show categorized errors with file:line references, suggest `/fix-build`
+- On success, report the build method, target, and configuration.
+- On failure, show the smallest useful error set with file references and
+  suggest `/fix-build`.

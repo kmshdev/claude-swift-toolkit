@@ -1,0 +1,200 @@
+{
+  "name": "codex-plugin-migration-knowledge-base",
+  "generated_at": "2026-04-11",
+  "depth": "focused",
+  "modules": [
+    {
+      "module": "official-build-surface",
+      "title": "Official Codex plugin build surface",
+      "category": "official-docs",
+      "traits": [
+        "manifest",
+        "marketplace",
+        "installation",
+        "path-rules"
+      ],
+      "dependencies": [],
+      "depth": "focused",
+      "sources": [
+        {
+          "title": "Build plugins \u2013 Codex",
+          "url": "https://developers.openai.com/codex/plugins/build",
+          "source_type": "official-docs",
+          "authority": "high",
+          "last_verified": "2026-04-11"
+        }
+      ],
+      "key_findings": [
+        "Codex plugins use .codex-plugin/plugin.json as the required entry point.",
+        "Repo and personal marketplaces live at .agents/plugins/marketplace.json and point to local plugin folders with ./-prefixed source.path values.",
+        "The documented portable plugin surface is skills, optional .mcp.json, optional .app.json, and optional assets.",
+        "Manifest paths should stay relative to the plugin root and start with ./."
+      ],
+      "recommended_actions": [
+        "Add .codex-plugin/plugin.json to each skill-bearing plugin folder.",
+        "Create a repo-scoped .agents/plugins/marketplace.json so the repo is installable in Codex without manual re-entry.",
+        "Use curated Codex-facing skill trees only when needed to avoid leaking host-specific Claude behavior into the Codex surface."
+      ]
+    },
+    {
+      "module": "community-validation-and-distribution",
+      "title": "Community validation and distribution practices",
+      "category": "community-practices",
+      "traits": [
+        "validation",
+        "ci",
+        "distribution",
+        "trust"
+      ],
+      "dependencies": [
+        "official-build-surface"
+      ],
+      "depth": "focused",
+      "sources": [
+        {
+          "title": "Built an OSS CI gate for Codex plugins",
+          "url": "https://community.openai.com/t/built-an-oss-ci-gate-for-codex-plugins-looking-for-feedback-from-plugin-authors/1378543",
+          "source_type": "community-thread",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        },
+        {
+          "title": "Awesome Codex Plugins",
+          "url": "https://github.com/hashgraph-online/awesome-codex-plugins",
+          "source_type": "community-registry",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        }
+      ],
+      "key_findings": [
+        "A community scanner workflow has emerged around codex-plugin-scanner lint/verify and a GitHub Action gate before wider distribution.",
+        "The awesome-codex-plugins registry uses a real repo marketplace and mirrored plugin folders, matching the official marketplace shape.",
+        "Registry maintainers treat validation evidence, plugin metadata quality, and packaging cleanliness as part of publish readiness."
+      ],
+      "recommended_actions": [
+        "Keep the repo marketplace machine-readable and checked into source control.",
+        "Validate manifest JSON and marketplace JSON after generating them.",
+        "Document the local marketplace install path so users can test the repo as a curated Codex source."
+      ]
+    },
+    {
+      "module": "dual-manifest-compatibility",
+      "title": "Dual manifest compatibility for Claude-first repositories",
+      "category": "community-practices",
+      "traits": [
+        "dual-compatibility",
+        "discoverability",
+        "migration"
+      ],
+      "dependencies": [
+        "official-build-surface"
+      ],
+      "depth": "focused",
+      "sources": [
+        {
+          "title": "Consider adding a .codex-plugin/plugin.json manifest for Codex discoverability",
+          "url": "https://github.com/thedotmack/claude-mem/issues/1561",
+          "source_type": "community-issue",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        },
+        {
+          "title": "claude-mem Codex manifest example",
+          "url": "https://raw.githubusercontent.com/thedotmack/claude-mem/main/.codex-plugin/plugin.json",
+          "source_type": "repo-file",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        }
+      ],
+      "key_findings": [
+        "A practical migration pattern is to keep the existing .claude-plugin manifest and add a .codex-plugin manifest alongside it.",
+        "Codex discoverability is tied directly to the presence of .codex-plugin/plugin.json, even for repositories that already ship Claude plugins.",
+        "Community feedback frames the Codex manifest as the low-risk compatibility layer rather than a full repository rewrite."
+      ],
+      "recommended_actions": [
+        "Preserve the Claude plugin manifests untouched and add parallel Codex manifests.",
+        "Reuse stable plugin names and versions across both manifests to avoid identity drift.",
+        "Document which repository surfaces remain host-specific after the Codex port."
+      ]
+    },
+    {
+      "module": "thin-wrapper-patterns",
+      "title": "Thin Codex wrapper patterns around skills and MCP",
+      "category": "community-examples",
+      "traits": [
+        "thin-wrapper",
+        "mcp",
+        "skills",
+        "metadata"
+      ],
+      "dependencies": [
+        "official-build-surface"
+      ],
+      "depth": "focused",
+      "sources": [
+        {
+          "title": "chrome-devtools-codex-plugin",
+          "url": "https://github.com/win4r/chrome-devtools-codex-plugin",
+          "source_type": "community-example",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        },
+        {
+          "title": "chrome-devtools-codex-plugin manifest",
+          "url": "https://raw.githubusercontent.com/win4r/chrome-devtools-codex-plugin/main/.codex-plugin/plugin.json",
+          "source_type": "repo-file",
+          "authority": "medium",
+          "last_verified": "2026-04-11"
+        }
+      ],
+      "key_findings": [
+        "A common Codex plugin pattern is a thin wrapper: keep runtime wiring small, put guidance in skills, and keep plugin metadata explicit.",
+        "The example plugin keeps its MCP wiring in .mcp.json and uses the manifest to describe install behavior and discovery metadata.",
+        "Community examples emphasize staying close to upstream tools instead of forking or re-implementing them inside the plugin."
+      ],
+      "recommended_actions": [
+        "Port the existing skill-bearing plugins first instead of trying to re-create every Claude-specific surface in Codex.",
+        "Leave unsupported host-specific behavior out of the Codex manifests unless the repo actually bundles the needed Codex surface.",
+        "Use README notes to explain the thin-wrapper boundary and any host-specific limitations."
+      ]
+    },
+    {
+      "module": "repo-application-plan",
+      "title": "Repository application plan for claude-swift-toolkit",
+      "category": "repo-application",
+      "traits": [
+        "mapping",
+        "compatibility",
+        "unsupported-surfaces",
+        "documentation"
+      ],
+      "dependencies": [
+        "official-build-surface",
+        "community-validation-and-distribution",
+        "dual-manifest-compatibility",
+        "thin-wrapper-patterns"
+      ],
+      "depth": "focused",
+      "sources": [
+        {
+          "title": "claude-swift-toolkit repository",
+          "url": "https://github.com/kmshdev/claude-swift-toolkit",
+          "source_type": "local-repo",
+          "authority": "high",
+          "last_verified": "2026-04-11"
+        }
+      ],
+      "key_findings": [
+        "The truthful Codex surface now includes the four lifecycle plugins: apple-app-architect, apple-design-system, apple-app-builder, and apple-app-quality.",
+        "apple-app-builder and apple-app-quality now bundle plugin-local .mcp.json files that launch the official Xcode MCP bridge via xcrun mcpbridge, making their Xcode-backed build and test workflows explicit in the Codex package.",
+        "hookify currently depends on Claude-specific commands, agents, and hooks and does not expose a Codex-ready skill, app, or MCP surface.",
+        "The least-risk transformation remains a dual-host rollout: keep the Claude-first structure intact, use Codex-facing wrapper skill trees only where host behavior diverges, and document hookify as Claude-only."
+      ],
+      "recommended_actions": [
+        "Keep the repo marketplace aligned with the full Codex-supported lifecycle plugin set.",
+        "Update the root README with Codex installation steps, the current support matrix, and the official Xcode MCP bridge prerequisite notes for builder and quality workflows.",
+        "Record the research synthesis in-repo so future plugin changes can reuse the migration rationale."
+      ]
+    }
+  ]
+}

@@ -38,10 +38,9 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 4. Identify app archetype (document-based, library+editor, utility, menu-bar, pro tool)
 5. **Scaffold the project:** Use `/scaffold-project` command (preferred)
    - Loads `apple-app-architect:swift-project-scaffold` skill automatically
-   - Detects XcodeGen (primary) or falls back to XcodeBuildMCP scaffold tools
-   - Creates `project.yml`, app entry point, ContentView, .gitignore
-   - Configures Swift 6.2, strict concurrency, correct deployment target
-   - Fallback: use `scaffold_macos_project` / `scaffold_ios_project` MCP tools directly, or `apple-app-builder:xcodebuildmcp-cli` skill
+   - Uses XcodeGen as the automation path for generating `project.yml`, the app entry point, ContentView, and `.gitignore`
+   - Configures Swift 6.2, strict concurrency, and the correct deployment target
+   - If XcodeGen is unavailable, stop and either ask the user to install it or create the starter project in Xcode manually
 
 **Next phase →** Load `apple-app-architect:macos-development` architecture-patterns module for Phase 1.
 
@@ -109,18 +108,18 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 **When:** Compiling, verifying builds, iterating on errors.
 
-**Load:** `apple-app-builder:xcodebuildmcp` or `apple-app-builder:xcodebuildmcp-cli`
+**Load:** `apple-app-builder:xcode-mcp`
 **Also:** `apple-app-builder:autonomous-ui-workflow` covers phases 5-8 (Build → Preview → Validate → Iterate)
 
 **Xcode MCP (Primary Interface):**
-When XcodeBuildMCP MCP server is available, it is the primary interface for ALL file operations, builds, and tests. Load the `apple-app-builder:xcodebuildmcp` skill for:
-- File ops: `XcodeRead`/`XcodeUpdate`/`XcodeWrite` (not `Read`/`Edit`/`Write`)
-- Build: **BuildFix Loop** (max 5 iterations with Issue Navigator diagnostics)
-- Test: **TestFix Loop** (with crash detection and CLI fallback)
+When the official Xcode MCP bridge is available, it is the primary interface for Xcode-aware file operations, builds, previews, and targeted test runs. Load the `apple-app-builder:xcode-mcp` skill for:
+- File ops: `XcodeRead`/`XcodeUpdate`/`XcodeWrite`
+- Build: **BuildFix Loop** with Issue Navigator diagnostics and build logs
+- Test: `GetTestList`, `RunSomeTests`, and `RunAllTests` when broader coverage is justified
 - Preview: `RenderPreview` for visual verification
 
 **Steps:**
-1. Build via XcodeBuildMCP tools or CLI (`/build`)
+1. Build via the official Xcode MCP bridge or the native Xcode CLI (`/build`)
 2. Fix build errors (`/fix-build`) — read full error, fix, rebuild
 3. Preview with `RenderPreview` to verify visual correctness
 4. Validate against project rules (see `apple-app-builder:autonomous-ui-workflow` Phase 7)
@@ -167,7 +166,7 @@ When XcodeBuildMCP MCP server is available, it is the primary interface for ALL 
 2. Test @Observable models with in-memory `ModelContainer`
 3. Follow Arrange/Act/Assert pattern
 4. Target 80%+ coverage for critical paths
-5. Run tests via `/test` or XcodeBuildMCP `test_macos`/`test_sim`
+5. Run tests via `/test` or the official Xcode MCP test tools (`GetTestList`, `RunSomeTests`, `RunAllTests`)
 
 ## Choosing Your Entry Point
 

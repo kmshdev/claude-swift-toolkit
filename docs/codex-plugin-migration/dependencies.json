@@ -1,0 +1,44 @@
+{
+  "official-build-surface": {
+    "depends_on": [],
+    "required_by": [
+      "community-validation-and-distribution",
+      "dual-manifest-compatibility",
+      "thin-wrapper-patterns",
+      "repo-application-plan"
+    ]
+  },
+  "community-validation-and-distribution": {
+    "depends_on": [
+      "official-build-surface"
+    ],
+    "required_by": [
+      "repo-application-plan"
+    ]
+  },
+  "dual-manifest-compatibility": {
+    "depends_on": [
+      "official-build-surface"
+    ],
+    "required_by": [
+      "repo-application-plan"
+    ]
+  },
+  "thin-wrapper-patterns": {
+    "depends_on": [
+      "official-build-surface"
+    ],
+    "required_by": [
+      "repo-application-plan"
+    ]
+  },
+  "repo-application-plan": {
+    "depends_on": [
+      "official-build-surface",
+      "community-validation-and-distribution",
+      "dual-manifest-compatibility",
+      "thin-wrapper-patterns"
+    ],
+    "required_by": []
+  }
+}

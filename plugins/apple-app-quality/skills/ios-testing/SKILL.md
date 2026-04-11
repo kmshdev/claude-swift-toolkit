@@ -1,7 +1,7 @@
 ---
 name: ios-testing
 description: This skill should be used when the user asks to "write tests", "add unit tests", "implement UI tests", "analyze test coverage", "use XCTest", "use Swift Testing", "test SwiftUI views", or needs iOS/macOS testing guidance. Provides testing strategies, XCTest and Swift Testing framework patterns, and SwiftUI-specific testing techniques.
-allowed-tools: [Read, Grep, Glob, mcp__xcodebuildmcp__test_*]
+allowed-tools: [Read, Grep, Glob, mcp__xcode__GetTestList, mcp__xcode__RunSomeTests, mcp__xcode__RunAllTests, mcp__xcode__GetBuildLog]
 hooks:
   Stop:
     - hooks:
@@ -14,7 +14,7 @@ hooks:
 
 ## Lifecycle Position
 
-Phase 6 (Test). After code is reviewed in Phase 5. Run tests via `/test` or XcodeBuildMCP `test_macos`/`test_sim`.
+Phase 6 (Test). After code is reviewed in Phase 5. Run the smallest relevant test slice first: discover tests with `GetTestList`, run the narrowest useful subset with `RunSomeTests`, then broaden to `RunAllTests` only when justified. Use `GetBuildLog` to inspect failing runs.
 
 ## Framework Choice
 

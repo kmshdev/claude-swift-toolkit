@@ -23,20 +23,20 @@ Steps when `xcodegen` is available:
 4. Write `AppEntry.swift` and `ContentView.swift` from templates
 5. Write `.gitignore` from template
 6. Run `xcodegen generate`
-7. Verify with `BuildProject` MCP tool
+7. Open the generated project in Xcode and verify with `BuildProject` when the bridge is available, otherwise use `xcodebuild`
 
-## 3. XcodeBuildMCP Fallback
+## 3. Manual Xcode Fallback
 
 Steps when `xcodegen` is NOT available:
 
-1. Call `scaffold_macos_project` or `scaffold_ios_project` MCP tool
-2. Apply post-scaffold patches to build settings:
-   - `SWIFT_VERSION = 6.2` (MCP scaffold defaults to 6.1)
-   - `SWIFT_STRICT_CONCURRENCY = complete`
-   - `ENABLE_DEBUG_DYLIB = YES`
-   - `MACOSX_DEPLOYMENT_TARGET = 26.0` or `IPHONEOS_DEPLOYMENT_TARGET = 26.0`
-3. Replace generated entry point with archetype-specific AppEntry.swift
-4. Verify with `BuildProject`
+1. Stop the automated scaffold path and tell the user there is no official Xcode
+   MCP project-scaffolding tool in this toolkit.
+2. Ask the user to either install XcodeGen or create a new App project in Xcode
+   manually.
+3. Once the project exists, write the template-based `AppEntry.swift`,
+   `ContentView.swift`, and `.gitignore` files into that project structure.
+4. Verify with `BuildProject` if the project is open in Xcode, otherwise use
+   `xcodebuild`.
 
 ## 4. App Archetypes
 
@@ -109,5 +109,4 @@ struct __APP_NAME__App: App {
 ## Cross-References
 
 - `apple-app-architect:swift-app-lifecycle` — scene structure details
-- `apple-app-builder:xcodebuildmcp` — BuildProject, scaffold tools
-- `apple-app-builder:xcodebuildmcp-cli` — CLI scaffolding alternative
+- `apple-app-builder:xcode-mcp` — BuildProject, diagnostics, previews, and targeted tests

@@ -1,0 +1,15 @@
+{
+  "official-docs": [
+    "official-build-surface"
+  ],
+  "community-practices": [
+    "community-validation-and-distribution",
+    "dual-manifest-compatibility"
+  ],
+  "community-examples": [
+    "thin-wrapper-patterns"
+  ],
+  "repo-application": [
+    "repo-application-plan"
+  ]
+}
