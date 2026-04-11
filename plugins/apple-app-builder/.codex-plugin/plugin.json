@@ -15,16 +15,17 @@
     "ios",
     "macos",
     "apple",
-    "xcodebuild",
+    "xcode",
     "concurrency",
     "networking",
-    "localization"
+    "localization",
+    "mcp"
   ],
   "skills": "./codex-skills/",
   "interface": {
     "displayName": "Apple App Builder",
     "shortDescription": "Implement SwiftUI features and drive build workflows",
-    "longDescription": "Focuses on Phase 3 and Phase 4 work: SwiftUI implementation, networking, concurrency, localization, and official Xcode MCP-backed project inspection, diagnostics, preview, build, and targeted test workflows for Xcode projects.",
+    "longDescription": "Focuses on Phase 3 and Phase 4 work: SwiftUI implementation, networking, concurrency, localization, and official Xcode MCP-backed project inspection, diagnostics, preview, build, and targeted test workflows for Xcode projects. Requires Xcode installed and running so the bundled bridge can attach.",
     "developerName": "kmshdev",
     "category": "Coding",
     "capabilities": [

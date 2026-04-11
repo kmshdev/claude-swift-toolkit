@@ -1,13 +1,12 @@
 ---
 name: code-analyzer
-description: This skill should be used when the user asks to "review code", "analyze architecture", "assess code quality", "audit the codebase", "review PR", or needs read-only code analysis. Provides structured review checklist for organization, error handling, performance, security, and test coverage.
+description: Review Apple app code read-only for architecture, code quality, security, test coverage, and performance.
 ---
 
 ## Project Context
 
 - Recent changes: !`git diff --name-only HEAD~3 2>/dev/null || echo "no git history"`
 - Swift version: !`swift --version 2>&1 | head -1 || echo "swift not found"`
-- Build target: !`xcodebuild -list -json 2>/dev/null | jq -r '.project.schemes[0]' 2>/dev/null || echo "unknown"`
 
 # Code Analyzer (Read-Only)
 
@@ -16,6 +15,17 @@ Structured Swift/macOS code analysis protocol. Read-only — no file modificatio
 ## Lifecycle Position
 
 Phase 5 (Review). Load before `swiftui-view-refactor` for architectural overview. For deep line-by-line analysis, use `audit-context-building`.
+
+## Xcode MCP Orientation
+
+When Xcode is available through this plugin's bundled bridge, prefer the MCP
+tools over shelling out to Xcode directly:
+
+1. Use `XcodeListWindows` to identify the active workspace tab.
+2. Use `XcodeGlob`, `XcodeGrep`, and `XcodeRead` to map the codebase you are
+   reviewing.
+3. Use `XcodeRefreshCodeIssuesInFile` when compiler diagnostics are relevant to
+   the review findings.
 
 ## Analysis Protocol
 

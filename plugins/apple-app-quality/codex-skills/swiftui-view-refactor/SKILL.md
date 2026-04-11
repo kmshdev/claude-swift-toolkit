@@ -5,13 +5,17 @@ description: Refactor and review SwiftUI view files for consistent structure, de
 
 ## Project Context
 
-- SwiftUI views: !`grep -rl "var body.*some View" --include="*.swift" . 2>/dev/null | head -20 || echo "none found"`
+- SwiftUI views: !`rg -l 'var body.*some View' -g '*.swift' . 2>/dev/null | head -20 || echo "none found"`
 
 # SwiftUI View Refactor
 
 ## Lifecycle Position
 
-Phase 5 (Review). After build is green. Pair with `code-analyzer` for architectural review and `ios-testing` when the refactor changes behavior.
+Phase 5 (Review). After build is green. Pair with `code-analyzer` for
+architectural review and `ios-testing` when the refactor changes behavior. Use
+`XcodeRefreshCodeIssuesInFile` after the refactor, and use `RenderPreview` or
+`BuildProject` when you need the smallest Xcode-backed proof that the view
+still compiles cleanly.
 
 ## Overview
 Apply a consistent structure and dependency pattern to SwiftUI views, with a focus on ordering, Model-View (MV) patterns, careful view model handling, and correct Observation usage.

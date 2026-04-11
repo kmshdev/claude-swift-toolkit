@@ -1,0 +1,4 @@
+interface:
+  display_name: "SwiftUI View Refactor"
+  short_description: "Refactor SwiftUI views for structure, state ownership, and Observation correctness"
+  default_prompt: "Use $swiftui-view-refactor to simplify this SwiftUI view, preserve behavior, and call out the smallest follow-up preview, build, or test check that should verify it."

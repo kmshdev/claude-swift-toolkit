@@ -1,4 +1,9 @@
 interface:
   display_name: "iOS Testing"
-  short_description: "Write and run Apple-platform tests through the official Xcode MCP bridge"
+  short_description: "Choose, add, and run Apple-platform tests through the official Xcode MCP bridge"
   default_prompt: "Use $ios-testing to choose the right Apple-platform test strategy, add the missing coverage, and run the smallest relevant Xcode test slice through the official Xcode MCP bridge."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "xcode"
+      description: "Bundled official Xcode MCP bridge from this plugin's .mcp.json"

@@ -1,6 +1,6 @@
 ---
 name: autonomous-ui-workflow
-description: Use when building or modifying SwiftUI views in an existing Xcode project and you need a practical Codex workflow from spec through implementation, Xcode preview verification, project builds, diagnostics, and test handoff.
+description: Implement SwiftUI changes in an existing Xcode project and validate them with previews, diagnostics, builds, and focused test handoff through the official Xcode MCP bridge.
 ---
 
 # Autonomous UI Workflow
@@ -84,5 +84,7 @@ inspection, diagnostics, preview rendering, builds, and targeted tests.
   changes, preview or test evidence.
 - Keep the workflow outcome-focused. Do not refer users to Claude-only slash
   commands or named subagents.
+- Prefer the bundled Xcode MCP bridge over direct `xcodebuild` shell commands
+  for project inspection, diagnostics, and validation.
 - If a task only needs reference guidance and not Xcode tooling, skip the MCP
   path and stay in the reference skills.

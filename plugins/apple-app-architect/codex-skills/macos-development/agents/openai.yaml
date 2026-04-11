@@ -1,3 +1,4 @@
 interface:
   display_name: "macOS Development"
-  short_description: "Planning and architecture guidance for SwiftUI and AppKit-based macOS apps"
+  short_description: "Planning and architecture guidance for SwiftUI- and AppKit-based macOS apps"
+  default_prompt: "Use $macos-development to plan or review a macOS app architecture, then load the narrowest module that matches the problem."

@@ -18,13 +18,15 @@
     "testing",
     "code-review",
     "refactor",
-    "quality"
+    "quality",
+    "xcode",
+    "mcp"
   ],
   "skills": "./codex-skills/",
   "interface": {
     "displayName": "Apple App Quality",
     "shortDescription": "Review, refactor, and test Apple app changes",
-    "longDescription": "Covers Phase 5 and Phase 6 work: code review, view refactoring, deep audit context building, and official Xcode MCP-backed test discovery, targeted test execution, build-log inspection, and preview-oriented verification for Apple app changes.",
+    "longDescription": "Covers Phase 5 and Phase 6 work: code review, view refactoring, deep audit context building, and official Xcode MCP-backed test discovery, targeted test execution, build-log inspection, and preview-oriented verification for Apple app changes. Requires Xcode installed and running so the bundled bridge can attach.",
     "developerName": "kmshdev",
     "category": "Coding",
     "capabilities": [

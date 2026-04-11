@@ -1,11 +1,11 @@
 ---
 name: app-development-workflow
-description: Use when starting a new Apple app, planning a major feature, or orienting to the Codex-ready lifecycle subset of this toolkit. Maps the planning, design, implementation, build, review, and test phases to the packaged Codex skills.
+description: Route Apple app work to the right packaged Codex skill, from planning and architecture through implementation, review, and test.
 ---
 
 # App Development Workflow
 
-Use this as the entry point for the Codex-ready subset of the toolkit.
+Use this as the lifecycle entry point for the packaged Codex surface.
 
 This repository's current Codex marketplace includes all four lifecycle
 plugins:

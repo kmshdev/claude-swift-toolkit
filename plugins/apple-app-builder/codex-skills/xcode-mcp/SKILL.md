@@ -63,6 +63,8 @@ third-party wrapper.
 
 - This Xcode MCP surface is IDE-centric. It does not provide simulator UI
   automation, screenshots, or LLDB session control in this plugin.
+- Prefer this bridge-first path over direct `xcodebuild` shell commands inside
+  the Codex plugin surface.
 - Prefer the narrowest proof: file diagnostics, preview render, targeted build,
   then targeted tests.
 - When a preview or targeted test is unavailable, say that plainly and fall

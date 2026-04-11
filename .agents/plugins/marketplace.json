@@ -1,7 +1,7 @@
 {
   "name": "claude-swift-toolkit",
   "interface": {
-    "displayName": "Claude Swift Toolkit"
+    "displayName": "Apple App Lifecycle Toolkit"
   },
   "plugins": [
     {

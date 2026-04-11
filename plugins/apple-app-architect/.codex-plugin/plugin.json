@@ -1,7 +1,7 @@
 {
   "name": "apple-app-architect",
   "version": "1.2.0",
-  "description": "Apple app planning and architecture for Codex — lifecycle planning, architecture guidance, and macOS development patterns.",
+  "description": "Apple app planning and architecture for Codex \u2014 lifecycle planning, architecture guidance, and macOS development patterns.",
   "author": {
     "name": "kmshdev",
     "url": "https://github.com/kmshdev"
@@ -22,7 +22,7 @@
   "interface": {
     "displayName": "Apple App Architect",
     "shortDescription": "Plan Apple apps and shape lifecycle architecture",
-    "longDescription": "Packages the Codex-safe planning and architecture subset of the toolkit: lifecycle framing, macOS development guidance, and early-phase architecture decisions for Apple apps.",
+    "longDescription": "Packages the planning and architecture side of the toolkit: lifecycle framing, macOS development guidance, and early-phase architecture decisions for Apple apps.",
     "developerName": "kmshdev",
     "category": "Coding",
     "capabilities": [

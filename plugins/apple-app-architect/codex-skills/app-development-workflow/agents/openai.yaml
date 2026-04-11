@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Development Workflow"
+  short_description: "Map Apple app work to the right lifecycle phase and packaged Codex skill"
+  default_prompt: "Use $app-development-workflow to pick the right Apple app lifecycle phase, identify the next skill to load, and outline the next concrete step."

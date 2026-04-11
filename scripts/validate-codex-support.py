@@ -11,6 +11,64 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
+REQUIRED_METADATA_FILES = (
+    ROOT
+    / "plugins"
+    / "apple-app-architect"
+    / "codex-skills"
+    / "app-development-workflow"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-architect"
+    / "codex-skills"
+    / "macos-development"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-builder"
+    / "codex-skills"
+    / "autonomous-ui-workflow"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-builder"
+    / "codex-skills"
+    / "xcode-mcp"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-quality"
+    / "codex-skills"
+    / "code-analyzer"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-quality"
+    / "codex-skills"
+    / "ios-testing"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-app-quality"
+    / "codex-skills"
+    / "swiftui-view-refactor"
+    / "agents"
+    / "openai.yaml",
+    ROOT
+    / "plugins"
+    / "apple-design-system"
+    / "skills"
+    / "swiftui-ui-patterns"
+    / "agents"
+    / "openai.yaml",
+)
 LEGACY_XCODE_BRIDGE = "xcode" "buildmcp"
 LEGACY_XCODE_BRIDGE_TITLE = "Xcode" "BuildMCP"
 LEGACY_XCODE_TOOL_PREFIX = "mcp__xcode" "buildmcp__"
@@ -26,6 +84,7 @@ UNSAFE_PATTERNS = (
         r"launch_app_sim|stop_app_sim|discover_projs|list_sims|snapshot_ui|"
         r"start_sim_log_cap|stop_sim_log_cap|debug_attach_sim)\\b"
     ),
+    re.compile(r"\\bxcodebuild\\s+-list\\b"),
 )
 
 
@@ -210,6 +269,15 @@ def main() -> int:
         print(f"{MARKETPLACE_PATH}: expected JSON object", file=sys.stderr)
         return 1
 
+    interface = marketplace.get("interface")
+    if not isinstance(interface, dict):
+        print(f"{MARKETPLACE_PATH}: missing top-level interface object", file=sys.stderr)
+        return 1
+    display_name = interface.get("displayName")
+    if not isinstance(display_name, str) or not display_name.strip():
+        print(f"{MARKETPLACE_PATH}: missing interface.displayName", file=sys.stderr)
+        return 1
+
     plugins = marketplace.get("plugins")
     if not isinstance(plugins, list):
         print(f"{MARKETPLACE_PATH}: 'plugins' must be an array", file=sys.stderr)
@@ -224,6 +292,23 @@ def main() -> int:
         if not isinstance(source, dict):
             errors.append(f"{MARKETPLACE_PATH}: plugin '{name}' is missing a source object")
             continue
+        policy = plugin.get("policy")
+        if not isinstance(policy, dict):
+            errors.append(f"{MARKETPLACE_PATH}: plugin '{name}' is missing a policy object")
+        else:
+            installation = policy.get("installation")
+            if not isinstance(installation, str) or not installation:
+                errors.append(
+                    f"{MARKETPLACE_PATH}: plugin '{name}' is missing policy.installation"
+                )
+            authentication = policy.get("authentication")
+            if not isinstance(authentication, str) or not authentication:
+                errors.append(
+                    f"{MARKETPLACE_PATH}: plugin '{name}' is missing policy.authentication"
+                )
+        category = plugin.get("category")
+        if not isinstance(category, str) or not category.strip():
+            errors.append(f"{MARKETPLACE_PATH}: plugin '{name}' is missing category")
         source_path = source.get("path")
         if not isinstance(source_path, str) or not source_path.startswith("./"):
             errors.append(
@@ -241,6 +326,10 @@ def main() -> int:
             errors.append(f"{MARKETPLACE_PATH}: plugin '{name}' path does not exist: {source_path}")
             continue
         errors.extend(validate_plugin(plugin_dir))
+
+    for metadata_path in REQUIRED_METADATA_FILES:
+        if not metadata_path.is_file():
+            errors.append(f"{metadata_path}: required entry-point metadata file is missing")
 
     if errors:
         print("Codex support validation failed:", file=sys.stderr)

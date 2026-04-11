@@ -1,6 +1,6 @@
 ---
 name: ios-testing
-description: This skill should be used when the user asks to "write tests", "add unit tests", "implement UI tests", "analyze test coverage", "use XCTest", "use Swift Testing", "test SwiftUI views", or needs iOS/macOS testing guidance. Provides testing strategies, XCTest and Swift Testing framework patterns, and SwiftUI-specific testing techniques.
+description: Choose, add, and run focused Apple-platform tests through the official Xcode MCP bridge, using Swift Testing or XCTest as appropriate.
 ---
 
 # iOS/macOS Testing
