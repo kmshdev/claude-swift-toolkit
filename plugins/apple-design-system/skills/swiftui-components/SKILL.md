@@ -133,11 +133,11 @@ skills/swiftui-components/
         └── AccountSettingsView.swift
 ```
 
-## Companion Skills & Agents
+## Companion Skills
 
-- **macos-architect** — Consult for architectural decisions (navigation patterns, multi-window, state management hierarchy)
-- **swift-reviewer** — Run code reviews against Swift 6 concurrency, memory, Liquid Glass, and accessibility standards
-- **apple-liquid-glass-design** — Deep reference for all Liquid Glass APIs and the Landmarks sample app
+- **macos-app-design** — Use before implementation when the component shape, hierarchy, or HIG alignment is still in flux
+- **apple-liquid-glass-design** — Deep reference for Liquid Glass APIs, materials, and Landmarks-style usage patterns
+- **swiftui-view-refactor** — Use after implementation for review-driven cleanup, extraction, and SwiftUI structure fixes
 
 ## Data Source
 

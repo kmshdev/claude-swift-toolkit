@@ -1,8 +1,6 @@
 ---
 name: audit-context-building
-description: Use after `code-analyzer` when you need an optional deep-dive to
-build line-by-line context for a security review, threat model, or
-architectural investigation.
+description: "Use after `code-analyzer` when you need an optional deep-dive to build line-by-line context for a security review, threat model, or architectural investigation."
 ---
 
 # Deep Context Builder Skill (Ultra-Granular Pure Context Mode)

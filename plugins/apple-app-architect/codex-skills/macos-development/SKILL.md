@@ -1,8 +1,6 @@
 ---
 name: macos-development
-description: Use when planning a macOS app, shaping architecture, choosing
-platform capabilities, or loading the right reference module for SwiftData,
-AppKit bridging, sandboxing, or macOS 26 APIs.
+description: "Use when planning a macOS app, shaping architecture, choosing platform capabilities, or loading the right reference module for SwiftData, AppKit bridging, sandboxing, or macOS 26 APIs."
 ---
 
 # macOS Development Expert
