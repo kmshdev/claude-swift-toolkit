@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
+TOKEN_CHARS = r"A-Za-z0-9_"
 REQUIRED_METADATA_FILES = (
     ROOT
     / "plugins"
@@ -72,19 +73,61 @@ REQUIRED_METADATA_FILES = (
 LEGACY_XCODE_BRIDGE = "xcode" "buildmcp"
 LEGACY_XCODE_BRIDGE_TITLE = "Xcode" "BuildMCP"
 LEGACY_XCODE_TOOL_PREFIX = "mcp__xcode" "buildmcp__"
+
+
+def compile_token_pattern(
+    *tokens: str, leading_chars: str = TOKEN_CHARS, trailing_chars: str = TOKEN_CHARS
+) -> re.Pattern[str]:
+    escaped = "|".join(re.escape(token) for token in tokens)
+    return re.compile(
+        rf"(?<![{leading_chars}])(?:{escaped})(?![{trailing_chars}])"
+    )
+
+
 UNSAFE_PATTERNS = (
-    re.compile(r"/(brainstorm|write-plan|execute-plan|build|fix-build|run-app|review|review-ui|refactor-view|swift-style|test)\\b"),
-    re.compile(r"\\b(macos-architect|code-architect|code-explorer|ui-developer|ios-developer|swift-reviewer|code-reviewer)\\b"),
-    re.compile(
-        rf"\\b({re.escape(LEGACY_XCODE_BRIDGE)}|{re.escape(LEGACY_XCODE_BRIDGE_TITLE)}|"
-        rf"{re.escape(LEGACY_XCODE_TOOL_PREFIX)})\\b"
+    compile_token_pattern(
+        "/brainstorm",
+        "/write-plan",
+        "/execute-plan",
+        "/build",
+        "/fix-build",
+        "/run-app",
+        "/review",
+        "/review-ui",
+        "/refactor-view",
+        "/swift-style",
+        "/test",
+        trailing_chars=TOKEN_CHARS + "-",
     ),
-    re.compile(
-        r"\\b(session_show_defaults|session_set_defaults|build_run_sim|build_sim|test_sim|"
-        r"launch_app_sim|stop_app_sim|discover_projs|list_sims|snapshot_ui|"
-        r"start_sim_log_cap|stop_sim_log_cap|debug_attach_sim)\\b"
+    compile_token_pattern(
+        "macos-architect",
+        "code-architect",
+        "code-explorer",
+        "ui-developer",
+        "ios-developer",
+        "swift-reviewer",
+        "code-reviewer",
+        leading_chars=TOKEN_CHARS + "-",
+        trailing_chars=TOKEN_CHARS + "-",
     ),
-    re.compile(r"\\bxcodebuild\\s+-list\\b"),
+    compile_token_pattern(LEGACY_XCODE_BRIDGE, LEGACY_XCODE_BRIDGE_TITLE),
+    re.compile(re.escape(LEGACY_XCODE_TOOL_PREFIX)),
+    compile_token_pattern(
+        "session_show_defaults",
+        "session_set_defaults",
+        "build_run_sim",
+        "build_sim",
+        "test_sim",
+        "launch_app_sim",
+        "stop_app_sim",
+        "discover_projs",
+        "list_sims",
+        "snapshot_ui",
+        "start_sim_log_cap",
+        "stop_sim_log_cap",
+        "debug_attach_sim",
+    ),
+    re.compile(rf"(?<![{TOKEN_CHARS}])xcodebuild\s+-list(?![{TOKEN_CHARS}])"),
 )
 
 
@@ -113,49 +156,6 @@ def ensure_relative_plugin_path(path_value: str, plugin_dir: Path) -> list[str]:
     return errors
 
 
-def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
-    text = path.read_text()
-    if not text.startswith("---\n"):
-        raise ValueError(f"{path}: missing frontmatter block")
-
-    end = text.find("\n---\n", 4)
-    if end == -1:
-        raise ValueError(f"{path}: unterminated frontmatter block")
-
-    frontmatter_block = text[4:end]
-    body = text[end + 5 :]
-    frontmatter: dict[str, str] = {}
-    for line in frontmatter_block.splitlines():
-        match = re.match(r"([A-Za-z0-9_-]+):\s*(.*)", line)
-        if match:
-            frontmatter[match.group(1)] = match.group(2)
-    return frontmatter, body
-
-
-def validate_skill_file(path: Path) -> list[str]:
-    errors: list[str] = []
-    try:
-        frontmatter, body = parse_frontmatter(path)
-    except ValueError as exc:
-        return [str(exc)]
-
-    missing = sorted(ALLOWED_FRONTMATTER_KEYS - frontmatter.keys())
-    if missing:
-        errors.append(f"{path}: missing required frontmatter keys: {', '.join(missing)}")
-
-    extras = sorted(set(frontmatter) - ALLOWED_FRONTMATTER_KEYS)
-    if extras:
-        errors.append(
-            f"{path}: unsupported frontmatter keys for Codex-exposed skill: {', '.join(extras)}"
-        )
-
-    for pattern in UNSAFE_PATTERNS:
-        match = pattern.search(body)
-        if match:
-            errors.append(f"{path}: contains Codex-unsafe reference '{match.group(0)}'")
-    return errors
-
-
 def parse_yaml_scalar(value: str, *, path: Path, line_number: int) -> object:
     if value.startswith(("'", '"')):
         quote = value[0]
@@ -171,9 +171,9 @@ def parse_yaml_scalar(value: str, *, path: Path, line_number: int) -> object:
     return value
 
 
-def load_simple_yaml(path: Path) -> object:
+def load_simple_yaml_text(text: str, *, path: Path, start_line: int = 1) -> object:
     entries: list[tuple[int, str, int]] = []
-    for line_number, raw_line in enumerate(path.read_text().splitlines(), start=1):
+    for line_number, raw_line in enumerate(text.splitlines(), start=start_line):
         stripped = raw_line.strip()
         if not stripped or stripped.startswith("#"):
             continue
@@ -290,6 +290,57 @@ def load_simple_yaml(path: Path) -> object:
     if next_index != len(entries):
         raise ValueError(f"{path}:{entries[next_index][2]}: trailing YAML content")
     return payload
+
+
+def load_simple_yaml(path: Path) -> object:
+    return load_simple_yaml_text(path.read_text(), path=path)
+
+
+def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
+    text = path.read_text()
+    if not text.startswith("---\n"):
+        raise ValueError(f"{path}: missing frontmatter block")
+
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        raise ValueError(f"{path}: unterminated frontmatter block")
+
+    frontmatter_block = text[4:end]
+    body = text[end + 5 :]
+    payload = load_simple_yaml_text(frontmatter_block, path=path, start_line=2)
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path}: frontmatter must be a top-level mapping")
+
+    frontmatter: dict[str, str] = {}
+    for key, value in payload.items():
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{path}: frontmatter '{key}' must be a non-empty string")
+        frontmatter[key] = value
+    return frontmatter, body
+
+
+def validate_skill_file(path: Path) -> list[str]:
+    errors: list[str] = []
+    try:
+        frontmatter, body = parse_frontmatter(path)
+    except ValueError as exc:
+        return [str(exc)]
+
+    missing = sorted(ALLOWED_FRONTMATTER_KEYS - frontmatter.keys())
+    if missing:
+        errors.append(f"{path}: missing required frontmatter keys: {', '.join(missing)}")
+
+    extras = sorted(set(frontmatter) - ALLOWED_FRONTMATTER_KEYS)
+    if extras:
+        errors.append(
+            f"{path}: unsupported frontmatter keys for Codex-exposed skill: {', '.join(extras)}"
+        )
+
+    for pattern in UNSAFE_PATTERNS:
+        match = pattern.search(body)
+        if match:
+            errors.append(f"{path}: contains Codex-unsafe reference '{match.group(0)}'")
+    return errors
 
 
 def validate_openai_metadata(path: Path) -> list[str]:
