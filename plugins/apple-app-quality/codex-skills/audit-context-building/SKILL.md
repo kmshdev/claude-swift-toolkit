@@ -1,13 +1,17 @@
 ---
 name: audit-context-building
-description: This skill should be used when the user asks to "audit this code", "deep analysis before security review", "build architectural context", "line-by-line code review", or needs ultra-granular analysis before vulnerability discovery. Provides structured context-building methodology with First Principles, 5 Whys, 5 Hows micro-analysis patterns.
+description: Use after `code-analyzer` when you need an optional deep-dive to
+build line-by-line context for a security review, threat model, or
+architectural investigation.
 ---
 
 # Deep Context Builder Skill (Ultra-Granular Pure Context Mode)
 
 ## Lifecycle Position
 
-Phase 5 (Review — optional deep-dive). For security audit or deep architectural review. Load after `code-analyzer` for targeted analysis.
+Phase 5 (Review — optional deep-dive). For security audit or deep
+architectural review. Load after `code-analyzer` for targeted analysis; this is
+not the first-stop review skill.
 
 ## 1. Purpose
 
@@ -27,6 +31,7 @@ This skill defines a structured analysis format (see Example: Function Micro-Ana
 ## 2. When to Use This Skill
 
 Use when:
+- `code-analyzer` already mapped the change and you need a deeper follow-on pass.
 - Deep comprehension is needed before bug or vulnerability discovery.
 - You want bottom-up understanding instead of high-level guessing.
 - Reducing hallucinations, contradictions, and context loss is critical.

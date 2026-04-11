@@ -1,6 +1,8 @@
 ---
 name: macos-development
-description: This skill should be used when the user asks about "macOS development", "Swift 6 patterns", "SwiftData best practices", "AppKit bridging", "macOS 26 APIs", "Tahoe features", or needs comprehensive macOS development guidance. Covers coding practices, architecture, SwiftData, sandboxing, and Tahoe APIs with detailed reference modules.
+description: Use when planning a macOS app, shaping architecture, choosing
+platform capabilities, or loading the right reference module for SwiftData,
+AppKit bridging, sandboxing, or macOS 26 APIs.
 ---
 
 # macOS Development Expert
@@ -14,12 +16,11 @@ Comprehensive guidance for macOS app development. This skill aggregates speciali
 ## When This Skill Activates
 
 Use this skill when the user:
-- Asks about macOS development best practices
-- Wants code review for macOS/Swift projects
-- Needs help with SwiftUI, SwiftData, or AppKit
-- Is implementing macOS 26 (Tahoe) features
-- Wants UI/UX review against HIG
-- Needs architecture guidance for macOS apps
+- Is planning a new macOS app or a major feature
+- Needs architecture guidance for a macOS app
+- Needs reference guidance for SwiftData, AppKit bridging, sandboxing, or
+  macOS 26 (Tahoe) APIs
+- Needs help choosing the right module before implementation starts
 
 ## Available Modules
 

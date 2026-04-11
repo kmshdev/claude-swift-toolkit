@@ -1,10 +1,20 @@
 # Claude Swift Toolkit v1.8.0
 
-**End-to-end Apple app development toolkit for Claude Code, with a Codex-ready lifecycle plugin set** — systematic lifecycle workflow from scaffold to shipping, with 25 skills, 10 agents, and 21 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization. Claude keeps the full command, agent, and hook surface. Codex now gets the four lifecycle plugins through `.codex-plugin` manifests, a repo-scoped marketplace, and plugin-level `.mcp.json` wiring that uses Xcode's official MCP bridge.
+**End-to-end Apple app development toolkit with a Claude-first full surface and a
+packaged Codex lifecycle plugin set** — systematic lifecycle workflow from
+scaffold to shipping, with 25 skills, 10 agents, and 21 commands covering
+Liquid Glass design, SwiftUI patterns, networking, concurrency, actor
+persistence, and localization. Claude keeps the full command, agent, and hook
+surface. Codex gets the four lifecycle plugins through `.codex-plugin`
+manifests, a repo-scoped marketplace, and plugin-level `.mcp.json` wiring that
+uses Xcode's official MCP bridge.
 
 ## Development Lifecycle
 
-The full lifecycle table below describes the complete toolkit. The Codex / OpenAI section below calls out the packaged Codex surface and the shared Xcode MCP dependency story.
+The lifecycle table below describes the complete toolkit. Its command and agent
+columns are Claude-only. For Codex, use only the `Codex / OpenAI` section
+below, `AGENTS.md`, `.agents/plugins/marketplace.json`, the lifecycle plugin
+manifests, and the packaged Codex skill trees as the live install surface.
 
 ```
 Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Implement → Phase 4: Build → Phase 5: Review → Phase 6: Test
@@ -20,7 +30,10 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/review`, `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
 
-## Quick Start
+## Quick Start (Full Toolkit / Claude-first)
+
+These examples include Claude-only slash commands. Codex users should skip to
+the `Codex / OpenAI` section below.
 
 **New macOS app:** Load `app-development-workflow` skill, follow phases 0-6.
 
@@ -71,11 +84,17 @@ source from this checkout, and install whichever lifecycle plugins you need.
 Restart Codex after changing the marketplace or any `.codex-plugin/plugin.json`
 file so the local install picks up the new metadata.
 
+For Codex, treat this section, `AGENTS.md`,
+`.agents/plugins/marketplace.json`, and the four lifecycle plugin manifests as
+the live source of truth. The command inventory, agent tables, hooks, and usage
+examples elsewhere in this README describe the broader Claude-first toolkit and
+are not part of the packaged Codex surface.
+
 `apple-app-builder` and `apple-app-quality` now bundle plugin-local
 `.mcp.json` files that start Xcode's official MCP bridge through
 `xcrun mcpbridge`, so their Codex build and test guidance no longer relies on
 an undeclared host MCP setup. Xcode must be installed and running before the
-bridge can attach. The lifecycle tables elsewhere in this README now use the same official Xcode MCP model.
+bridge can attach.
 
 When editing the Codex marketplace, manifests, `.mcp.json`, or Codex-exposed
 skills, run:
@@ -89,9 +108,9 @@ Claude commands, agents, and hooks rather than Codex-packaged skills, apps, or
 MCP config.
 
 See `docs/codex-plugin-migration/README.md` for the archived migration
-rationale and research snapshot. Use this README, `AGENTS.md`,
-`.agents/plugins/marketplace.json`, and the plugin manifests as the live Codex
-source of truth.
+rationale and research snapshot. Use the `Codex / OpenAI` section of this
+README, `AGENTS.md`, `.agents/plugins/marketplace.json`, and the plugin
+manifests as the live Codex source of truth.
 
 ## Dependencies
 
@@ -175,6 +194,9 @@ source of truth.
 | Skill | Purpose |
 |-------|---------|
 | `ios-testing` | XCTest + Swift Testing patterns |
+
+The remaining sections describe the broader Claude-first toolkit and are not
+part of the packaged Codex install surface.
 
 ## Agents
 

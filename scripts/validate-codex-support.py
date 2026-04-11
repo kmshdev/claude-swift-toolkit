@@ -156,15 +156,191 @@ def validate_skill_file(path: Path) -> list[str]:
     return errors
 
 
+def parse_yaml_scalar(value: str, *, path: Path, line_number: int) -> object:
+    if value.startswith(("'", '"')):
+        quote = value[0]
+        if len(value) < 2 or not value.endswith(quote):
+            raise ValueError(f"{path}:{line_number}: unterminated quoted scalar")
+        return value[1:-1]
+    if value == "null":
+        return None
+    if value == "true":
+        return True
+    if value == "false":
+        return False
+    return value
+
+
+def load_simple_yaml(path: Path) -> object:
+    entries: list[tuple[int, str, int]] = []
+    for line_number, raw_line in enumerate(path.read_text().splitlines(), start=1):
+        stripped = raw_line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        indent = len(raw_line) - len(raw_line.lstrip(" "))
+        if indent % 2 != 0:
+            raise ValueError(f"{path}:{line_number}: indentation must use multiples of 2 spaces")
+        entries.append((indent, stripped, line_number))
+
+    if not entries:
+        raise ValueError(f"{path}: empty YAML file")
+
+    def parse_block(index: int, indent: int) -> tuple[object, int]:
+        is_list = entries[index][1].startswith("- ")
+        if is_list:
+            items: list[object] = []
+            while index < len(entries):
+                current_indent, stripped, line_number = entries[index]
+                if current_indent < indent:
+                    break
+                if current_indent != indent:
+                    raise ValueError(f"{path}:{line_number}: unexpected indentation")
+                if not stripped.startswith("- "):
+                    raise ValueError(f"{path}:{line_number}: mixed YAML collection types")
+                item, index = parse_list_item(index, indent)
+                items.append(item)
+            return items, index
+
+        mapping: dict[str, object] = {}
+        while index < len(entries):
+            current_indent, stripped, line_number = entries[index]
+            if current_indent < indent:
+                break
+            if current_indent != indent:
+                raise ValueError(f"{path}:{line_number}: unexpected indentation")
+            if stripped.startswith("- "):
+                raise ValueError(f"{path}:{line_number}: mixed YAML collection types")
+            key, value, index = parse_mapping_entry(index, indent)
+            if key in mapping:
+                raise ValueError(f"{path}:{line_number}: duplicate key '{key}'")
+            mapping[key] = value
+        return mapping, index
+
+    def parse_mapping_entry(index: int, indent: int) -> tuple[str, object, int]:
+        _, stripped, line_number = entries[index]
+        key, separator, raw_value = stripped.partition(":")
+        if separator != ":" or not key.strip():
+            raise ValueError(f"{path}:{line_number}: invalid mapping entry")
+        key = key.strip()
+        raw_value = raw_value.lstrip()
+        index += 1
+        if raw_value:
+            return key, parse_yaml_scalar(raw_value, path=path, line_number=line_number), index
+        if index < len(entries) and entries[index][0] > indent:
+            child_indent = entries[index][0]
+            if child_indent != indent + 2:
+                raise ValueError(f"{path}:{entries[index][2]}: invalid nested indentation")
+            value, index = parse_block(index, child_indent)
+            return key, value, index
+        return key, None, index
+
+    def parse_list_item(index: int, indent: int) -> tuple[object, int]:
+        _, stripped, line_number = entries[index]
+        item_text = stripped[2:].strip()
+        index += 1
+        if not item_text:
+            if index < len(entries) and entries[index][0] > indent:
+                child_indent = entries[index][0]
+                if child_indent != indent + 2:
+                    raise ValueError(f"{path}:{entries[index][2]}: invalid nested indentation")
+                return parse_block(index, child_indent)
+            return None, index
+
+        key, separator, raw_value = item_text.partition(":")
+        if separator != ":":
+            return parse_yaml_scalar(item_text, path=path, line_number=line_number), index
+
+        item: dict[str, object] = {}
+        key = key.strip()
+        raw_value = raw_value.lstrip()
+        if raw_value:
+            item[key] = parse_yaml_scalar(raw_value, path=path, line_number=line_number)
+            if index < len(entries) and entries[index][0] > indent:
+                child_indent = entries[index][0]
+                if child_indent != indent + 2:
+                    raise ValueError(f"{path}:{entries[index][2]}: invalid nested indentation")
+                nested, index = parse_block(index, child_indent)
+                if not isinstance(nested, dict):
+                    raise ValueError(
+                        f"{path}:{entries[index - 1][2]}: list item metadata must be a mapping"
+                    )
+                for nested_key, nested_value in nested.items():
+                    if nested_key in item:
+                        raise ValueError(
+                            f"{path}:{entries[index - 1][2]}: duplicate key '{nested_key}'"
+                        )
+                    item[nested_key] = nested_value
+            return item, index
+
+        if index < len(entries) and entries[index][0] > indent:
+            child_indent = entries[index][0]
+            if child_indent != indent + 2:
+                raise ValueError(f"{path}:{entries[index][2]}: invalid nested indentation")
+            value, index = parse_block(index, child_indent)
+            item[key] = value
+            return item, index
+
+        item[key] = None
+        return item, index
+
+    if entries[0][0] != 0:
+        raise ValueError(f"{path}:{entries[0][2]}: top-level keys must start at column 1")
+
+    payload, next_index = parse_block(0, 0)
+    if next_index != len(entries):
+        raise ValueError(f"{path}:{entries[next_index][2]}: trailing YAML content")
+    return payload
+
+
 def validate_openai_metadata(path: Path) -> list[str]:
     errors: list[str] = []
-    text = path.read_text()
-    if "interface:" not in text:
+    try:
+        payload = load_simple_yaml(path)
+    except ValueError as exc:
+        return [str(exc)]
+
+    if not isinstance(payload, dict):
+        return [f"{path}: expected top-level YAML mapping"]
+
+    interface = payload.get("interface")
+    if not isinstance(interface, dict):
         errors.append(f"{path}: missing top-level interface block")
-    if "display_name:" not in text:
+        return errors
+
+    display_name = interface.get("display_name")
+    if not isinstance(display_name, str) or not display_name.strip():
         errors.append(f"{path}: missing interface.display_name")
-    if "short_description:" not in text:
+
+    short_description = interface.get("short_description")
+    if not isinstance(short_description, str) or not short_description.strip():
         errors.append(f"{path}: missing interface.short_description")
+
+    default_prompt = interface.get("default_prompt")
+    if default_prompt is not None and (
+        not isinstance(default_prompt, str) or not default_prompt.strip()
+    ):
+        errors.append(f"{path}: interface.default_prompt must be a non-empty string")
+
+    dependencies = payload.get("dependencies")
+    if dependencies is not None:
+        if not isinstance(dependencies, dict):
+            errors.append(f"{path}: dependencies must be a mapping when present")
+            return errors
+        tools = dependencies.get("tools")
+        if tools is not None:
+            if not isinstance(tools, list):
+                errors.append(f"{path}: dependencies.tools must be a list when present")
+            else:
+                for tool in tools:
+                    if not isinstance(tool, dict):
+                        errors.append(f"{path}: each dependencies.tools entry must be a mapping")
+                        continue
+                    tool_type = tool.get("type")
+                    tool_value = tool.get("value")
+                    if not isinstance(tool_type, str) or not tool_type.strip():
+                        errors.append(f"{path}: dependencies.tools entries must include type")
+                    if not isinstance(tool_value, str) or not tool_value.strip():
+                        errors.append(f"{path}: dependencies.tools entries must include value")
     return errors
 
 

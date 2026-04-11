@@ -17,7 +17,7 @@ Modern development tools and optimizations for macOS 26 / iOS 26 development.
 
 ## Agentic Coding (Xcode 26.3+)
 
-- Claude Agent and OpenAI Codex integration for autonomous coding
+- Compatible coding agents, including Codex, for autonomous coding
 - Model Context Protocol (MCP) support for external agent tools
 - Comprehensive permissions system for agent capabilities
 - Xcode exposes its tools via MCP for any compatible agent
