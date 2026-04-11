@@ -1,7 +1,19 @@
 {
   "module": "repo-application-plan",
-  "title": "Repository application plan for claude-swift-toolkit",
+  "title": "Archived repository application snapshot for claude-swift-toolkit",
   "category": "repo-application",
+  "artifact_status": "archived-research",
+  "archive_note": "This entry records the migration-time repo application snapshot. Use the root lifecycle docs, repo marketplace, and current .codex-plugin manifests as the live source of truth.",
+  "live_source_of_truth": [
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".agents/plugins/marketplace.json",
+    "plugins/apple-app-architect/.codex-plugin/plugin.json",
+    "plugins/apple-design-system/.codex-plugin/plugin.json",
+    "plugins/apple-app-builder/.codex-plugin/plugin.json",
+    "plugins/apple-app-quality/.codex-plugin/plugin.json"
+  ],
   "traits": [
     "mapping",
     "compatibility",
@@ -25,14 +37,14 @@
     }
   ],
   "key_findings": [
-    "The truthful Codex surface now includes the four lifecycle plugins: apple-app-architect, apple-design-system, apple-app-builder, and apple-app-quality.",
-    "apple-app-builder and apple-app-quality now bundle plugin-local .mcp.json files that launch the official Xcode MCP bridge via xcrun mcpbridge, making their Xcode-backed build and test workflows explicit in the Codex package.",
+    "In the migration snapshot, the truthful Codex surface included the four lifecycle plugins: apple-app-architect, apple-design-system, apple-app-builder, and apple-app-quality.",
+    "apple-app-builder and apple-app-quality bundled plugin-local .mcp.json files that launch the official Xcode MCP bridge via xcrun mcpbridge, making their Xcode-backed build and test workflows explicit in the Codex package.",
     "hookify currently depends on Claude-specific commands, agents, and hooks and does not expose a Codex-ready skill, app, or MCP surface.",
-    "The least-risk transformation remains a dual-host rollout: keep the Claude-first structure intact, use Codex-facing wrapper skill trees only where host behavior diverges, and document hookify as Claude-only."
+    "The least-risk transformation was a dual-host rollout: keep the Claude-first structure intact, use Codex-facing wrapper skill trees only where host behavior diverges, and document hookify as Claude-only."
   ],
   "recommended_actions": [
-    "Keep the repo marketplace aligned with the full Codex-supported lifecycle plugin set.",
-    "Update the root README with Codex installation steps, the current support matrix, and the official Xcode MCP bridge prerequisite notes for builder and quality workflows.",
-    "Record the research synthesis in-repo so future plugin changes can reuse the migration rationale."
+    "Keep the repo marketplace aligned with the live Codex-supported lifecycle plugin set.",
+    "Use the root README for the active support matrix and official Xcode MCP bridge prerequisite notes for builder and quality workflows.",
+    "Retain this archive so future plugin changes can reuse the migration rationale without mistaking it for the live contract."
   ]
 }

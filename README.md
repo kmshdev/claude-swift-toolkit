@@ -88,8 +88,10 @@ python3 scripts/validate-codex-support.py
 Claude commands, agents, and hooks rather than Codex-packaged skills, apps, or
 MCP config.
 
-See `docs/codex-plugin-migration/README.md` for the migration rationale,
-knowledge-base outputs, and source-backed compatibility notes.
+See `docs/codex-plugin-migration/README.md` for the archived migration
+rationale and research snapshot. Use this README, `AGENTS.md`,
+`.agents/plugins/marketplace.json`, and the plugin manifests as the live Codex
+source of truth.
 
 ## Dependencies
 
