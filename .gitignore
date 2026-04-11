@@ -22,6 +22,7 @@ env/
 
 # Internal session state
 tasks/
+.firecrawl/
 
 # Plan documents (internal)
 docs/plans/
