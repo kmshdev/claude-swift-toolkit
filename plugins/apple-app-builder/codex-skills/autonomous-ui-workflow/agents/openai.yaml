@@ -1,0 +1,9 @@
+interface:
+  display_name: "Autonomous UI Workflow"
+  short_description: "Implement SwiftUI changes and validate them with the smallest useful Xcode proof"
+  default_prompt: "Use $autonomous-ui-workflow to implement this SwiftUI change, validate it with the smallest useful Xcode MCP evidence, and hand off any remaining review or test work clearly."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "xcode"
+      description: "Bundled official Xcode MCP bridge from this plugin's .mcp.json"

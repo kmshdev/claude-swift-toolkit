@@ -33,7 +33,7 @@ model: sonnet
 tools: Read, Write, Edit, Bash(swift *), Bash(xcodebuild *), Bash(xcrun *), Glob, Grep
 color: magenta
 memory: project
-mcpServers: xcodebuildmcp, plugin:context7:context7
+mcpServers: xcode, plugin:context7:context7
 skills:
   - autonomous-ui-workflow
   - swift-concurrency

@@ -1,6 +1,6 @@
 ---
 description: Run unit and integration tests
-allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *), Read, Grep
+allowed-tools: mcp__xcode__*, Bash(swift *), Bash(xcodebuild *), Read, Grep
 ---
 
 # Run Tests
@@ -8,36 +8,36 @@ allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *), Read, G
 ## Steps
 
 ### 1. Discover Test Targets
-- Check for test targets in the Xcode project: `mcp__xcodebuildmcp__list_schemes` or `xcodebuild -list`
-- Look for schemes ending in `Tests` or `UITests`
-- For Swift packages: check `Package.swift` for `.testTarget` entries
-- If no test targets → suggest creating tests using the **`claude-swift-toolkit:ios-testing` skill** using the Skill tool
+- If the project is open in Xcode and the official bridge is available, use
+  `GetTestList` for the active scheme.
+- Otherwise inspect the project with `xcodebuild -list` or look for `.testTarget`
+  entries in `Package.swift`.
+- If no test targets exist, suggest creating tests with the
+  `apple-app-quality:ios-testing` skill.
 
-### 2. Select Framework
+### 2. Select the Framework
 Identify which test framework the project uses:
 - **Swift Testing** (`@Test`, `#expect`, `@Suite`) — preferred for new code
-- **XCTest** (`XCTestCase`, `XCTAssert*`) — legacy but widely used
+- **XCTest** (`XCTestCase`, `XCTAssert*`) — legacy and UI/performance coverage
 - Both can coexist in the same target
-- **Load `claude-swift-toolkit:ios-testing` skill** using the Skill tool for framework patterns and best practices
 
 ### 3. Run Tests
-- **Xcode project (MCP):** `mcp__xcodebuildmcp__test_sim_name_proj` with scheme and simulator
-- **Xcode project (CLI):** `xcodebuild test -scheme <Scheme> -destination 'platform=iOS Simulator,name=iPhone 16'`
-- **Swift package:** `swift test` (or `swift test --filter <TestName>` for specific tests)
-- For focused testing: run only the test file or suite relevant to recent changes
+- **Official Xcode MCP:** `RunSomeTests` for the narrowest useful slice, then
+  `RunAllTests` only when broader coverage is warranted
+- **Xcode CLI fallback:** `xcodebuild test -scheme <Scheme> -destination <Destination>`
+- **Swift package:** `swift test` or `swift test --filter <TestName>`
 
 ### 4. Parse Results
 Categorize failures:
 
 | Category | Indicators | Action |
 |----------|-----------|--------|
-| **Assertion** | `#expect` failed, `XCTAssertEqual` mismatch | Check expected vs actual values; fix logic or update expectations |
-| **Timeout** | "test timed out", "exceeded time limit" | Check for missing async fulfillment, deadlocks, or slow setup |
-| **Crash** | `EXC_BAD_ACCESS`, `fatalError`, force-unwrap | Fix nil handling, check thread safety |
-| **Setup** | "failed to load", "missing fixture" | Verify test data, mock configuration, `ModelContainer(for:configurations:inMemory: true)` |
+| Assertion | `#expect` or `XCTAssert*` failure | Check expected vs actual values |
+| Timeout | test timed out | Check async fulfillment, deadlocks, or slow setup |
+| Crash | `EXC_BAD_ACCESS`, `fatalError`, force-unwrap | Fix nil handling or thread-safety issues |
+| Setup | missing fixture, container, or scheme issue | Verify data, mocks, and active scheme |
 
 ### 5. Report
-- Show pass/fail counts per target
-- For failures: include test name, file:line reference, assertion message
-- Suggest fixes based on failure category
-- If all pass → confirm with target names and test count
+- Show pass/fail counts per target or scheme
+- For failures, include the test name, file reference, and key assertion or log message
+- If all pass, confirm the targets or suites covered

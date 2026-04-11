@@ -1,0 +1,59 @@
+{
+  "manifest": [
+    "official-build-surface"
+  ],
+  "marketplace": [
+    "official-build-surface"
+  ],
+  "installation": [
+    "official-build-surface"
+  ],
+  "path-rules": [
+    "official-build-surface"
+  ],
+  "validation": [
+    "community-validation-and-distribution"
+  ],
+  "ci": [
+    "community-validation-and-distribution"
+  ],
+  "distribution": [
+    "community-validation-and-distribution"
+  ],
+  "trust": [
+    "community-validation-and-distribution"
+  ],
+  "dual-compatibility": [
+    "dual-manifest-compatibility"
+  ],
+  "discoverability": [
+    "dual-manifest-compatibility"
+  ],
+  "migration": [
+    "dual-manifest-compatibility"
+  ],
+  "thin-wrapper": [
+    "thin-wrapper-patterns"
+  ],
+  "mcp": [
+    "thin-wrapper-patterns"
+  ],
+  "skills": [
+    "thin-wrapper-patterns"
+  ],
+  "metadata": [
+    "thin-wrapper-patterns"
+  ],
+  "mapping": [
+    "repo-application-plan"
+  ],
+  "compatibility": [
+    "repo-application-plan"
+  ],
+  "unsupported-surfaces": [
+    "repo-application-plan"
+  ],
+  "documentation": [
+    "repo-application-plan"
+  ]
+}

@@ -1,6 +1,6 @@
 ---
-description: Build and launch the app on simulator or Mac
-allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *), Bash(xcrun *), Bash(open *)
+description: Build the app and launch what the current official tool surface can support
+allowed-tools: mcp__xcode__*, Bash(swift *), Bash(xcodebuild *), Bash(open *), Bash(find *)
 ---
 
 # Build and Run
@@ -8,31 +8,22 @@ allowed-tools: mcp__xcodebuildmcp__*, Bash(swift *), Bash(xcodebuild *), Bash(xc
 ## Steps
 
 ### 1. Build First
-- Run the `/build` workflow to compile the project
-- If build fails → stop and suggest `/fix-build`
+- Run the `/build` workflow to compile the project.
+- If the build fails, stop and suggest `/fix-build`.
 
-### 2. Select Run Target
-Determine the appropriate destination:
+### 2. Detect the Platform
+- macOS targets can be opened directly once built.
+- iOS and iPadOS targets can be built here, but this toolkit no longer bundles
+  simulator launch automation.
 
-| App Type | Default Target | How to Detect |
-|----------|---------------|---------------|
-| **macOS** | "My Mac" | Deployment target is macOS, or `@main` uses `WindowGroup`/`MenuBarExtra` |
-| **iOS** | iPhone 16 Simulator | Deployment target is iOS |
-| **iPadOS** | iPad Pro Simulator | User requests iPad or app uses `NavigationSplitView` patterns |
-| **Multi-platform** | Ask user | Both iOS and macOS destinations available |
+### 3. Launch What Is Supported
+- **macOS:** locate the built `.app` bundle in DerivedData and open it.
+- **iOS / iPadOS:** report a successful build and tell the user to run the
+  active scheme from Xcode. Do not claim simulator launch support.
+- **Swift package executables:** run the built executable if the package defines
+  one and the user asked for it explicitly.
 
-- List available simulators: `xcrun simctl list devices available` or `mcp__xcodebuildmcp__list_available_simulators`
-- If user specifies a device name → use that
-- If simulator is not booted → boot it: `xcrun simctl boot <device-id>`
-
-### 3. Launch
-- **macOS apps:** Build and open the `.app` from derived data, or use `mcp__xcodebuildmcp__run_app`
-- **iOS Simulator:** Install and launch via `xcrun simctl install` + `xcrun simctl launch`
-- Pass any launch arguments the user specifies (e.g., `-com.apple.CoreData.SQLDebug 1`)
-- Pass environment variables if specified (e.g., `SQLITE_ENABLE_THREAD_ASSERTIONS=1`)
-
-### 4. Monitor
-- Watch console output for runtime errors, crashes, or constraint warnings
-- Auto Layout warnings: report the conflicting constraints
-- Fatal errors / crashes: report the crash log with stack trace
-- If the app launches successfully → report success with the run target
+### 4. Report
+- On macOS, report the app path you launched.
+- On iOS or iPadOS, report that the build succeeded and the next step is to run
+  from Xcode.

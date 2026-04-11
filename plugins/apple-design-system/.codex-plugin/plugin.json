@@ -1,0 +1,42 @@
+{
+  "name": "apple-design-system",
+  "version": "1.0.0",
+  "description": "Apple design system reference for Codex \u2014 Liquid Glass, SwiftUI API references, HIG compliance, and UI patterns for iOS 26+ and macOS 26+.",
+  "author": {
+    "name": "kmshdev",
+    "url": "https://github.com/kmshdev"
+  },
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "swiftui",
+    "ios",
+    "macos",
+    "apple",
+    "liquid-glass",
+    "design-system",
+    "hig",
+    "sf-symbols",
+    "ui-reference"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Apple Design System",
+    "shortDescription": "SwiftUI, HIG, and Liquid Glass reference layer",
+    "longDescription": "Packages the design-side knowledge layer for Apple apps: Liquid Glass guidance, HIG-aware app design, and focused SwiftUI API reference skills for materials, iconography, colors, typography, inputs, effects, and presentation.",
+    "developerName": "kmshdev",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
+    "defaultPrompt": [
+      "Design a SwiftUI screen that follows Apple HIG and uses Liquid Glass well.",
+      "Show the right SwiftUI APIs for materials, typography, and iconography.",
+      "Review this Apple app UI for HIG alignment and visual consistency."
+    ],
+    "brandColor": "#0F766E"
+  }
+}

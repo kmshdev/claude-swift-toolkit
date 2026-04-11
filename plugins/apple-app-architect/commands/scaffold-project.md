@@ -1,7 +1,7 @@
 ---
 description: Create a new Xcode project with Swift 6.2, iOS 26/macOS 26, strict concurrency, and proper app bundle structure
 argument-hint: "[app name]"
-allowed-tools: Read, Write, Bash(xcodegen *), Bash(which *), Bash(mkdir *), Bash(chmod *), Bash(open *), Bash(ls *), mcp__xcodebuildmcp__*
+allowed-tools: Read, Write, Bash(xcodegen *), Bash(which *), Bash(mkdir *), Bash(chmod *), Bash(open *), Bash(ls *), mcp__xcode__*
 ---
 
 # /scaffold-project
@@ -10,17 +10,17 @@ Create a new Xcode project configured for iOS 26+ / macOS 26+ with Swift 6.2 and
 
 ## Prerequisites
 
-Load `apple-app-architect:swift-project-scaffold` skill using the Skill tool.
+Load `apple-app-architect:swift-project-scaffold` using the Skill tool.
 
 ## Step 1 — Gather Requirements
 
-Ask the user these questions (use defaults if `$ARGUMENTS` provides app name):
+Ask the user these questions (use defaults if `$ARGUMENTS` provides the app name):
 
 1. **App name** — default: `$ARGUMENTS` or current directory name
 2. **Bundle ID prefix** — default: `com.developer`
-3. **Platform** — `[1] macOS  [2] iOS` — default: 1 (macOS)
+3. **Platform** — `[1] macOS  [2] iOS` — default: 1
 4. **Deployment target** — default: macOS 26.0 / iOS 26.0
-5. **Archetype** — `[1] Standard (WindowGroup)  [2] Document-based  [3] Menu bar extra  [4] Utility` — default: 1
+5. **Archetype** — `[1] Standard  [2] Document-based  [3] Menu bar extra  [4] Utility` — default: 1
 6. **Include test target?** — default: yes
 7. **Include SwiftData?** — default: no
 
@@ -30,36 +30,34 @@ Ask the user these questions (use defaults if `$ARGUMENTS` provides app name):
 which xcodegen
 ```
 
-- If found → **XcodeGen path** (primary)
-- If not found → **XcodeBuildMCP fallback**
+- If found → **XcodeGen path**
+- If not found → stop and ask the user to either install XcodeGen or create the starter project in Xcode manually
 
 ## Step 3 — Create Project
 
 ### XcodeGen Path
 
 1. Create directories: `Sources/<AppName>/`, `Tests/<AppName>Tests/`
-2. Read template from `swift-project-scaffold` skill: select `macos.project.yml` or `ios.project.yml`
-3. Replace template variables (`__APP_NAME__`, `__BUNDLE_PREFIX__`, `__BUNDLE_ID__`, `__MACOS_TARGET__` or `__IOS_TARGET__`)
-4. Write `project.yml` at project root
-5. Read and write `AppEntry.swift` to `Sources/<AppName>/` — replace archetype code block based on user's selection
-6. Read and write `ContentView.swift` to `Sources/<AppName>/`
-7. Write `.gitignore` from template
-8. If SwiftData selected: add `import SwiftData` and `modelContainer(for:)` to AppEntry.swift
-9. If test target excluded: remove the test target section from `project.yml`
-10. Run: `xcodegen generate`
+2. Select the correct template from `swift-project-scaffold`
+3. Replace template variables (`__APP_NAME__`, `__BUNDLE_PREFIX__`, `__BUNDLE_ID__`, deployment target variables)
+4. Write `project.yml`, `AppEntry.swift`, `ContentView.swift`, and `.gitignore`
+5. Apply the selected archetype and optional SwiftData configuration
+6. Run `xcodegen generate`
+7. Open the project in Xcode if needed
 
-### XcodeBuildMCP Fallback
+### Manual Xcode Path
 
-1. Call `scaffold_macos_project` or `scaffold_ios_project` MCP tool with the app name
-2. Apply build setting patches (per `swift-project-scaffold` skill fallback section)
-3. Replace generated AppEntry.swift with archetype-specific version
-4. If SwiftData selected: add SwiftData imports and model container
+- There is no bundled official Xcode MCP scaffolding command in this toolkit.
+- If the user already created a starter project in Xcode, write the generated
+  source files into that project and continue with verification.
+- Otherwise stop after explaining the two supported options: install XcodeGen or
+  create the starter project manually in Xcode.
 
 ## Step 4 — Verify
 
-1. Run `BuildProject` to confirm clean build
-2. Report result to user
-3. Suggest: `open <AppName>.xcodeproj` to open in Xcode
+1. If the project is open in Xcode and the bridge is available, run `BuildProject`
+2. Otherwise run `xcodebuild` for a clean build check
+3. Report the result to the user
 
 ## Step 5 — Report
 
@@ -73,5 +71,5 @@ Project scaffolded successfully:
 - Target: <deployment target>
 - Test target: <yes/no>
 - SwiftData: <yes/no>
-- Method: <XcodeGen/XcodeBuildMCP>
+- Method: <XcodeGen/Manual Xcode>
 ```

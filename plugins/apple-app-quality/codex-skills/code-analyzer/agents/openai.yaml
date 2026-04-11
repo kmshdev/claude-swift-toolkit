@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Analyzer"
+  short_description: "Read-only Apple app review for architecture, code quality, testing, and performance"
+  default_prompt: "Use $code-analyzer to review this Apple app change read-only, summarize the highest-risk findings, and recommend the next fix order."

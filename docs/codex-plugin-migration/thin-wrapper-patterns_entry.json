@@ -1,0 +1,41 @@
+{
+  "module": "thin-wrapper-patterns",
+  "title": "Thin Codex wrapper patterns around skills and MCP",
+  "category": "community-examples",
+  "traits": [
+    "thin-wrapper",
+    "mcp",
+    "skills",
+    "metadata"
+  ],
+  "dependencies": [
+    "official-build-surface"
+  ],
+  "depth": "focused",
+  "sources": [
+    {
+      "title": "chrome-devtools-codex-plugin",
+      "url": "https://github.com/win4r/chrome-devtools-codex-plugin",
+      "source_type": "community-example",
+      "authority": "medium",
+      "last_verified": "2026-04-11"
+    },
+    {
+      "title": "chrome-devtools-codex-plugin manifest",
+      "url": "https://raw.githubusercontent.com/win4r/chrome-devtools-codex-plugin/main/.codex-plugin/plugin.json",
+      "source_type": "repo-file",
+      "authority": "medium",
+      "last_verified": "2026-04-11"
+    }
+  ],
+  "key_findings": [
+    "A common Codex plugin pattern is a thin wrapper: keep runtime wiring small, put guidance in skills, and keep plugin metadata explicit.",
+    "The example plugin keeps its MCP wiring in .mcp.json and uses the manifest to describe install behavior and discovery metadata.",
+    "Community examples emphasize staying close to upstream tools instead of forking or re-implementing them inside the plugin."
+  ],
+  "recommended_actions": [
+    "Port the existing skill-bearing plugins first instead of trying to re-create every Claude-specific surface in Codex.",
+    "Leave unsupported host-specific behavior out of the Codex manifests unless the repo actually bundles the needed Codex surface.",
+    "Use README notes to explain the thin-wrapper boundary and any host-specific limitations."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "apple-app-architect",
+  "version": "1.2.0",
+  "description": "Apple app planning and architecture for Codex \u2014 lifecycle planning, architecture guidance, and macOS development patterns.",
+  "author": {
+    "name": "kmshdev",
+    "url": "https://github.com/kmshdev"
+  },
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "swift",
+    "swiftui",
+    "ios",
+    "macos",
+    "apple",
+    "architecture",
+    "planning"
+  ],
+  "skills": "./codex-skills/",
+  "interface": {
+    "displayName": "Apple App Architect",
+    "shortDescription": "Plan Apple apps and shape lifecycle architecture",
+    "longDescription": "Packages the planning and architecture side of the toolkit: lifecycle framing, macOS development guidance, and early-phase architecture decisions for Apple apps.",
+    "developerName": "kmshdev",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
+    "defaultPrompt": [
+      "Plan a new macOS or iOS app from idea to architecture decisions.",
+      "Review my app architecture and suggest a cleaner SwiftUI structure.",
+      "Map the first planning and design phases for a new Apple feature."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

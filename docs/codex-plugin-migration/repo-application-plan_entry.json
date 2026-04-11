@@ -1,0 +1,50 @@
+{
+  "module": "repo-application-plan",
+  "title": "Archived repository application snapshot for claude-swift-toolkit",
+  "category": "repo-application",
+  "artifact_status": "archived-research",
+  "archive_note": "This entry records the migration-time repo application snapshot. Use the root lifecycle docs, repo marketplace, and current .codex-plugin manifests as the live source of truth.",
+  "live_source_of_truth": [
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".agents/plugins/marketplace.json",
+    "plugins/apple-app-architect/.codex-plugin/plugin.json",
+    "plugins/apple-design-system/.codex-plugin/plugin.json",
+    "plugins/apple-app-builder/.codex-plugin/plugin.json",
+    "plugins/apple-app-quality/.codex-plugin/plugin.json"
+  ],
+  "traits": [
+    "mapping",
+    "compatibility",
+    "unsupported-surfaces",
+    "documentation"
+  ],
+  "dependencies": [
+    "official-build-surface",
+    "community-validation-and-distribution",
+    "dual-manifest-compatibility",
+    "thin-wrapper-patterns"
+  ],
+  "depth": "focused",
+  "sources": [
+    {
+      "title": "claude-swift-toolkit repository",
+      "url": "https://github.com/kmshdev/claude-swift-toolkit",
+      "source_type": "local-repo",
+      "authority": "high",
+      "last_verified": "2026-04-11"
+    }
+  ],
+  "key_findings": [
+    "In the migration snapshot, the truthful Codex surface included the four lifecycle plugins: apple-app-architect, apple-design-system, apple-app-builder, and apple-app-quality.",
+    "apple-app-builder and apple-app-quality bundled plugin-local .mcp.json files that launch the official Xcode MCP bridge via xcrun mcpbridge, making their Xcode-backed build and test workflows explicit in the Codex package.",
+    "hookify currently depends on Claude-specific commands, agents, and hooks and does not expose a Codex-ready skill, app, or MCP surface.",
+    "The least-risk transformation was a dual-host rollout: keep the Claude-first structure intact, use Codex-facing wrapper skill trees only where host behavior diverges, and document hookify as Claude-only."
+  ],
+  "recommended_actions": [
+    "Keep the repo marketplace aligned with the live Codex-supported lifecycle plugin set.",
+    "Use the root README for the active support matrix and official Xcode MCP bridge prerequisite notes for builder and quality workflows.",
+    "Retain this archive so future plugin changes can reuse the migration rationale without mistaking it for the live contract."
+  ]
+}

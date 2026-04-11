@@ -71,7 +71,7 @@ Before writing code:
 ## Phase 4: Implement
 
 Follow project conventions (check CLAUDE.md and existing code):
-- Use Xcode MCP tools as primary file interface when available: `XcodeUpdate` for edits, `XcodeRead` for reading, `XcodeWrite` for new files. See `xcodebuildmcp` skill for the full tool mapping.
+- Use Xcode MCP tools as primary file interface when available: `XcodeUpdate` for edits, `XcodeRead` for reading, `XcodeWrite` for new files. See `xcode-mcp` for the full tool mapping.
 - Use the project's state management pattern
 - `#Preview` block at bottom
 - Extract views > 100 lines
@@ -79,7 +79,7 @@ Follow project conventions (check CLAUDE.md and existing code):
 
 ## Phase 5: Build
 
-Via Xcode MCP: follow the **BuildFix Loop** from the `xcodebuildmcp` skill.
+Via Xcode MCP: follow the **BuildFix Loop** from the `xcode-mcp` skill.
 
 If build fails → `XcodeListNavigatorIssues` → fix via `XcodeUpdate` → rebuild (max 5 iterations).
 Do NOT claim success without build evidence.

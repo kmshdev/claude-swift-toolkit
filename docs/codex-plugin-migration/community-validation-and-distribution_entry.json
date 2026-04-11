@@ -1,0 +1,41 @@
+{
+  "module": "community-validation-and-distribution",
+  "title": "Community validation and distribution practices",
+  "category": "community-practices",
+  "traits": [
+    "validation",
+    "ci",
+    "distribution",
+    "trust"
+  ],
+  "dependencies": [
+    "official-build-surface"
+  ],
+  "depth": "focused",
+  "sources": [
+    {
+      "title": "Built an OSS CI gate for Codex plugins",
+      "url": "https://community.openai.com/t/built-an-oss-ci-gate-for-codex-plugins-looking-for-feedback-from-plugin-authors/1378543",
+      "source_type": "community-thread",
+      "authority": "medium",
+      "last_verified": "2026-04-11"
+    },
+    {
+      "title": "Awesome Codex Plugins",
+      "url": "https://github.com/hashgraph-online/awesome-codex-plugins",
+      "source_type": "community-registry",
+      "authority": "medium",
+      "last_verified": "2026-04-11"
+    }
+  ],
+  "key_findings": [
+    "A community scanner workflow has emerged around codex-plugin-scanner lint/verify and a GitHub Action gate before wider distribution.",
+    "The awesome-codex-plugins registry uses a real repo marketplace and mirrored plugin folders, matching the official marketplace shape.",
+    "Registry maintainers treat validation evidence, plugin metadata quality, and packaging cleanliness as part of publish readiness."
+  ],
+  "recommended_actions": [
+    "Keep the repo marketplace machine-readable and checked into source control.",
+    "Validate manifest JSON and marketplace JSON after generating them.",
+    "Document the local marketplace install path so users can test the repo as a curated Codex source."
+  ]
+}

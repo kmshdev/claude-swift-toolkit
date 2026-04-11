@@ -1,6 +1,6 @@
 ---
 description: Diagnose and fix build errors systematically
-allowed-tools: mcp__xcodebuildmcp__*, Read, Write, Edit, Bash(swift *), Bash(xcodebuild *), Grep
+allowed-tools: mcp__xcode__*, Read, Write, Edit, Bash(swift *), Bash(xcodebuild *), Grep
 ---
 
 # Fix Build Errors
@@ -8,47 +8,38 @@ allowed-tools: mcp__xcodebuildmcp__*, Read, Write, Edit, Bash(swift *), Bash(xco
 ## Steps
 
 ### 1. Get Fresh Errors
-- Run a clean build to get the current error set (not stale cache errors)
-- Use `mcp__xcodebuildmcp__build_project` or `xcodebuild build` with the same scheme/destination as `/build`
-- Capture full build output
+- Run a fresh build rather than trusting stale diagnostics.
+- Prefer `BuildProject` plus `GetBuildLog` when the official Xcode MCP bridge is
+  available.
+- Otherwise use `xcodebuild build` with the same project, workspace, scheme,
+  and destination as `/build`.
 
 ### 2. Categorize Errors
-Read each error and classify:
+Read each error and classify it before editing:
 
-**SPM / Package Resolution:**
-- "package resolution failed", "dependency not found", "version solving failed"
-- Fix: `swift package resolve`, clean derived data, check `Package.resolved` for conflicts
-- Check minimum deployment target matches dependency requirements
+**Package Resolution**
+- Missing or incompatible dependencies
+- Fix package issues before touching application code
 
-**Swift Compiler:**
-- Type mismatches, missing members, ambiguous references
-- Fix: check API availability (`#available`), add missing imports, fix type signatures
-- For deprecation warnings: load `swiftui-ui-patterns` for modern API replacements
+**Swift Compiler**
+- Type mismatches, missing imports, unavailable APIs, macro or preview errors
+- Fix the smallest upstream type or availability issue first
 
-**Linker:**
-- "undefined symbol", "framework not found", "library not found"
-- Fix: verify framework is linked in Build Phases → Link Binary With Libraries
-- Check framework search paths in Build Settings
-- For SPM dependencies: ensure `.product()` is listed in target dependencies
+**Linker**
+- Undefined symbols, missing frameworks, missing target membership
+- Check target linkage and build settings
 
-**Code Signing:**
-- "no provisioning profile", "code signing identity not found"
-- Fix: verify team in Signing & Capabilities, check bundle ID matches profile
-- For development: set "Automatically manage signing" in Xcode
-- Check entitlements file matches capabilities
-
-**Swift Concurrency (Swift 6):**
-- "sending", "non-sendable", "actor-isolated", "data race"
-- Fix: add `@MainActor`, conform to `Sendable`, use `@unchecked Sendable` (last resort)
-- Load `swiftui-ui-patterns` for concurrency patterns
+**Code Signing**
+- Missing team, provisioning profile, or entitlement mismatch
+- Verify signing configuration before retrying
 
 ### 3. Fix Errors
-- Fix one category at a time, starting with the most upstream (SPM → compiler → linker → signing)
-- SPM errors block everything else — resolve these first
-- After each fix, rebuild to check if downstream errors resolve
+- Prefer `XcodeUpdate` or `XcodeWrite` when working through the MCP bridge.
+- Otherwise edit files directly and keep changes minimal.
+- Re-run `XcodeRefreshCodeIssuesInFile` on touched files when that tool is
+  available.
 
 ### 4. Verify
-- Run a full clean build after all fixes
-- If build succeeds → report success
-- If new errors appear → return to step 2 with the new error set
-- Maximum 3 fix-rebuild cycles before stopping and reporting remaining issues to the user
+- Rebuild after each focused fix.
+- Stop after 3 fix/rebuild cycles and report the remaining blockers if the
+  build is still red.

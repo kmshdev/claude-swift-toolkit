@@ -1,0 +1,33 @@
+{
+  "module": "official-build-surface",
+  "title": "Official Codex plugin build surface",
+  "category": "official-docs",
+  "traits": [
+    "manifest",
+    "marketplace",
+    "installation",
+    "path-rules"
+  ],
+  "dependencies": [],
+  "depth": "focused",
+  "sources": [
+    {
+      "title": "Build plugins \u2013 Codex",
+      "url": "https://developers.openai.com/codex/plugins/build",
+      "source_type": "official-docs",
+      "authority": "high",
+      "last_verified": "2026-04-11"
+    }
+  ],
+  "key_findings": [
+    "Codex plugins use .codex-plugin/plugin.json as the required entry point.",
+    "Repo and personal marketplaces live at .agents/plugins/marketplace.json and point to local plugin folders with ./-prefixed source.path values.",
+    "The documented portable plugin surface is skills, optional .mcp.json, optional .app.json, and optional assets.",
+    "Manifest paths should stay relative to the plugin root and start with ./."
+  ],
+  "recommended_actions": [
+    "Add .codex-plugin/plugin.json to each skill-bearing plugin folder.",
+    "Create a repo-scoped .agents/plugins/marketplace.json so the repo is installable in Codex without manual re-entry.",
+    "Use curated Codex-facing skill trees only when needed to avoid leaking host-specific Claude behavior into the Codex surface."
+  ]
+}

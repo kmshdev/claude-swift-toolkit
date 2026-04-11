@@ -1,0 +1,46 @@
+{
+  "name": "apple-app-quality",
+  "version": "1.0.0",
+  "description": "Apple app quality gate for Codex \u2014 structured review, SwiftUI refactoring, deep audit analysis, and official Xcode MCP-backed test workflows.",
+  "author": {
+    "name": "kmshdev",
+    "url": "https://github.com/kmshdev"
+  },
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "swift",
+    "swiftui",
+    "ios",
+    "macos",
+    "apple",
+    "testing",
+    "code-review",
+    "refactor",
+    "quality",
+    "xcode",
+    "mcp"
+  ],
+  "skills": "./codex-skills/",
+  "interface": {
+    "displayName": "Apple App Quality",
+    "shortDescription": "Review, refactor, and test Apple app changes",
+    "longDescription": "Covers Phase 5 and Phase 6 work: code review, view refactoring, deep audit context building, and official Xcode MCP-backed test discovery, targeted test execution, build-log inspection, and preview-oriented verification for Apple app changes. Requires Xcode installed and running so the bundled bridge can attach.",
+    "developerName": "kmshdev",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
+    "defaultPrompt": [
+      "Review this SwiftUI change for architecture, code quality, tests, and performance.",
+      "Refactor a SwiftUI view without changing behavior, then confirm the change with the right preview or test strategy.",
+      "Add or improve Apple-platform tests and run the smallest relevant Xcode test slice through the official Xcode MCP bridge."
+    ],
+    "brandColor": "#DC2626"
+  },
+  "mcpServers": "./.mcp.json"
+}

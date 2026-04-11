@@ -1,8 +1,20 @@
 # Claude Swift Toolkit v1.8.0
 
-**End-to-end Apple app development toolkit for Claude Code** — systematic lifecycle workflow from scaffold to shipping, with 26 skills, 10 agents, and 21 commands covering Liquid Glass design, SwiftUI patterns, networking, concurrency, actor persistence, and localization.
+**End-to-end Apple app development toolkit with a Claude-first full surface and a
+packaged Codex lifecycle plugin set** — systematic lifecycle workflow from
+scaffold to shipping, with 25 skills, 10 agents, and 21 commands covering
+Liquid Glass design, SwiftUI patterns, networking, concurrency, actor
+persistence, and localization. Claude keeps the full command, agent, and hook
+surface. Codex gets the four lifecycle plugins through `.codex-plugin`
+manifests, a repo-scoped marketplace, and plugin-level `.mcp.json` wiring that
+uses Xcode's official MCP bridge.
 
 ## Development Lifecycle
+
+The lifecycle table below describes the complete toolkit. Its command and agent
+columns are Claude-only. For Codex, use only the `Codex / OpenAI` section
+below, `AGENTS.md`, `.agents/plugins/marketplace.json`, the lifecycle plugin
+manifests, and the packaged Codex skill trees as the live install surface.
 
 ```
 Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Implement → Phase 4: Build → Phase 5: Review → Phase 6: Test
@@ -14,11 +26,14 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 | **1 — Architecture** | `macos-development` (architecture-patterns), `swift-app-lifecycle` | `macos-architect` | — |
 | **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
 | **3 — Implement** | `swiftui-components`, `swiftui-ui-patterns`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
-| **4 — Build** | `xcodebuildmcp`, `xcodebuildmcp-cli`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
+| **4 — Build** | `xcode-mcp`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
 | **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/review`, `/refactor-view`, `/swift-style` |
 | **6 — Test** | `ios-testing` | — | `/test` |
 
-## Quick Start
+## Quick Start (Full Toolkit / Claude-first)
+
+These examples include Claude-only slash commands. Codex users should skip to
+the `Codex / OpenAI` section below.
 
 **New macOS app:** Load `app-development-workflow` skill, follow phases 0-6.
 
@@ -28,14 +43,14 @@ Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Imp
 
 ## Installation
 
-### Via GitHub (Recommended)
+### Claude Code
 
 ```bash
 git clone https://github.com/kmshdev/claude-swift-toolkit.git
 claude --plugin ./claude-swift-toolkit
 ```
 
-### Via Project Settings
+### Claude Project Settings
 
 Add to your project's `.claude/settings.json`:
 
@@ -47,11 +62,55 @@ Add to your project's `.claude/settings.json`:
 }
 ```
 
-### Via npx (if published to skills.sh)
+### Claude via npx (if published to skills.sh)
 
 ```bash
 npx skills add kmshdev/claude-swift-toolkit
 ```
+
+### Codex / OpenAI
+
+This repo now includes a Codex marketplace at `.agents/plugins/marketplace.json`
+and `.codex-plugin/plugin.json` manifests for the lifecycle plugins that are
+currently packaged for Codex:
+
+- `apple-app-architect`
+- `apple-design-system`
+- `apple-app-builder`
+- `apple-app-quality`
+
+Clone the repo, open the plugin directory in Codex, choose the repo marketplace
+source from this checkout, and install whichever lifecycle plugins you need.
+Restart Codex after changing the marketplace or any `.codex-plugin/plugin.json`
+file so the local install picks up the new metadata.
+
+For Codex, treat this section, `AGENTS.md`,
+`.agents/plugins/marketplace.json`, and the four lifecycle plugin manifests as
+the live source of truth. The command inventory, agent tables, hooks, and usage
+examples elsewhere in this README describe the broader Claude-first toolkit and
+are not part of the packaged Codex surface.
+
+`apple-app-builder` and `apple-app-quality` now bundle plugin-local
+`.mcp.json` files that start Xcode's official MCP bridge through
+`xcrun mcpbridge`, so their Codex build and test guidance no longer relies on
+an undeclared host MCP setup. Xcode must be installed and running before the
+bridge can attach.
+
+When editing the Codex marketplace, manifests, `.mcp.json`, or Codex-exposed
+skills, run:
+
+```bash
+python3 scripts/validate-codex-support.py
+```
+
+`hookify` remains Claude-only for now because its current surface is built around
+Claude commands, agents, and hooks rather than Codex-packaged skills, apps, or
+MCP config.
+
+See `docs/codex-plugin-migration/README.md` for the archived migration
+rationale and research snapshot. Use the `Codex / OpenAI` section of this
+README, `AGENTS.md`, `.agents/plugins/marketplace.json`, and the plugin
+manifests as the live Codex source of truth.
 
 ## Dependencies
 
@@ -120,8 +179,7 @@ npx skills add kmshdev/claude-swift-toolkit
 
 | Skill | Purpose |
 |-------|---------|
-| `xcodebuildmcp` | Xcode build/test/debug via MCP tools |
-| `xcodebuildmcp-cli` | CLI alternative to MCP tool calls |
+| `xcode-mcp` | Official Xcode MCP bridge for build, diagnostics, previews, and tests |
 
 ### Review (Phase 5)
 
@@ -136,6 +194,9 @@ npx skills add kmshdev/claude-swift-toolkit
 | Skill | Purpose |
 |-------|---------|
 | `ios-testing` | XCTest + Swift Testing patterns |
+
+The remaining sections describe the broader Claude-first toolkit and are not
+part of the packaged Codex install surface.
 
 ## Agents
 
