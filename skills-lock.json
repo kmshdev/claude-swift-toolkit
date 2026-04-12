@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "plugin-creator": {
+      "source": "openai/plugins",
+      "sourceType": "github",
+      "computedHash": "7e6c938d097c14df192df17db35cd4cf6b77ab2a5505644806b4971b6a032097"
+    }
+  }
+}

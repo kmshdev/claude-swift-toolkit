@@ -1,0 +1,664 @@
+{
+  "version": 1,
+  "canonical": {
+    "manifest": ".codex-plugin/plugin.json",
+    "marketplace": ".agents/plugins/marketplace.json",
+    "config": ".codex/config.toml",
+    "hooks": ".codex/hooks.json",
+    "agentsDir": ".codex/agents",
+    "paritySource": ".codex/parity-source.toml",
+    "mcp": ".mcp.json",
+    "primarySkill": "codex-operating-layer",
+    "validationTargets": [
+      ".codex",
+      ".codex-plugin/plugin.json",
+      ".mcp.json",
+      ".agents/plugins/marketplace.json",
+      ".agents/skills/plugin-creator",
+      "README.md",
+      "AGENTS.md",
+      "scripts/validate-codex-support.py",
+      "scripts/generate_codex_parity_contract.py"
+    ]
+  },
+  "plugin": {
+    "name": "codex-swift-toolkit",
+    "version": "2.0.0",
+    "description": "Canonical Codex operating layer for Apple app lifecycle work \u2014 orchestrator skill, repo-local runtime, custom agents, hooks, and Xcode MCP wiring.",
+    "skillsPath": "./.codex/skills/",
+    "mcpServersPath": "./.mcp.json",
+    "interface": {
+      "displayName": "Codex Swift Toolkit",
+      "shortDescription": "Repo-scoped Codex operating layer for Apple app work",
+      "longDescription": "Codex-first operating layer for this repository: one primary orchestration entrypoint, repo-local custom agents, experimental hooks, and curated access to the Apple lifecycle skill library through .codex/config.toml.",
+      "developerName": "kmshdev",
+      "category": "Coding",
+      "capabilities": [
+        "Interactive",
+        "Read",
+        "Write"
+      ],
+      "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
+      "defaultPrompt": [
+        "Use $codex-operating-layer to plan, build, and review Apple app work in this repo.",
+        "Route this task through the right architecture, design, build, and quality agents.",
+        "Validate changes to the canonical Codex operating layer and regenerate the parity contract."
+      ],
+      "brandColor": "#2563EB"
+    }
+  },
+  "marketplace": {
+    "name": "codex-swift-toolkit",
+    "displayName": "Codex Swift Toolkit",
+    "plugins": [
+      {
+        "name": "codex-swift-toolkit",
+        "source": {
+          "source": "local",
+          "path": "./"
+        },
+        "policy": {
+          "installation": "AVAILABLE",
+          "authentication": "ON_INSTALL"
+        },
+        "category": "Coding"
+      }
+    ]
+  },
+  "runtime": {
+    "features": {
+      "codex_hooks": true
+    },
+    "agents": {
+      "max_threads": 6,
+      "max_depth": 1
+    },
+    "skills": [
+      {
+        "name": "codex-operating-layer",
+        "description": "Use as the primary autonomous entrypoint for this repo's Codex-first runtime. It maps the task to the canonical parity contract, loads the narrowest Apple lifecycle skills, delegates to the right specialist agents, and validates Codex-surface changes before finishing.",
+        "path": ".codex/skills/codex-operating-layer",
+        "source_group": "runtime"
+      },
+      {
+        "name": "plugin-creator",
+        "description": "Create and scaffold plugin directories for Codex with a required `.codex-plugin/plugin.json`, optional plugin folders/files, and baseline placeholders you can edit before publishing or testing. In this repo, use it for backing-bundle scaffolding and external marketplace files, not for mutating the repo-root canonical marketplace.",
+        "path": ".agents/skills/plugin-creator",
+        "source_group": "automation"
+      },
+      {
+        "name": "app-development-workflow",
+        "description": "Route Apple app work to the right packaged Codex skill, from planning and architecture through implementation, review, and test.",
+        "path": "plugins/apple-app-architect/codex-skills/app-development-workflow",
+        "source_group": "apple-app-architect"
+      },
+      {
+        "name": "macos-development",
+        "description": "Use when planning a macOS app, shaping architecture, choosing platform capabilities, or loading the right reference module for SwiftData, AppKit bridging, sandboxing, or macOS 26 APIs.",
+        "path": "plugins/apple-app-architect/codex-skills/macos-development",
+        "source_group": "apple-app-architect"
+      },
+      {
+        "name": "swift-app-lifecycle",
+        "description": "Design and implement the app entry point, scene structure, deep links, and system integrations. Use when scaffolding a new app, adding multi-window support, implementing URL schemes, or configuring push notifications.",
+        "path": "plugins/apple-app-architect/skills/swift-app-lifecycle",
+        "source_group": "apple-app-architect"
+      },
+      {
+        "name": "swift-project-scaffold",
+        "description": "Use when creating a new iOS or macOS Xcode project. Provides XcodeGen project.yml templates, app entry point archetypes, and post-scaffold build setting patches for Swift 6.2 / iOS 26 / macOS 26 with strict concurrency.",
+        "path": "plugins/apple-app-architect/skills/swift-project-scaffold",
+        "source_group": "apple-app-architect"
+      },
+      {
+        "name": "swift-actor-persistence",
+        "description": "Thread-safe data persistence in Swift using actors \u2014 in-memory cache with file-backed storage. Use when building local storage layers, offline-first patterns, or any shared mutable state that needs both concurrency safety and disk persistence.",
+        "path": "plugins/apple-app-architect/skills/swift-actor-persistence",
+        "source_group": "apple-app-architect"
+      },
+      {
+        "name": "macos-app-design",
+        "description": "Use when designing or building native macOS applications with SwiftUI or AppKit. Triggers on menu bar structure, keyboard shortcuts, multi-window behavior, Liquid Glass design system, macOS Tahoe/Sequoia, sidebar navigation, toolbar design, app icons, SF Symbols, or making an app feel like a \"good Mac citizen.",
+        "path": "plugins/apple-design-system/skills/macos-app-design",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "apple-liquid-glass-design",
+        "description": "Use when building UI with Apple's Liquid Glass material for iOS 26, iPadOS 26, macOS 26 - covers glassEffect, GlassEffectContainer, backgroundExtensionEffect, morph animations, toolbar grouping, button styles (.glass, .glassProminent), Icon Composer, ConcentricRectangle, scroll edge effects, and adoption best practices across SwiftUI, UIKit, and AppKit.",
+        "path": "plugins/apple-design-system/skills/apple-liquid-glass-design",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-components",
+        "description": "SwiftUI component expert for building reusable views, custom modifiers, view compositions, and Liquid Glass integration. Use when creating new SwiftUI views, refactoring UI code, applying design tokens, or building production-ready component libraries for macOS Tahoe (26) and iOS 26.",
+        "path": "plugins/apple-design-system/skills/swiftui-components",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-ui-patterns",
+        "description": "Use when writing, reviewing, or refactoring SwiftUI views. Covers state management, view composition, performance, modern APIs, navigation routing, sheet architecture, theming, haptics, deep links, loading states, and iOS 26+ patterns. Merged from swiftui-expert-skill with added UI architecture patterns from production apps (IceCubesApp).",
+        "path": "plugins/apple-design-system/skills/swiftui-ui-patterns",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-colors-api",
+        "description": "This skill should be used when the user asks to \"style with colors\", \"apply gradients\", \"use foregroundStyle\", \"add linear/radial gradient\", \"set tint color\", or needs SwiftUI color and ShapeStyle API reference. Provides Color usage, foregroundStyle with hierarchical levels, gradients, system colors, and custom ShapeStyle patterns.",
+        "path": "plugins/apple-design-system/skills/swiftui-colors-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-effects-api",
+        "description": "This skill should be used when the user asks to \"add blur effect\", \"apply shadow\", \"adjust opacity/brightness\", \"use blend modes\", \"create visual effects\", or needs SwiftUI visual effects API reference. Provides view modifiers (blur, shadow, opacity), VisualEffect protocol, blend modes, and Canvas drawing.",
+        "path": "plugins/apple-design-system/skills/swiftui-effects-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-iconography-api",
+        "description": "This skill should be used when the user asks to \"add SF Symbols\", \"animate icons\", \"use symbol effects\", \"apply symbol rendering mode\", \"add bounce/pulse effect\", or needs SwiftUI iconography API reference. Provides SF Symbols usage, rendering modes (monochrome, hierarchical, multicolor, palette), symbol effects, and variable values.",
+        "path": "plugins/apple-design-system/skills/swiftui-iconography-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-input-api",
+        "description": "This skill should be used when the user asks to \"add TextField\", \"implement text input\", \"create pickers/sliders\", \"handle keyboard shortcuts\", \"use onKeyPress\", or needs SwiftUI user input API reference. Provides TextField, SecureField, TextEditor, form controls, keyboard shortcuts, and key press handling patterns.",
+        "path": "plugins/apple-design-system/skills/swiftui-input-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-material-api",
+        "description": "This skill should be used when the user asks to \"add material background\", \"apply translucent overlay\", \"use .regularMaterial\", \"choose material thickness\", \"work with shapes\", or needs SwiftUI material and structure API reference. Provides material types (ultraThin to ultraThick), shapes (Rectangle, Capsule, Circle), and layout containers.",
+        "path": "plugins/apple-design-system/skills/swiftui-material-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-presentation-api",
+        "description": "This skill should be used when the user asks to \"present sheet\", \"show popover\", \"create alert\", \"add confirmation dialog\", \"configure presentation\", or needs SwiftUI presentation API reference. Provides sheet, popover, fullScreenCover, alert, confirmation dialog, inspector modifiers, and macOS window behaviors.",
+        "path": "plugins/apple-design-system/skills/swiftui-presentation-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-typography-api",
+        "description": "This skill should be used when the user asks to \"set font\", \"use text styles\", \"apply font weight\", \"use custom fonts\", \"implement Dynamic Type\", or needs SwiftUI typography API reference. Provides Font.TextStyle, Font.Design (serif, rounded, monospaced), Font.Weight, custom font usage, and ScaledMetric for adaptive sizing.",
+        "path": "plugins/apple-design-system/skills/swiftui-typography-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "swiftui-26-api",
+        "description": "Non-glass SwiftUI APIs from WWDC 2025 (iOS 26, macOS 26, visionOS 26). Covers @Animatable macro, TextEditor with AttributedString/AttributedTextSelection/AttributedTextFormattingDefinition, FindContext, WebView/WebPage, UIHostingSceneDelegate, ToolbarSpacer, Slider ticks, windowResizeAnchor, dragContainer, draggable(containerItemID:), scrollEdgeEffectStyle, tabBarMinimizeBehavior. Use when building rich text editors, embedding web content, bridging UIKit scenes to SwiftUI, or configuring scroll edge effects and tab bar minimization. DO NOT use for Liquid Glass design patterns (use apple-liquid-glass-design), general Swift or pre-iOS 26 SwiftUI (use swiftui-ui-patterns).",
+        "path": "plugins/apple-design-system/skills/swiftui-26-api",
+        "source_group": "apple-design-system"
+      },
+      {
+        "name": "autonomous-ui-workflow",
+        "description": "Implement SwiftUI changes in an existing Xcode project and validate them with previews, diagnostics, builds, and focused test handoff through the official Xcode MCP bridge.",
+        "path": "plugins/apple-app-builder/codex-skills/autonomous-ui-workflow",
+        "source_group": "apple-app-builder"
+      },
+      {
+        "name": "swift-networking",
+        "description": "Build, test, or review networking code using URLSession with async/await. Use when adding API calls, implementing authentication, handling errors from remote services, or reviewing network layer code for correctness and resilience.",
+        "path": "plugins/apple-app-builder/codex-skills/swift-networking",
+        "source_group": "apple-app-builder"
+      },
+      {
+        "name": "swift-concurrency",
+        "description": "Write, review, or fix Swift concurrency code using actors, async/await, and structured concurrency. Use when implementing concurrent features, resolving data race warnings, migrating from GCD, enabling Swift 6 strict concurrency mode, or adopting Swift 6.2 approachable concurrency (@concurrent, main-actor-by-default, isolated conformances).",
+        "path": "plugins/apple-app-builder/codex-skills/swift-concurrency",
+        "source_group": "apple-app-builder"
+      },
+      {
+        "name": "swift-localization",
+        "description": "Implement localization using modern String Catalogs and LocalizedStringResource. Use when adding user-facing text, handling plurals, formatting numbers/dates for locale, or preparing an app for international release.",
+        "path": "plugins/apple-app-builder/codex-skills/swift-localization",
+        "source_group": "apple-app-builder"
+      },
+      {
+        "name": "xcode-mcp",
+        "description": "Use when the user needs Xcode project inspection, Apple API docs, compiler diagnostics, build logs, preview rendering, snippet execution, or targeted test runs through the official Xcode MCP bridge exposed by `xcrun mcpbridge`.",
+        "path": "plugins/apple-app-builder/codex-skills/xcode-mcp",
+        "source_group": "apple-app-builder"
+      },
+      {
+        "name": "code-analyzer",
+        "description": "Review Apple app code read-only for architecture, code quality, security, test coverage, and performance.",
+        "path": "plugins/apple-app-quality/codex-skills/code-analyzer",
+        "source_group": "apple-app-quality"
+      },
+      {
+        "name": "audit-context-building",
+        "description": "Use after `code-analyzer` when you need an optional deep-dive to build line-by-line context for a security review, threat model, or architectural investigation.",
+        "path": "plugins/apple-app-quality/codex-skills/audit-context-building",
+        "source_group": "apple-app-quality"
+      },
+      {
+        "name": "swiftui-view-refactor",
+        "description": "Refactor and review SwiftUI view files for consistent structure, dependency injection, and Observation usage. Use when asked to clean up a SwiftUI view\u2019s layout/ordering, handle view models safely (non-optional when possible), or standardize how dependencies and @Observable state are initialized and passed.",
+        "path": "plugins/apple-app-quality/codex-skills/swiftui-view-refactor",
+        "source_group": "apple-app-quality"
+      },
+      {
+        "name": "ios-testing",
+        "description": "Choose, add, and run focused Apple-platform tests through the official Xcode MCP bridge, using Swift Testing or XCTest as appropriate.",
+        "path": "plugins/apple-app-quality/codex-skills/ios-testing",
+        "source_group": "apple-app-quality"
+      }
+    ],
+    "skillBundles": [
+      {
+        "id": "apple-app-architect",
+        "skills": [
+          {
+            "name": "app-development-workflow",
+            "path": "plugins/apple-app-architect/codex-skills/app-development-workflow"
+          },
+          {
+            "name": "macos-development",
+            "path": "plugins/apple-app-architect/codex-skills/macos-development"
+          },
+          {
+            "name": "swift-actor-persistence",
+            "path": "plugins/apple-app-architect/skills/swift-actor-persistence"
+          },
+          {
+            "name": "swift-app-lifecycle",
+            "path": "plugins/apple-app-architect/skills/swift-app-lifecycle"
+          },
+          {
+            "name": "swift-project-scaffold",
+            "path": "plugins/apple-app-architect/skills/swift-project-scaffold"
+          }
+        ]
+      },
+      {
+        "id": "apple-app-builder",
+        "skills": [
+          {
+            "name": "autonomous-ui-workflow",
+            "path": "plugins/apple-app-builder/codex-skills/autonomous-ui-workflow"
+          },
+          {
+            "name": "swift-concurrency",
+            "path": "plugins/apple-app-builder/codex-skills/swift-concurrency"
+          },
+          {
+            "name": "swift-localization",
+            "path": "plugins/apple-app-builder/codex-skills/swift-localization"
+          },
+          {
+            "name": "swift-networking",
+            "path": "plugins/apple-app-builder/codex-skills/swift-networking"
+          },
+          {
+            "name": "xcode-mcp",
+            "path": "plugins/apple-app-builder/codex-skills/xcode-mcp"
+          }
+        ]
+      },
+      {
+        "id": "apple-app-quality",
+        "skills": [
+          {
+            "name": "audit-context-building",
+            "path": "plugins/apple-app-quality/codex-skills/audit-context-building"
+          },
+          {
+            "name": "code-analyzer",
+            "path": "plugins/apple-app-quality/codex-skills/code-analyzer"
+          },
+          {
+            "name": "ios-testing",
+            "path": "plugins/apple-app-quality/codex-skills/ios-testing"
+          },
+          {
+            "name": "swiftui-view-refactor",
+            "path": "plugins/apple-app-quality/codex-skills/swiftui-view-refactor"
+          }
+        ]
+      },
+      {
+        "id": "apple-design-system",
+        "skills": [
+          {
+            "name": "apple-liquid-glass-design",
+            "path": "plugins/apple-design-system/skills/apple-liquid-glass-design"
+          },
+          {
+            "name": "macos-app-design",
+            "path": "plugins/apple-design-system/skills/macos-app-design"
+          },
+          {
+            "name": "swiftui-26-api",
+            "path": "plugins/apple-design-system/skills/swiftui-26-api"
+          },
+          {
+            "name": "swiftui-colors-api",
+            "path": "plugins/apple-design-system/skills/swiftui-colors-api"
+          },
+          {
+            "name": "swiftui-components",
+            "path": "plugins/apple-design-system/skills/swiftui-components"
+          },
+          {
+            "name": "swiftui-effects-api",
+            "path": "plugins/apple-design-system/skills/swiftui-effects-api"
+          },
+          {
+            "name": "swiftui-iconography-api",
+            "path": "plugins/apple-design-system/skills/swiftui-iconography-api"
+          },
+          {
+            "name": "swiftui-input-api",
+            "path": "plugins/apple-design-system/skills/swiftui-input-api"
+          },
+          {
+            "name": "swiftui-material-api",
+            "path": "plugins/apple-design-system/skills/swiftui-material-api"
+          },
+          {
+            "name": "swiftui-presentation-api",
+            "path": "plugins/apple-design-system/skills/swiftui-presentation-api"
+          },
+          {
+            "name": "swiftui-typography-api",
+            "path": "plugins/apple-design-system/skills/swiftui-typography-api"
+          },
+          {
+            "name": "swiftui-ui-patterns",
+            "path": "plugins/apple-design-system/skills/swiftui-ui-patterns"
+          }
+        ]
+      },
+      {
+        "id": "automation",
+        "skills": [
+          {
+            "name": "plugin-creator",
+            "path": ".agents/skills/plugin-creator"
+          }
+        ]
+      },
+      {
+        "id": "runtime",
+        "skills": [
+          {
+            "name": "codex-operating-layer",
+            "path": ".codex/skills/codex-operating-layer"
+          }
+        ]
+      }
+    ],
+    "customAgents": [
+      {
+        "name": "swift_architect",
+        "description": "Planning and architecture agent for app structure, lifecycle boundaries, and system design decisions.",
+        "path": ".codex/agents/swift_architect.toml",
+        "model": "gpt-5.4",
+        "model_reasoning_effort": "high",
+        "sandbox_mode": "read-only"
+      },
+      {
+        "name": "swift_builder",
+        "description": "Implementation and build agent for SwiftUI features, Xcode MCP workflows, and Codex/plugin runtime changes.",
+        "path": ".codex/agents/swift_builder.toml",
+        "model": "gpt-5.4",
+        "model_reasoning_effort": "high",
+        "sandbox_mode": "workspace-write"
+      },
+      {
+        "name": "swift_designer",
+        "description": "Apple design-system agent for HIG alignment, Liquid Glass usage, component selection, and visual/system consistency.",
+        "path": ".codex/agents/swift_designer.toml",
+        "model": "gpt-5.4",
+        "model_reasoning_effort": "medium",
+        "sandbox_mode": "read-only"
+      },
+      {
+        "name": "swift_quality",
+        "description": "Review and quality agent for correctness, tests, refactors, and Codex-surface validation.",
+        "path": ".codex/agents/swift_quality.toml",
+        "model": "gpt-5.4",
+        "model_reasoning_effort": "high",
+        "sandbox_mode": "read-only"
+      }
+    ],
+    "hooks": [
+      {
+        "event": "SessionStart",
+        "matcher": "startup|resume",
+        "type": "command",
+        "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/session_context.py\"",
+        "statusMessage": "Loading Codex operating layer"
+      },
+      {
+        "event": "Stop",
+        "matcher": null,
+        "type": "command",
+        "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_validate_codex_surface.py\"",
+        "statusMessage": "Validating Codex surface"
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "id": "plan-architecture",
+      "label": "Plan and architect Apple app work",
+      "description": "Use the architecture lane for lifecycle planning, system boundaries, app scaffolding, and repo-level design choices.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "app-development-workflow",
+          "path": "plugins/apple-app-architect/codex-skills/app-development-workflow",
+          "source_group": "apple-app-architect"
+        },
+        {
+          "name": "macos-development",
+          "path": "plugins/apple-app-architect/codex-skills/macos-development",
+          "source_group": "apple-app-architect"
+        },
+        {
+          "name": "swift-app-lifecycle",
+          "path": "plugins/apple-app-architect/skills/swift-app-lifecycle",
+          "source_group": "apple-app-architect"
+        },
+        {
+          "name": "swift-project-scaffold",
+          "path": "plugins/apple-app-architect/skills/swift-project-scaffold",
+          "source_group": "apple-app-architect"
+        }
+      ],
+      "agents": [
+        "swift_architect"
+      ]
+    },
+    {
+      "id": "design-system",
+      "label": "Design Apple-platform interfaces",
+      "description": "Use the design-system lane for HIG alignment, Liquid Glass decisions, component selection, and UI reference work.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "macos-app-design",
+          "path": "plugins/apple-design-system/skills/macos-app-design",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "apple-liquid-glass-design",
+          "path": "plugins/apple-design-system/skills/apple-liquid-glass-design",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-components",
+          "path": "plugins/apple-design-system/skills/swiftui-components",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-ui-patterns",
+          "path": "plugins/apple-design-system/skills/swiftui-ui-patterns",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-colors-api",
+          "path": "plugins/apple-design-system/skills/swiftui-colors-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-effects-api",
+          "path": "plugins/apple-design-system/skills/swiftui-effects-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-iconography-api",
+          "path": "plugins/apple-design-system/skills/swiftui-iconography-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-input-api",
+          "path": "plugins/apple-design-system/skills/swiftui-input-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-material-api",
+          "path": "plugins/apple-design-system/skills/swiftui-material-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-presentation-api",
+          "path": "plugins/apple-design-system/skills/swiftui-presentation-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-typography-api",
+          "path": "plugins/apple-design-system/skills/swiftui-typography-api",
+          "source_group": "apple-design-system"
+        },
+        {
+          "name": "swiftui-26-api",
+          "path": "plugins/apple-design-system/skills/swiftui-26-api",
+          "source_group": "apple-design-system"
+        }
+      ],
+      "agents": [
+        "swift_designer"
+      ]
+    },
+    {
+      "id": "implementation-build",
+      "label": "Implement and verify Apple app changes",
+      "description": "Use the implementation lane for SwiftUI coding, concurrency, networking, localization, persistence, and Xcode-backed build verification.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "autonomous-ui-workflow",
+          "path": "plugins/apple-app-builder/codex-skills/autonomous-ui-workflow",
+          "source_group": "apple-app-builder"
+        },
+        {
+          "name": "swift-networking",
+          "path": "plugins/apple-app-builder/codex-skills/swift-networking",
+          "source_group": "apple-app-builder"
+        },
+        {
+          "name": "swift-concurrency",
+          "path": "plugins/apple-app-builder/codex-skills/swift-concurrency",
+          "source_group": "apple-app-builder"
+        },
+        {
+          "name": "swift-localization",
+          "path": "plugins/apple-app-builder/codex-skills/swift-localization",
+          "source_group": "apple-app-builder"
+        },
+        {
+          "name": "swift-actor-persistence",
+          "path": "plugins/apple-app-architect/skills/swift-actor-persistence",
+          "source_group": "apple-app-architect"
+        },
+        {
+          "name": "xcode-mcp",
+          "path": "plugins/apple-app-builder/codex-skills/xcode-mcp",
+          "source_group": "apple-app-builder"
+        }
+      ],
+      "agents": [
+        "swift_builder"
+      ]
+    },
+    {
+      "id": "review-test",
+      "label": "Review, refactor, and test Apple app changes",
+      "description": "Use the quality lane for read-heavy review, deep audit context, refactor guidance, and focused Xcode test workflows.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "code-analyzer",
+          "path": "plugins/apple-app-quality/codex-skills/code-analyzer",
+          "source_group": "apple-app-quality"
+        },
+        {
+          "name": "audit-context-building",
+          "path": "plugins/apple-app-quality/codex-skills/audit-context-building",
+          "source_group": "apple-app-quality"
+        },
+        {
+          "name": "swiftui-view-refactor",
+          "path": "plugins/apple-app-quality/codex-skills/swiftui-view-refactor",
+          "source_group": "apple-app-quality"
+        },
+        {
+          "name": "ios-testing",
+          "path": "plugins/apple-app-quality/codex-skills/ios-testing",
+          "source_group": "apple-app-quality"
+        }
+      ],
+      "agents": [
+        "swift_quality"
+      ]
+    },
+    {
+      "id": "plugin-runtime",
+      "label": "Evolve the Codex runtime and plugin surface",
+      "description": "Use the runtime lane for root plugin metadata, skill packaging, hooks, agents, marketplace shape, and parity-contract work.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "plugin-creator",
+          "path": ".agents/skills/plugin-creator",
+          "source_group": "automation"
+        },
+        {
+          "name": "xcode-mcp",
+          "path": "plugins/apple-app-builder/codex-skills/xcode-mcp",
+          "source_group": "apple-app-builder"
+        },
+        {
+          "name": "code-analyzer",
+          "path": "plugins/apple-app-quality/codex-skills/code-analyzer",
+          "source_group": "apple-app-quality"
+        }
+      ],
+      "agents": [
+        "swift_builder",
+        "swift_quality"
+      ]
+    }
+  ]
+}

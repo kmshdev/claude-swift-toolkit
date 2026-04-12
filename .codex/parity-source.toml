@@ -1,0 +1,87 @@
+version = 1
+primary_skill = "codex-operating-layer"
+validation_targets = [
+  ".codex",
+  ".codex-plugin/plugin.json",
+  ".mcp.json",
+  ".agents/plugins/marketplace.json",
+  ".agents/skills/plugin-creator",
+  "README.md",
+  "AGENTS.md",
+  "scripts/validate-codex-support.py",
+  "scripts/generate_codex_parity_contract.py"
+]
+
+[[outcomes]]
+id = "plan-architecture"
+label = "Plan and architect Apple app work"
+description = "Use the architecture lane for lifecycle planning, system boundaries, app scaffolding, and repo-level design choices."
+skills = [
+  "codex-operating-layer",
+  "app-development-workflow",
+  "macos-development",
+  "swift-app-lifecycle",
+  "swift-project-scaffold"
+]
+agents = ["swift_architect"]
+
+[[outcomes]]
+id = "design-system"
+label = "Design Apple-platform interfaces"
+description = "Use the design-system lane for HIG alignment, Liquid Glass decisions, component selection, and UI reference work."
+skills = [
+  "codex-operating-layer",
+  "macos-app-design",
+  "apple-liquid-glass-design",
+  "swiftui-components",
+  "swiftui-ui-patterns",
+  "swiftui-colors-api",
+  "swiftui-effects-api",
+  "swiftui-iconography-api",
+  "swiftui-input-api",
+  "swiftui-material-api",
+  "swiftui-presentation-api",
+  "swiftui-typography-api",
+  "swiftui-26-api"
+]
+agents = ["swift_designer"]
+
+[[outcomes]]
+id = "implementation-build"
+label = "Implement and verify Apple app changes"
+description = "Use the implementation lane for SwiftUI coding, concurrency, networking, localization, persistence, and Xcode-backed build verification."
+skills = [
+  "codex-operating-layer",
+  "autonomous-ui-workflow",
+  "swift-networking",
+  "swift-concurrency",
+  "swift-localization",
+  "swift-actor-persistence",
+  "xcode-mcp"
+]
+agents = ["swift_builder"]
+
+[[outcomes]]
+id = "review-test"
+label = "Review, refactor, and test Apple app changes"
+description = "Use the quality lane for read-heavy review, deep audit context, refactor guidance, and focused Xcode test workflows."
+skills = [
+  "codex-operating-layer",
+  "code-analyzer",
+  "audit-context-building",
+  "swiftui-view-refactor",
+  "ios-testing"
+]
+agents = ["swift_quality"]
+
+[[outcomes]]
+id = "plugin-runtime"
+label = "Evolve the Codex runtime and plugin surface"
+description = "Use the runtime lane for root plugin metadata, skill packaging, hooks, agents, marketplace shape, and parity-contract work."
+skills = [
+  "codex-operating-layer",
+  "plugin-creator",
+  "xcode-mcp",
+  "code-analyzer"
+]
+agents = ["swift_builder", "swift_quality"]
