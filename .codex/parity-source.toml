@@ -12,6 +12,84 @@ validation_targets = [
   "scripts/generate_codex_parity_contract.py"
 ]
 
+[runtime_doctor]
+skill = "codex-runtime-doctor"
+role = "diagnosis_only"
+checks = [
+  "canonical_surface",
+  "repo_hooks",
+  "external_hook_overlay",
+  "xcode_bridge"
+]
+limitations = [
+  "does_not_mutate_config",
+  "does_not_start_background_mcp",
+  "does_not_open_xcode",
+  "does_not_build_or_test"
+]
+
+[[hook_support]]
+event = "SessionStart"
+status = "experimental"
+configured = true
+matcher_behavior = "startup_resume_only"
+handler = ".codex/hooks/session_context.py"
+support_tags = ["experimental"]
+limitations = [
+  "adds canonical repo context only",
+  "does not enforce tool policy"
+]
+
+[[hook_support]]
+event = "PreToolUse"
+status = "experimental"
+configured = true
+matcher_behavior = "bash_only"
+handler = ".codex/hooks/pre_tool_use_policy.py"
+policy_files = [".codex/hooks/policies/bash-safety.md"]
+support_tags = ["experimental", "bash_only"]
+limitations = [
+  "matcher applies to Bash only",
+  "does not intercept MCP, Write, or other non-Bash tools"
+]
+
+[[hook_support]]
+event = "PostToolUse"
+status = "experimental"
+configured = true
+matcher_behavior = "bash_only"
+handler = ".codex/hooks/post_tool_use_policy.py"
+policy_files = [".codex/hooks/policies/bash-post-review.md"]
+support_tags = ["experimental", "bash_only"]
+limitations = [
+  "matcher applies to Bash only",
+  "cannot undo side effects from a Bash command that already ran"
+]
+
+[[hook_support]]
+event = "UserPromptSubmit"
+status = "available_unused"
+configured = false
+matcher_behavior = "matcher_ignored"
+support_tags = ["matcher_ignored"]
+limitations = [
+  "event is documented in the contract but not configured in this repo",
+  "matcher is currently ignored for this event"
+]
+
+[[hook_support]]
+event = "Stop"
+status = "experimental"
+configured = true
+matcher_behavior = "matcher_ignored"
+handler = ".codex/hooks/stop_validate_codex_surface.py"
+policy_files = [".codex/hooks/policies/stop-completion.md"]
+support_tags = ["experimental", "matcher_ignored", "authoritative_stop_gate"]
+limitations = [
+  "decision:block continues the turn with remediation instead of rejecting it",
+  "acts as the authoritative completion gate for canonical Codex files"
+]
+
 [[outcomes]]
 id = "plan-architecture"
 label = "Plan and architect Apple app work"
@@ -80,8 +158,19 @@ label = "Evolve the Codex runtime and plugin surface"
 description = "Use the runtime lane for root plugin metadata, skill packaging, hooks, agents, marketplace shape, and parity-contract work."
 skills = [
   "codex-operating-layer",
+  "codex-runtime-doctor",
   "plugin-creator",
   "xcode-mcp",
   "code-analyzer"
 ]
 agents = ["swift_builder", "swift_quality"]
+
+[[outcomes]]
+id = "runtime-readiness"
+label = "Diagnose Codex runtime and Xcode bridge readiness"
+description = "Use the readiness lane before hook-backed or Xcode-backed workflows when the repo-local runtime, overlay state, or root bridge wiring may be degraded."
+skills = [
+  "codex-operating-layer",
+  "codex-runtime-doctor"
+]
+agents = ["swift_quality"]

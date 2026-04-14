@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Runtime Doctor"
+  short_description: "Diagnose repo hook readiness, canonical Codex truth, and root Xcode bridge wiring"
+  default_prompt: "Use $codex-runtime-doctor to classify the repo-local Codex runtime, explain any hook or overlay constraints, and report root Xcode bridge readiness without changing the environment."

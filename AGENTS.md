@@ -43,7 +43,11 @@ Use these roles when delegation helps:
 ## Runtime Notes
 
 - `.codex/config.toml` is the runtime control plane.
-- `.codex/hooks.json` is experimental and intentionally narrow.
+- `.codex/hooks.json` wires an experimental, Bash-only hook policy pack.
+- `PreToolUse` and `PostToolUse` apply only to `Bash`, and `Stop` remains the
+  authoritative completion gate.
+- Use `codex-runtime-doctor` as the diagnosis-only readiness entrypoint before
+  deeper hook or Xcode bridge troubleshooting.
 - `.mcp.json` is the single Xcode MCP dependency story.
 - `.codex/contracts/parity-contract.json` is generated. Do not hand-edit it.
 - `.agents/skills/plugin-creator/` is part of the canonical `plugin-runtime`

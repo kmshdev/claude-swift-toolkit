@@ -10,6 +10,10 @@ path = "./skills/codex-operating-layer"
 enabled = true
 
 [[skills.config]]
+path = "./skills/codex-runtime-doctor"
+enabled = true
+
+[[skills.config]]
 path = "../.agents/skills/plugin-creator"
 enabled = true
 

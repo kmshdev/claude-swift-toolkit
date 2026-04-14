@@ -12,6 +12,10 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.hook_policy.loader import extract_frontmatter as extract_markdown_frontmatter  # noqa: E402
 MANIFEST_PATH = ROOT / ".codex-plugin" / "plugin.json"
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
 MCP_PATH = ROOT / ".mcp.json"
@@ -24,9 +28,34 @@ CONTRACT_PATH = ROOT / ".codex" / "contracts" / "parity-contract.json"
 ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
 TOKEN_CHARS = r"A-Za-z0-9_"
 PRIMARY_SKILL_NAME = "codex-operating-layer"
+README_PATH = ROOT / "README.md"
+OPERATING_LAYER_SKILL_PATH = ROOT / ".codex" / "skills" / PRIMARY_SKILL_NAME / "SKILL.md"
 LEGACY_XCODE_BRIDGE = "xcode" "buildmcp"
 LEGACY_XCODE_BRIDGE_TITLE = "Xcode" "BuildMCP"
 LEGACY_XCODE_TOOL_PREFIX = "mcp__xcode" "buildmcp__"
+SUPPORTED_HOOK_EVENTS = {"SessionStart", "PreToolUse", "PostToolUse", "Stop"}
+NEGATION_PATTERN = re.compile(r"\b(?:do(?:es)? not|must not|cannot|can not|never|without|not)\b", re.IGNORECASE)
+README_REQUIRED_PHRASES = (
+    "Hooks are repo-scoped and experimental.",
+    "`PreToolUse` and `PostToolUse` apply only to `Bash`.",
+    "`Stop` remains the authoritative completion gate.",
+    "`codex-runtime-doctor` is the diagnosis-only readiness entrypoint.",
+)
+AGENTS_REQUIRED_PHRASES = (
+    "experimental, Bash-only hook policy pack",
+    "Use `codex-runtime-doctor` as the diagnosis-only readiness entrypoint",
+)
+OPERATING_LAYER_REQUIRED_PHRASES = (
+    "`codex-runtime-doctor`",
+    "experimental, Bash-only for `PreToolUse` / `PostToolUse`",
+    "Route runtime readiness questions through `codex-runtime-doctor`",
+)
+MANIFEST_REQUIRED_PHRASES = (
+    "experimental Bash-only hook policy pack",
+    "authoritative completion gate",
+    "codex-runtime-doctor",
+    "diagnosis-only readiness entrypoint",
+)
 
 
 def compile_token_pattern(
@@ -268,13 +297,9 @@ def load_simple_yaml(path: Path) -> object:
 
 def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
     """Parse skill frontmatter and body."""
-    text = path.read_text()
-    if not text.startswith("---\n"):
+    payload, body = extract_markdown_frontmatter(path.read_text(), path=path)
+    if not payload:
         raise ValueError(f"{path}: missing frontmatter block")
-    end = text.find("\n---\n", 4)
-    if end == -1:
-        raise ValueError(f"{path}: unterminated frontmatter block")
-    payload = load_simple_yaml_text(text[4:end], path=path, start_line=2)
     if not isinstance(payload, dict):
         raise ValueError(f"{path}: frontmatter must be a top-level mapping")
 
@@ -283,7 +308,7 @@ def parse_frontmatter(path: Path) -> tuple[dict[str, str], str]:
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{path}: frontmatter '{key}' must be a non-empty string")
         frontmatter[key] = value
-    return frontmatter, text[end + 5 :]
+    return frontmatter, body
 
 
 
@@ -620,17 +645,30 @@ def validate_hooks() -> list[str]:
         return [f"{HOOKS_PATH}: missing hooks object"]
 
     for event_name, groups in hooks.items():
+        if event_name not in SUPPORTED_HOOK_EVENTS:
+            errors.append(f"{HOOKS_PATH}: unsupported hook event '{event_name}'")
         if not isinstance(groups, list) or not groups:
             errors.append(f"{HOOKS_PATH}: hooks.{event_name} must be a non-empty list")
             continue
+        if event_name in {"SessionStart", "PreToolUse", "PostToolUse", "Stop"} and len(groups) != 1:
+            errors.append(f"{HOOKS_PATH}: hooks.{event_name} must use exactly one group")
         for group in groups:
             if not isinstance(group, dict):
                 errors.append(f"{HOOKS_PATH}: matcher groups must be objects")
                 continue
+            matcher = group.get("matcher")
             group_hooks = group.get("hooks")
             if not isinstance(group_hooks, list) or not group_hooks:
                 errors.append(f"{HOOKS_PATH}: hooks.{event_name} group missing hooks list")
                 continue
+            if event_name == "SessionStart" and matcher != "startup|resume":
+                errors.append(
+                    f"{HOOKS_PATH}: hooks.SessionStart matcher must be 'startup|resume'"
+                )
+            if event_name in {"PreToolUse", "PostToolUse"} and matcher != "Bash":
+                errors.append(f"{HOOKS_PATH}: hooks.{event_name} matcher must be 'Bash'")
+            if event_name == "Stop" and matcher is not None:
+                errors.append(f"{HOOKS_PATH}: hooks.Stop must not declare matcher")
             for hook in group_hooks:
                 if not isinstance(hook, dict):
                     errors.append(f"{HOOKS_PATH}: hook entries must be objects")
@@ -710,6 +748,141 @@ def validate_parity_source(skill_dirs: dict[str, Path], agent_names: set[str]) -
             if not (ROOT / target).exists():
                 errors.append(f"{PARITY_SOURCE_PATH}: validation target missing: {ROOT / target}")
 
+    runtime_doctor = payload.get("runtime_doctor")
+    if not isinstance(runtime_doctor, dict):
+        errors.append(f"{PARITY_SOURCE_PATH}: runtime_doctor must be a table")
+    else:
+        skill_name = runtime_doctor.get("skill")
+        role = runtime_doctor.get("role")
+        checks = runtime_doctor.get("checks")
+        limitations = runtime_doctor.get("limitations")
+        if not isinstance(skill_name, str) or skill_name not in skill_dirs:
+            errors.append(f"{PARITY_SOURCE_PATH}: runtime_doctor.skill must be configured")
+        elif skill_name != "codex-runtime-doctor":
+            errors.append(
+                f"{PARITY_SOURCE_PATH}: runtime_doctor.skill must be codex-runtime-doctor"
+            )
+        if role != "diagnosis_only":
+            errors.append(f"{PARITY_SOURCE_PATH}: runtime_doctor.role must be 'diagnosis_only'")
+        if not isinstance(checks, list) or any(not isinstance(item, str) or not item for item in checks):
+            errors.append(f"{PARITY_SOURCE_PATH}: runtime_doctor.checks must be a non-empty string array")
+        if not isinstance(limitations, list) or any(
+            not isinstance(item, str) or not item for item in limitations
+        ):
+            errors.append(
+                f"{PARITY_SOURCE_PATH}: runtime_doctor.limitations must be a non-empty string array"
+            )
+
+    hook_support = payload.get("hook_support")
+    if not isinstance(hook_support, list) or not hook_support:
+        errors.append(f"{PARITY_SOURCE_PATH}: hook_support must be a non-empty array")
+    else:
+        configured_events: set[str] = set()
+        if HOOKS_PATH.is_file():
+            try:
+                hooks_payload = load_json(HOOKS_PATH)
+            except ValueError as exc:
+                errors.append(str(exc))
+                hooks_payload = {}
+            hooks = hooks_payload.get("hooks") if isinstance(hooks_payload, dict) else {}
+            if isinstance(hooks, dict):
+                configured_events = set(hooks)
+
+        seen_events: set[str] = set()
+        for item in hook_support:
+            if not isinstance(item, dict):
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support entries must be tables")
+                continue
+            event = item.get("event")
+            configured = item.get("configured")
+            matcher_behavior = item.get("matcher_behavior")
+            status = item.get("status")
+            handler = item.get("handler")
+            policy_files = item.get("policy_files", [])
+            support_tags = item.get("support_tags")
+            limitations = item.get("limitations")
+            if not isinstance(event, str) or not event:
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support.event must be a string")
+                continue
+            if event in seen_events:
+                errors.append(f"{PARITY_SOURCE_PATH}: duplicate hook_support event '{event}'")
+                continue
+            seen_events.add(event)
+            if event not in SUPPORTED_HOOK_EVENTS | {"UserPromptSubmit"}:
+                errors.append(f"{PARITY_SOURCE_PATH}: unsupported hook_support event '{event}'")
+            if not isinstance(configured, bool):
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support.{event} configured must be boolean")
+            if not isinstance(matcher_behavior, str) or not matcher_behavior:
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} matcher_behavior must be a string"
+                )
+            if not isinstance(status, str) or not status:
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support.{event} status must be a string")
+            if handler is not None and (not isinstance(handler, str) or not handler):
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support.{event} handler must be a string")
+            elif isinstance(handler, str) and not (ROOT / handler).is_file():
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} handler missing: {ROOT / handler}"
+                )
+            if not isinstance(policy_files, list) or any(
+                not isinstance(file_path, str) or not file_path for file_path in policy_files
+            ):
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} policy_files must be a string array"
+                )
+            else:
+                for policy_path in policy_files:
+                    if not (ROOT / policy_path).is_file():
+                        errors.append(
+                            f"{PARITY_SOURCE_PATH}: hook_support.{event} policy missing: {ROOT / policy_path}"
+                        )
+            if not isinstance(support_tags, list) or any(
+                not isinstance(tag, str) or not tag for tag in support_tags
+            ):
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} support_tags must be a string array"
+                )
+            if not isinstance(limitations, list) or any(
+                not isinstance(text, str) or not text for text in limitations
+            ):
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} limitations must be a string array"
+                )
+            if configured is True and event not in configured_events:
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} must exist in hooks.json when configured"
+                )
+            if configured is False and event in configured_events and event != "UserPromptSubmit":
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} must mark configured=true"
+                )
+            if event in {"PreToolUse", "PostToolUse"} and matcher_behavior != "bash_only":
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} must be marked bash_only"
+                )
+            if event == "Stop" and matcher_behavior != "matcher_ignored":
+                errors.append(f"{PARITY_SOURCE_PATH}: hook_support.Stop must be matcher_ignored")
+            if event == "UserPromptSubmit":
+                if configured is not False:
+                    errors.append(
+                        f"{PARITY_SOURCE_PATH}: hook_support.UserPromptSubmit must remain unconfigured"
+                    )
+                if matcher_behavior != "matcher_ignored":
+                    errors.append(
+                        f"{PARITY_SOURCE_PATH}: hook_support.UserPromptSubmit must be matcher_ignored"
+                    )
+            if event == "SessionStart" and matcher_behavior != "startup_resume_only":
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.SessionStart must be startup_resume_only"
+                )
+            if event == "Stop" and (
+                not isinstance(support_tags, list)
+                or "authoritative_stop_gate" not in support_tags
+            ):
+                errors.append(
+                    f"{PARITY_SOURCE_PATH}: hook_support.Stop must include authoritative_stop_gate"
+                )
+
     outcomes = payload.get("outcomes")
     if not isinstance(outcomes, list) or not outcomes:
         return errors + [f"{PARITY_SOURCE_PATH}: outcomes must be a non-empty array"]
@@ -740,6 +913,182 @@ def validate_parity_source(skill_dirs: dict[str, Path], agent_names: set[str]) -
                     errors.append(
                         f"{PARITY_SOURCE_PATH}: unknown outcome agent '{agent_name}'"
                     )
+    return errors
+
+
+
+def iter_text_chunks(text: str) -> list[str]:
+    """Split prose into sentence- and line-like chunks for simple policy checks."""
+    chunks = re.split(r"(?:\n+|(?<=[.!?])\s+)", text)
+    return [chunk.strip() for chunk in chunks if chunk.strip()]
+
+
+
+def validate_document_truth(path: Path, required_phrases: tuple[str, ...]) -> list[str]:
+    """Require exact runtime-truth phrases in a user-facing document."""
+    if not path.is_file():
+        return [f"{path}: missing truth-tracked document"]
+
+    text = path.read_text()
+    errors: list[str] = []
+    for phrase in required_phrases:
+        if phrase not in text:
+            errors.append(f"{path}: missing required truth phrase: {phrase}")
+    return errors
+
+
+
+def has_local_negation(text: str, start: int) -> bool:
+    """Return whether a match is locally preceded by explicit negation."""
+    window = text[max(0, start - 16) : start]
+    return NEGATION_PATTERN.search(window) is not None
+
+
+
+def validate_unsupported_hook_claims(path: Path) -> list[str]:
+    """Reject doc claims that overstate current Codex hook interception."""
+    if not path.is_file():
+        return [f"{path}: missing truth-tracked document"]
+
+    errors: list[str] = []
+    for chunk in iter_text_chunks(path.read_text()):
+        if not re.search(r"\bPreToolUse\b|\bPostToolUse\b", chunk):
+            continue
+        general_match = re.search(
+            r"\b(?:intercept|apply|applies|match|matches|cover|covers|handle|handles|run|runs|trigger|triggers)\b"
+            r".{0,24}\b(?:any|all|every|general)\b.{0,24}\btool",
+            chunk,
+            re.IGNORECASE,
+        )
+        if general_match and not has_local_negation(chunk, general_match.start()):
+            errors.append(f"{path}: unsupported general hook claim: {chunk}")
+            continue
+        non_bash_match = re.search(
+            r"\b(?:intercept|apply|applies|match|matches|cover|covers|handle|handles|run|runs|trigger|triggers)\b"
+            r".{0,24}\b(?:Edit|Write|Read|MCP|WebSearch|WebFetch|non-Bash)\b",
+            chunk,
+            re.IGNORECASE,
+        )
+        if non_bash_match and not has_local_negation(chunk, non_bash_match.start()):
+            errors.append(f"{path}: unsupported non-Bash hook claim: {chunk}")
+    return errors
+
+
+
+def validate_runtime_doctor_scope(path: Path) -> list[str]:
+    """Reject docs that overclaim the runtime doctor as a repair workflow."""
+    if not path.is_file():
+        return [f"{path}: missing truth-tracked document"]
+
+    errors: list[str] = []
+    for chunk in iter_text_chunks(path.read_text()):
+        if not re.search(r"codex-runtime-doctor|runtime doctor", chunk, re.IGNORECASE):
+            continue
+        scope_matches = re.finditer(
+            r"\b(?:install|repair|fix|setup|set up|start background|open xcode|build|preview|test|boot|launch)\b",
+            chunk,
+            re.IGNORECASE,
+        )
+        for scope_match in scope_matches:
+            if not has_local_negation(chunk, scope_match.start()):
+                errors.append(f"{path}: runtime doctor must remain diagnosis-only: {chunk}")
+                break
+    return errors
+
+
+
+def validate_contract_truth() -> list[str]:
+    """Validate that the generated contract and runtime-facing docs agree."""
+    errors: list[str] = []
+    try:
+        payload = load_json(CONTRACT_PATH)
+    except ValueError as exc:
+        return [str(exc)]
+
+    if not isinstance(payload, dict):
+        return [f"{CONTRACT_PATH}: expected JSON object"]
+
+    runtime = payload.get("runtime")
+    if not isinstance(runtime, dict):
+        return [f"{CONTRACT_PATH}: missing runtime object"]
+
+    hook_support = runtime.get("hookSupport")
+    if not isinstance(hook_support, list) or not hook_support:
+        errors.append(f"{CONTRACT_PATH}: runtime.hookSupport must be a non-empty array")
+        support_lookup: dict[str, dict[str, object]] = {}
+    else:
+        support_lookup = {
+            item.get("event"): item
+            for item in hook_support
+            if isinstance(item, dict) and isinstance(item.get("event"), str)
+        }
+
+    for event_name in ("SessionStart", "PreToolUse", "PostToolUse", "UserPromptSubmit", "Stop"):
+        if event_name not in support_lookup:
+            errors.append(f"{CONTRACT_PATH}: runtime.hookSupport missing {event_name}")
+
+    pre_tool_use = support_lookup.get("PreToolUse", {})
+    if pre_tool_use.get("matcherBehavior") != "bash_only":
+        errors.append(f"{CONTRACT_PATH}: PreToolUse must be marked bash_only")
+    if pre_tool_use.get("configured") is not True:
+        errors.append(f"{CONTRACT_PATH}: PreToolUse must be configured")
+
+    post_tool_use = support_lookup.get("PostToolUse", {})
+    if post_tool_use.get("matcherBehavior") != "bash_only":
+        errors.append(f"{CONTRACT_PATH}: PostToolUse must be marked bash_only")
+    if post_tool_use.get("configured") is not True:
+        errors.append(f"{CONTRACT_PATH}: PostToolUse must be configured")
+
+    user_prompt_submit = support_lookup.get("UserPromptSubmit", {})
+    if user_prompt_submit.get("configured") is not False:
+        errors.append(f"{CONTRACT_PATH}: UserPromptSubmit must remain documented but unconfigured")
+    if user_prompt_submit.get("matcherBehavior") != "matcher_ignored":
+        errors.append(f"{CONTRACT_PATH}: UserPromptSubmit must be marked matcher_ignored")
+
+    stop_hook = support_lookup.get("Stop", {})
+    stop_tags = stop_hook.get("supportTags", [])
+    if stop_hook.get("matcherBehavior") != "matcher_ignored":
+        errors.append(f"{CONTRACT_PATH}: Stop must be marked matcher_ignored")
+    if not isinstance(stop_tags, list) or "authoritative_stop_gate" not in stop_tags:
+        errors.append(f"{CONTRACT_PATH}: Stop must include authoritative_stop_gate")
+
+    readiness = runtime.get("readiness")
+    if not isinstance(readiness, dict):
+        errors.append(f"{CONTRACT_PATH}: runtime.readiness must be present")
+    else:
+        role = readiness.get("role")
+        if role != "diagnosis_only":
+            errors.append(f"{CONTRACT_PATH}: runtime.readiness.role must be diagnosis_only")
+        skill = readiness.get("skill")
+        if not isinstance(skill, dict) or skill.get("name") != "codex-runtime-doctor":
+            errors.append(
+                f"{CONTRACT_PATH}: runtime.readiness.skill.name must be codex-runtime-doctor"
+            )
+
+    errors.extend(validate_document_truth(README_PATH, README_REQUIRED_PHRASES))
+    errors.extend(
+        validate_document_truth(OPERATING_LAYER_SKILL_PATH, OPERATING_LAYER_REQUIRED_PHRASES)
+    )
+    errors.extend(validate_document_truth(ROOT / "AGENTS.md", AGENTS_REQUIRED_PHRASES))
+    errors.extend(validate_unsupported_hook_claims(README_PATH))
+    errors.extend(validate_unsupported_hook_claims(OPERATING_LAYER_SKILL_PATH))
+    errors.extend(validate_unsupported_hook_claims(ROOT / "AGENTS.md"))
+    errors.extend(validate_runtime_doctor_scope(README_PATH))
+    errors.extend(validate_runtime_doctor_scope(OPERATING_LAYER_SKILL_PATH))
+    errors.extend(validate_runtime_doctor_scope(ROOT / "AGENTS.md"))
+
+    try:
+        manifest = load_json(MANIFEST_PATH)
+    except ValueError as exc:
+        errors.append(str(exc))
+        manifest = None
+    if isinstance(manifest, dict):
+        interface = manifest.get("interface")
+        manifest_text = json.dumps(interface, sort_keys=True) if isinstance(interface, dict) else ""
+        for phrase in MANIFEST_REQUIRED_PHRASES:
+            if phrase not in manifest_text:
+                errors.append(f"{MANIFEST_PATH}: missing required runtime-truth phrase: {phrase}")
+
     return errors
 
 
@@ -784,6 +1133,7 @@ def main() -> int:
     errors.extend(agent_errors)
     errors.extend(validate_parity_source(skill_dirs, agent_names))
     errors.extend(validate_contract_generation())
+    errors.extend(validate_contract_truth())
 
     if errors:
         print("Codex support validation failed:", file=sys.stderr)

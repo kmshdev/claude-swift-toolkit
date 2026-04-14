@@ -30,7 +30,7 @@
     "interface": {
       "displayName": "Codex Swift Toolkit",
       "shortDescription": "Repo-scoped Codex operating layer for Apple app work",
-      "longDescription": "Codex-first operating layer for this repository: one primary orchestration entrypoint, repo-local custom agents, experimental hooks, and curated access to the Apple lifecycle skill library through .codex/config.toml.",
+      "longDescription": "Codex-first operating layer for this repository: one primary orchestration entrypoint, an experimental Bash-only hook policy pack, repo-local custom agents, the authoritative completion gate, and a diagnosis-only readiness entrypoint through codex-runtime-doctor.",
       "developerName": "kmshdev",
       "category": "Coding",
       "capabilities": [
@@ -41,8 +41,8 @@
       "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
       "defaultPrompt": [
         "Use $codex-operating-layer to plan, build, and review Apple app work in this repo.",
-        "Route this task through the right architecture, design, build, and quality agents.",
-        "Validate changes to the canonical Codex operating layer and regenerate the parity contract."
+        "Treat PreToolUse and PostToolUse as Bash-only guardrails, and Stop as the authoritative completion gate.",
+        "Use codex-runtime-doctor as the diagnosis-only readiness entrypoint before deeper runtime or Xcode bridge troubleshooting."
       ],
       "brandColor": "#2563EB"
     }
@@ -78,6 +78,12 @@
         "name": "codex-operating-layer",
         "description": "Use as the primary autonomous entrypoint for this repo's Codex-first runtime. It maps the task to the canonical parity contract, loads the narrowest Apple lifecycle skills, delegates to the right specialist agents, and validates Codex-surface changes before finishing.",
         "path": ".codex/skills/codex-operating-layer",
+        "source_group": "runtime"
+      },
+      {
+        "name": "codex-runtime-doctor",
+        "description": "Use when Codex hook behavior, canonical runtime truth, or Xcode MCP readiness might be degraded. It diagnoses the repo-scoped Codex surface, reports hook and overlay constraints, and classifies root Xcode bridge readiness without mutating the environment.",
+        "path": ".codex/skills/codex-runtime-doctor",
         "source_group": "runtime"
       },
       {
@@ -118,7 +124,7 @@
       },
       {
         "name": "macos-app-design",
-        "description": "Use when designing or building native macOS applications with SwiftUI or AppKit. Triggers on menu bar structure, keyboard shortcuts, multi-window behavior, Liquid Glass design system, macOS Tahoe/Sequoia, sidebar navigation, toolbar design, app icons, SF Symbols, or making an app feel like a \"good Mac citizen.",
+        "description": "Use when designing or building native macOS applications with SwiftUI or AppKit. Triggers on menu bar structure, keyboard shortcuts, multi-window behavior, Liquid Glass design system, macOS Tahoe/Sequoia, sidebar navigation, toolbar design, app icons, SF Symbols, or making an app feel like a \"good Mac citizen.\"",
         "path": "plugins/apple-design-system/skills/macos-app-design",
         "source_group": "apple-design-system"
       },
@@ -383,6 +389,10 @@
           {
             "name": "codex-operating-layer",
             "path": ".codex/skills/codex-operating-layer"
+          },
+          {
+            "name": "codex-runtime-doctor",
+            "path": ".codex/skills/codex-runtime-doctor"
           }
         ]
       }
@@ -430,13 +440,134 @@
         "statusMessage": "Loading Codex operating layer"
       },
       {
+        "event": "PreToolUse",
+        "matcher": "Bash",
+        "type": "command",
+        "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py\"",
+        "statusMessage": "Checking Bash safety"
+      },
+      {
+        "event": "PostToolUse",
+        "matcher": "Bash",
+        "type": "command",
+        "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_policy.py\"",
+        "statusMessage": "Reviewing Bash result"
+      },
+      {
         "event": "Stop",
         "matcher": null,
         "type": "command",
         "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/stop_validate_codex_surface.py\"",
         "statusMessage": "Validating Codex surface"
       }
-    ]
+    ],
+    "hookSupport": [
+      {
+        "event": "SessionStart",
+        "status": "experimental",
+        "configured": true,
+        "matcherBehavior": "startup_resume_only",
+        "handler": ".codex/hooks/session_context.py",
+        "policyFiles": [],
+        "supportTags": [
+          "experimental"
+        ],
+        "limitations": [
+          "adds canonical repo context only",
+          "does not enforce tool policy"
+        ]
+      },
+      {
+        "event": "PreToolUse",
+        "status": "experimental",
+        "configured": true,
+        "matcherBehavior": "bash_only",
+        "handler": ".codex/hooks/pre_tool_use_policy.py",
+        "policyFiles": [
+          ".codex/hooks/policies/bash-safety.md"
+        ],
+        "supportTags": [
+          "experimental",
+          "bash_only"
+        ],
+        "limitations": [
+          "matcher applies to Bash only",
+          "does not intercept MCP, Write, or other non-Bash tools"
+        ]
+      },
+      {
+        "event": "PostToolUse",
+        "status": "experimental",
+        "configured": true,
+        "matcherBehavior": "bash_only",
+        "handler": ".codex/hooks/post_tool_use_policy.py",
+        "policyFiles": [
+          ".codex/hooks/policies/bash-post-review.md"
+        ],
+        "supportTags": [
+          "experimental",
+          "bash_only"
+        ],
+        "limitations": [
+          "matcher applies to Bash only",
+          "cannot undo side effects from a Bash command that already ran"
+        ]
+      },
+      {
+        "event": "UserPromptSubmit",
+        "status": "available_unused",
+        "configured": false,
+        "matcherBehavior": "matcher_ignored",
+        "handler": null,
+        "policyFiles": [],
+        "supportTags": [
+          "matcher_ignored"
+        ],
+        "limitations": [
+          "event is documented in the contract but not configured in this repo",
+          "matcher is currently ignored for this event"
+        ]
+      },
+      {
+        "event": "Stop",
+        "status": "experimental",
+        "configured": true,
+        "matcherBehavior": "matcher_ignored",
+        "handler": ".codex/hooks/stop_validate_codex_surface.py",
+        "policyFiles": [
+          ".codex/hooks/policies/stop-completion.md"
+        ],
+        "supportTags": [
+          "experimental",
+          "matcher_ignored",
+          "authoritative_stop_gate"
+        ],
+        "limitations": [
+          "decision:block continues the turn with remediation instead of rejecting it",
+          "acts as the authoritative completion gate for canonical Codex files"
+        ]
+      }
+    ],
+    "readiness": {
+      "skill": {
+        "name": "codex-runtime-doctor",
+        "path": ".codex/skills/codex-runtime-doctor",
+        "source_group": "runtime"
+      },
+      "role": "diagnosis_only",
+      "checks": [
+        "canonical_surface",
+        "repo_hooks",
+        "external_hook_overlay",
+        "xcode_bridge"
+      ],
+      "limitations": [
+        "does_not_mutate_config",
+        "does_not_start_background_mcp",
+        "does_not_open_xcode",
+        "does_not_build_or_test"
+      ]
+    }
   },
   "outcomes": [
     {
@@ -640,6 +771,11 @@
           "source_group": "runtime"
         },
         {
+          "name": "codex-runtime-doctor",
+          "path": ".codex/skills/codex-runtime-doctor",
+          "source_group": "runtime"
+        },
+        {
           "name": "plugin-creator",
           "path": ".agents/skills/plugin-creator",
           "source_group": "automation"
@@ -657,6 +793,26 @@
       ],
       "agents": [
         "swift_builder",
+        "swift_quality"
+      ]
+    },
+    {
+      "id": "runtime-readiness",
+      "label": "Diagnose Codex runtime and Xcode bridge readiness",
+      "description": "Use the readiness lane before hook-backed or Xcode-backed workflows when the repo-local runtime, overlay state, or root bridge wiring may be degraded.",
+      "skills": [
+        {
+          "name": "codex-operating-layer",
+          "path": ".codex/skills/codex-operating-layer",
+          "source_group": "runtime"
+        },
+        {
+          "name": "codex-runtime-doctor",
+          "path": ".codex/skills/codex-runtime-doctor",
+          "source_group": "runtime"
+        }
+      ],
+      "agents": [
         "swift_quality"
       ]
     }

@@ -13,6 +13,11 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.hook_policy.loader import extract_frontmatter as extract_markdown_frontmatter  # noqa: E402
+
 CONFIG_PATH = ROOT / ".codex" / "config.toml"
 HOOKS_PATH = ROOT / ".codex" / "hooks.json"
 AGENTS_DIR = ROOT / ".codex" / "agents"
@@ -69,23 +74,16 @@ def load_toml(path: Path) -> dict[str, object]:
 
 def parse_frontmatter(skill_path: Path) -> tuple[dict[str, str], str]:
     """Read the limited SKILL frontmatter used by this repository."""
-    text = skill_path.read_text()
-    if not text.startswith("---\n"):
-        raise ValueError(f"{skill_path}: missing frontmatter block")
-    end = text.find("\n---\n", 4)
-    if end == -1:
-        raise ValueError(f"{skill_path}: unterminated frontmatter block")
+    payload, body = extract_markdown_frontmatter(skill_path.read_text(), path=skill_path)
+    if not isinstance(payload, dict):
+        raise ValueError(f"{skill_path}: frontmatter must be a top-level mapping")
 
-    payload: dict[str, str] = {}
-    for raw_line in text[4:end].splitlines():
-        line = raw_line.strip()
-        if not line:
-            continue
-        key, separator, value = line.partition(":")
-        if separator != ":":
-            raise ValueError(f"{skill_path}: invalid frontmatter line '{raw_line}'")
-        payload[key.strip()] = value.strip().strip('"')
-    return payload, text[end + 5 :]
+    frontmatter: dict[str, str] = {}
+    for key, value in payload.items():
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{skill_path}: frontmatter '{key}' must be a non-empty string")
+        frontmatter[str(key)] = value
+    return frontmatter, body
 
 
 
@@ -188,6 +186,89 @@ def inventory_hooks(hooks_path: Path) -> list[dict[str, object]]:
 
 
 
+def build_hook_support(
+    parity_source: dict[str, object], configured_events: set[str]
+) -> list[dict[str, object]]:
+    """Resolve support-level metadata for documented Codex hook events."""
+    hook_support = parity_source.get("hook_support", [])
+    if not isinstance(hook_support, list):
+        raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support must be an array")
+
+    resolved: list[dict[str, object]] = []
+    seen_events: set[str] = set()
+    for item in hook_support:
+        if not isinstance(item, dict):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: each hook_support entry must be a table")
+
+        event = item.get("event")
+        status = item.get("status")
+        configured = item.get("configured")
+        matcher_behavior = item.get("matcher_behavior")
+        support_tags = item.get("support_tags", [])
+        policy_files = item.get("policy_files", [])
+        limitations = item.get("limitations", [])
+        handler = item.get("handler")
+
+        if not isinstance(event, str) or not event.strip():
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.event must be a non-empty string")
+        if event in seen_events:
+            raise ValueError(f"{PARITY_SOURCE_PATH}: duplicate hook_support event '{event}'")
+        seen_events.add(event)
+        if not isinstance(status, str) or not status.strip():
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} missing status")
+        if not isinstance(configured, bool):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} configured must be boolean")
+        if not isinstance(matcher_behavior, str) or not matcher_behavior.strip():
+            raise ValueError(
+                f"{PARITY_SOURCE_PATH}: hook_support.{event} missing matcher_behavior"
+            )
+        if not isinstance(support_tags, list) or any(
+            not isinstance(tag, str) or not tag for tag in support_tags
+        ):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} support_tags invalid")
+        if not isinstance(policy_files, list) or any(
+            not isinstance(path, str) or not path for path in policy_files
+        ):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} policy_files invalid")
+        if not isinstance(limitations, list) or any(
+            not isinstance(text, str) or not text for text in limitations
+        ):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} limitations invalid")
+        if handler is not None and (not isinstance(handler, str) or not handler.strip()):
+            raise ValueError(f"{PARITY_SOURCE_PATH}: hook_support.{event} handler must be a string")
+        if configured and event not in configured_events:
+            raise ValueError(
+                f"{PARITY_SOURCE_PATH}: hook_support.{event} is configured but missing from hooks.json"
+            )
+        if not configured and event in configured_events and event != "UserPromptSubmit":
+            raise ValueError(
+                f"{PARITY_SOURCE_PATH}: hook_support.{event} must mark configured=true"
+            )
+        if handler is not None and not (ROOT / handler).is_file():
+            raise ValueError(
+                f"{PARITY_SOURCE_PATH}: hook_support.{event} handler missing: {ROOT / handler}"
+            )
+        for policy_path in policy_files:
+            if not (ROOT / policy_path).is_file():
+                raise ValueError(
+                    f"{PARITY_SOURCE_PATH}: hook_support.{event} policy missing: {ROOT / policy_path}"
+                )
+
+        resolved.append(
+            {
+                "event": event,
+                "status": status,
+                "configured": configured,
+                "matcherBehavior": matcher_behavior,
+                "handler": handler,
+                "policyFiles": policy_files,
+                "supportTags": support_tags,
+                "limitations": limitations,
+            }
+        )
+    return resolved
+
+
 def inventory_agents(agents_dir: Path) -> list[dict[str, object]]:
     """Load custom-agent metadata from `.codex/agents/*.toml`."""
     if not agents_dir.is_dir():
@@ -273,6 +354,46 @@ def build_outcomes(
 
 
 
+def build_runtime_doctor(
+    parity_source: dict[str, object], skill_lookup: dict[str, SkillRecord]
+) -> dict[str, object] | None:
+    """Resolve runtime doctor metadata from parity source."""
+    runtime_doctor = parity_source.get("runtime_doctor")
+    if runtime_doctor is None:
+        return None
+    if not isinstance(runtime_doctor, dict):
+        raise ValueError(f"{PARITY_SOURCE_PATH}: runtime_doctor must be a table")
+
+    skill_name = runtime_doctor.get("skill")
+    role = runtime_doctor.get("role")
+    checks = runtime_doctor.get("checks", [])
+    limitations = runtime_doctor.get("limitations", [])
+    if not isinstance(skill_name, str) or skill_name not in skill_lookup:
+        raise ValueError(f"{PARITY_SOURCE_PATH}: runtime_doctor.skill must name a configured skill")
+    if not isinstance(role, str) or not role.strip():
+        raise ValueError(f"{PARITY_SOURCE_PATH}: runtime_doctor.role must be a string")
+    if not isinstance(checks, list) or any(not isinstance(item, str) or not item for item in checks):
+        raise ValueError(f"{PARITY_SOURCE_PATH}: runtime_doctor.checks must be a string array")
+    if not isinstance(limitations, list) or any(
+        not isinstance(item, str) or not item for item in limitations
+    ):
+        raise ValueError(
+            f"{PARITY_SOURCE_PATH}: runtime_doctor.limitations must be a string array"
+        )
+
+    skill = skill_lookup[skill_name]
+    return {
+        "skill": {
+            "name": skill.name,
+            "path": skill.path,
+            "source_group": skill.source_group,
+        },
+        "role": role,
+        "checks": checks,
+        "limitations": limitations,
+    }
+
+
 def build_bundles(skill_records: list[SkillRecord]) -> list[dict[str, object]]:
     """Group skills by source group for easier inspection."""
     bundles: defaultdict[str, list[SkillRecord]] = defaultdict(list)
@@ -306,6 +427,11 @@ def build_contract() -> dict[str, object]:
     agent_records = inventory_agents(AGENTS_DIR)
     agent_lookup = {record["name"] for record in agent_records}
     hook_records = inventory_hooks(HOOKS_PATH)
+    configured_events = {
+        record["event"] for record in hook_records if isinstance(record.get("event"), str)
+    }
+    hook_support = build_hook_support(parity_source, configured_events)
+    runtime_doctor = build_runtime_doctor(parity_source, skill_lookup)
 
     primary_skill = parity_source.get("primary_skill")
     if not isinstance(primary_skill, str) or primary_skill not in skill_lookup:
@@ -357,6 +483,8 @@ def build_contract() -> dict[str, object]:
             "skillBundles": build_bundles(skill_records),
             "customAgents": agent_records,
             "hooks": hook_records,
+            "hookSupport": hook_support,
+            "readiness": runtime_doctor,
         },
         "outcomes": outcomes,
     }

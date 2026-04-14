@@ -93,10 +93,12 @@ Xcode must be installed and running before the bridge can attach.
 | `.agents/plugins/marketplace.json` | Local install wrapper pointing at repo root |
 | `.mcp.json` | Root Xcode MCP bridge configuration |
 | `.codex/config.toml` | Repo-local Codex runtime config and curated skill activation |
-| `.codex/hooks.json` | Repo-local experimental hooks |
-| `.codex/hooks/` | Hook scripts for session context and stop-time validation |
+| `.codex/hooks.json` | Repo-local experimental Bash-only hook policy pack plus the Stop gate |
+| `.codex/hooks/` | Hook scripts for session context, Bash policy, and stop-time validation |
+| `.codex/hooks/policies/` | Declarative policy files for Bash guardrails and completion guidance |
 | `.codex/agents/` | Specialist custom-agent definitions |
 | `.codex/skills/codex-operating-layer/` | Primary orchestration entrypoint |
+| `.codex/skills/codex-runtime-doctor/` | Diagnosis-only readiness entrypoint for runtime and Xcode bridge health |
 | `.codex/parity-source.toml` | Human-authored outcome and validation source |
 | `.codex/contracts/parity-contract.json` | Generated machine-readable Codex surface contract |
 | `.agents/skills/plugin-creator/` | Integrated runtime-tooling skill for backing-bundle scaffolding |
@@ -114,13 +116,14 @@ The operating layer uses these repo-local custom agents:
 
 ## Outcome Lanes
 
-The parity contract currently defines five high-value lanes:
+The parity contract currently defines six high-value lanes:
 
 - `plan-architecture` — app planning, architecture, lifecycle setup
 - `design-system` — Apple HIG, Liquid Glass, SwiftUI reference work
 - `implementation-build` — implementation, concurrency, networking, localization, Xcode-backed verification
 - `review-test` — read-heavy review, audit context, refactor, tests
 - `plugin-runtime` — Codex runtime, hooks, manifests, packaging, parity-contract work
+- `runtime-readiness` — diagnosis-only readiness checks for hooks, overlays, and the root Xcode bridge
 
 The exact skill-to-lane mapping lives in `.codex/contracts/parity-contract.json`.
 
@@ -130,6 +133,7 @@ The runtime currently activates the following backing skill families through
 `.codex/config.toml`:
 
 - Core orchestration: `codex-operating-layer`
+- Runtime readiness: `codex-runtime-doctor` for diagnosis-only runtime and Xcode bridge checks
 - Runtime tooling: `plugin-creator` for backing-bundle scaffolding and external
   marketplace files; the repo-root marketplace remains the single canonical
   `./` install surface
@@ -147,13 +151,21 @@ The runtime currently activates the following backing skill families through
 ## Hooks
 
 Hooks are repo-scoped and experimental.
+`PreToolUse` and `PostToolUse` apply only to `Bash`.
+`Stop` remains the authoritative completion gate.
+`codex-runtime-doctor` is the diagnosis-only readiness entrypoint.
 
-This repo uses them narrowly:
+This repo uses them with one repo-local handler per configured event:
 
 - `SessionStart` injects canonical Codex operating-layer context from the
   generated parity contract.
+- `PreToolUse` applies declarative Bash safety policy before a Bash command runs.
+- `PostToolUse` reviews Bash results and adds targeted follow-up guidance when
+  canonical runtime or bridge commands fail.
+- `UserPromptSubmit` is documented in the parity contract as available but
+  unused.
 - `Stop` regenerates and validates the Codex surface when canonical files have
-  changed.
+  changed, and remains the authoritative completion gate.
 
 Do not treat these hooks as a general Claude-style hook surface. They exist to
 keep the root Codex runtime truthful and self-checking.

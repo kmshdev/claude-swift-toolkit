@@ -53,7 +53,13 @@ The operating layer is defined by:
   - `audit-context-building`
   - `swiftui-view-refactor`
   - `ios-testing`
+- For runtime readiness and diagnosis, start with:
+  - `codex-runtime-doctor`
+  - Treat `codex-runtime-doctor` as diagnosis-only; it reports readiness and
+    remediation, but it does not install, repair, build, or test
 - For Codex/plugin/runtime work, include:
+  - `codex-runtime-doctor` before deeper runtime or Xcode troubleshooting when
+    hook behavior, contract truth, or root bridge wiring may be degraded
   - `plugin-creator` for backing-bundle scaffolding or external marketplace
     files only
 
@@ -93,6 +99,9 @@ The operating layer is defined by:
 - Do not route users into Claude-only command manifests or named Claude agents.
 - Do not invent parity claims beyond what the generated contract says.
 - Do not treat hooks as a general interception framework. In this repo they are
-  intentionally narrow and only enforce the canonical Codex surface.
+  experimental, Bash-only for `PreToolUse` / `PostToolUse`, and still anchored
+  by the authoritative `Stop` validation gate.
+- Route runtime readiness questions through `codex-runtime-doctor` before
+  escalating into broader Xcode or environment debugging.
 - Keep the orchestration outcome-focused. Load the narrowest skill set that can
   do the job.
