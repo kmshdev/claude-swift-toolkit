@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 INPUT=$(cat)
 TOOL=$(echo "$INPUT" | jq -r '.tool_name')
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')

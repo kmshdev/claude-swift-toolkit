@@ -8,11 +8,6 @@
   "license": "MIT",
   "repository": "https://github.com/kmshdev/claude-swift-toolkit",
   "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
-  "categories": [
-    "automation",
-    "hooks",
-    "workflow"
-  ],
   "keywords": [
     "hooks",
     "automation",

@@ -30,10 +30,8 @@ description: |
   </commentary>
   </example>
 model: sonnet
-color: blue
-tools: Read, Grep, Glob
+tools: Read Grep Glob
 memory: project
-mcpServers: plugin:context7:context7, xcodebuildmcp
 skills:
   - macos-development
   - swift-app-lifecycle

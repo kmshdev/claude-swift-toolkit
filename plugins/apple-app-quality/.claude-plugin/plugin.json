@@ -8,12 +8,6 @@
   "license": "MIT",
   "repository": "https://github.com/kmshdev/claude-swift-toolkit",
   "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
-  "categories": [
-    "swift",
-    "ios",
-    "macos",
-    "apple"
-  ],
   "keywords": [
     "swift",
     "code-review",

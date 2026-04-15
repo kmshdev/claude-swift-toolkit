@@ -30,9 +30,7 @@ description: |
   </commentary>
   </example>
 model: sonnet
-color: blue
-tools: Read, Grep, Glob
-mcpServers: xcodebuildmcp
+tools: Read Grep Glob
 memory: project
 skills:
   - code-analyzer

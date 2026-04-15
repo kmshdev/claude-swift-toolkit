@@ -1,6 +1,7 @@
 ---
 name: conversation-analyzer
-description: Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Examples:
+description: |
+  Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks. Examples:
 
   <example>
   Context: User is running /hookify command without arguments
@@ -20,8 +21,7 @@ description: Use this agent when analyzing conversation transcripts to find beha
   </commentary>
   </example>
 model: sonnet
-color: yellow
-tools: Read, Grep
+tools: Read Grep
 ---
 
 You are a conversation analysis specialist that identifies problematic behaviors in Claude Code sessions that could be prevented with hooks.
