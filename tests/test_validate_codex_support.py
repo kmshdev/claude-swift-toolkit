@@ -79,6 +79,67 @@ class ValidateCodexSupportTests(unittest.TestCase):
                                     'hooks': [
                                         {
                                             'type': 'command',
+                                            'command': '".codex/hooks/session_context.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'PreToolUse': [
+                                {
+                                    'matcher': 'Bash',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '".codex/hooks/pre_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'PostToolUse': [
+                                {
+                                    'matcher': 'Bash',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '".codex/hooks/post_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'Stop': [
+                                {
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '".codex/hooks/stop_validate_codex_surface.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    }
+                )
+            )
+
+            with mock.patch.object(module, 'HOOKS_PATH', hooks_path):
+                errors = module.validate_hooks()
+
+        self.assertIn('hooks.SessionStart matcher must be', errors[0])
+
+    def test_validate_hooks_rejects_pinned_system_python(self) -> None:
+        module = load_module('validate_codex_support_hook_python', VALIDATOR_PATH)
+        with TemporaryDirectory() as temp_dir:
+            hooks_path = Path(temp_dir) / 'hooks.json'
+            hooks_path.write_text(
+                json.dumps(
+                    {
+                        'hooks': {
+                            'SessionStart': [
+                                {
+                                    'matcher': 'startup|resume',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
                                             'command': '/usr/bin/python3 ".codex/hooks/session_context.py"',
                                         }
                                     ],
@@ -124,7 +185,68 @@ class ValidateCodexSupportTests(unittest.TestCase):
             with mock.patch.object(module, 'HOOKS_PATH', hooks_path):
                 errors = module.validate_hooks()
 
-        self.assertIn('hooks.SessionStart matcher must be', errors[0])
+        self.assertTrue(any('must not pin /usr/bin/python3' in error for error in errors))
+
+    def test_validate_hooks_rejects_git_repo_root_resolution(self) -> None:
+        module = load_module('validate_codex_support_hook_repo_root', VALIDATOR_PATH)
+        with TemporaryDirectory() as temp_dir:
+            hooks_path = Path(temp_dir) / 'hooks.json'
+            hooks_path.write_text(
+                json.dumps(
+                    {
+                        'hooks': {
+                            'SessionStart': [
+                                {
+                                    'matcher': 'startup|resume',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '\"$(git rev-parse --show-toplevel)/.codex/hooks/session_context.py\"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'PreToolUse': [
+                                {
+                                    'matcher': 'Bash',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '\"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py\"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'PostToolUse': [
+                                {
+                                    'matcher': 'Bash',
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '\"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_policy.py\"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            'Stop': [
+                                {
+                                    'hooks': [
+                                        {
+                                            'type': 'command',
+                                            'command': '\"$(git rev-parse --show-toplevel)/.codex/hooks/stop_validate_codex_surface.py\"',
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    }
+                )
+            )
+
+            with mock.patch.object(module, 'HOOKS_PATH', hooks_path):
+                errors = module.validate_hooks()
+
+        self.assertTrue(any('must not resolve the repo root' in error for error in errors))
 
     def test_validate_contract_truth_passes_for_current_repo_state(self) -> None:
         module = load_module('validate_codex_support_repo_truth', VALIDATOR_PATH)

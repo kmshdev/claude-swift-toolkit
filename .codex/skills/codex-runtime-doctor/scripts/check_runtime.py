@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import json
+import os
 import platform
+import re
 import subprocess
 import sys
 import tomllib
@@ -26,6 +28,8 @@ REQUIRED_POLICY_FILES = (
     POLICY_DIR / "stop-completion.md",
 )
 REQUIRED_HOOK_EVENTS = ("SessionStart", "PreToolUse", "PostToolUse", "Stop")
+EXPECTED_PYTHON_HOOK_SHEBANG = "#!/usr/bin/env python3"
+EXPECTED_SHELL_HOOK_SHEBANG = "#!/usr/bin/env bash"
 
 
 def run_command(command: list[str], *, timeout: int = 5) -> subprocess.CompletedProcess[str]:
@@ -57,6 +61,28 @@ def section(status: str, evidence: list[str], remediation: list[str]) -> dict[st
         "evidence": evidence,
         "remediation": remediation,
     }
+
+
+def iter_group_commands(group: object) -> list[str]:
+    """Return command strings from a single hook matcher group."""
+    if not isinstance(group, dict):
+        return []
+    hooks = group.get("hooks")
+    if not isinstance(hooks, list):
+        return []
+    commands: list[str] = []
+    for hook in hooks:
+        if not isinstance(hook, dict):
+            continue
+        command = hook.get("command")
+        if isinstance(command, str) and command:
+            commands.append(command)
+    return commands
+
+
+def extract_repo_script_paths(command: str) -> list[Path]:
+    """Extract repo-local hook scripts from a hook command string."""
+    return [ROOT / match for match in re.findall(r"\.codex/[A-Za-z0-9_./-]+\.(?:py|sh)", command)]
 
 
 def check_canonical_surface() -> dict[str, object]:
@@ -175,9 +201,61 @@ def check_repo_hooks() -> dict[str, object]:
         remediation.append("Restore the repo-local hook policy files under `.codex/hooks/policies/`.")
         return section("degraded", evidence, remediation)
 
+    commands = (
+        iter_group_commands(session_groups[0])
+        + iter_group_commands(pre_groups[0])
+        + iter_group_commands(post_groups[0])
+        + iter_group_commands(stop_groups[0])
+    )
+    if any(re.search(r"/usr/bin/python3\s+(?!-c\b)", command) for command in commands):
+        evidence.append(
+            "Repo-local hooks pin `/usr/bin/python3`, which can miss the stdlib needed by "
+            "these hook scripts on macOS."
+        )
+        remediation.append(
+            "Route repo-local hooks through the repo-local launcher or another Python 3.11+ "
+            "entrypoint instead of `/usr/bin/python3`."
+        )
+        return section("degraded", evidence, remediation)
+
+    if any("git rev-parse --show-toplevel" in command for command in commands):
+        evidence.append(
+            "Repo-local hooks resolve the repo root from process cwd with `git rev-parse`, "
+            "which can fail when the hook process starts outside the repository."
+        )
+        remediation.append(
+            "Resolve the repo root from the hook payload `cwd` instead of process cwd."
+        )
+        return section("degraded", evidence, remediation)
+
+    for command in commands:
+        for script_path in extract_repo_script_paths(command):
+            if not script_path.is_file():
+                evidence.append(f"Referenced repo-local hook script is missing: {script_path}")
+                remediation.append("Restore the missing repo-local hook script and rerun the doctor.")
+                return section("degraded", evidence, remediation)
+            if not os.access(script_path, os.X_OK):
+                evidence.append(f"Repo-local hook script is not executable: {script_path}")
+                remediation.append("Restore the executable bit on the repo-local hook script.")
+                return section("degraded", evidence, remediation)
+            contents = script_path.read_text()
+            first_line = contents.splitlines()[0] if contents else ""
+            expected_shebang = EXPECTED_PYTHON_HOOK_SHEBANG
+            if script_path.suffix == ".sh":
+                expected_shebang = EXPECTED_SHELL_HOOK_SHEBANG
+            if first_line != expected_shebang:
+                evidence.append(
+                    f"Repo-local hook script has drifted from the expected shebang: {script_path}"
+                )
+                remediation.append(
+                    f"Restore the `{expected_shebang}` shebang on the repo-local hook script."
+                )
+                return section("degraded", evidence, remediation)
+
     evidence.append("Repo-local hooks are enabled and scoped to supported Codex events.")
     evidence.append("`SessionStart` remains scoped to startup/resume only.")
     evidence.append("`PreToolUse` and `PostToolUse` remain Bash-only, and `Stop` stays matcher-free.")
+    evidence.append("Repo-local hooks avoid a pinned system Python and route through the repo-local launcher.")
     return section("ready", evidence, remediation)
 
 

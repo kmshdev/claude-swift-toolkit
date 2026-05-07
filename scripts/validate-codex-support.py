@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -623,8 +624,41 @@ def resolve_configured_skill_dirs() -> tuple[list[str], dict[str, Path]]:
 
 def extract_repo_script_paths(command: str) -> list[Path]:
     """Extract repo-local script paths from a hook command string."""
-    matches = re.findall(r"\.codex/[A-Za-z0-9_./-]+\.py", command)
+    matches = re.findall(r"\.codex/[A-Za-z0-9_./-]+\.(?:py|sh)", command)
     return [ROOT / match for match in matches]
+
+
+def validate_repo_hook_script_command(command: str, script_paths: list[Path]) -> list[str]:
+    """Validate how repo-local hook commands launch their scripts."""
+    errors: list[str] = []
+    if not script_paths:
+        return errors
+    if re.search(r"/usr/bin/python3\s+(?!-c\b)", command):
+        errors.append(
+            f"{HOOKS_PATH}: repo-local hook commands must not pin /usr/bin/python3; "
+            "route through the repo-local launcher or another Python 3.11+ entrypoint"
+        )
+    if "git rev-parse --show-toplevel" in command:
+        errors.append(
+            f"{HOOKS_PATH}: repo-local hook commands must not resolve the repo root from "
+            "process cwd with git rev-parse; use the hook payload cwd instead"
+        )
+    for script_path in script_paths:
+        if not script_path.is_file():
+            continue
+        if not os.access(script_path, os.X_OK):
+            errors.append(f"{HOOKS_PATH}: repo-local hook script must be executable: {script_path}")
+            continue
+        contents = script_path.read_text()
+        first_line = contents.splitlines()[0] if contents else ""
+        expected_shebang = "#!/usr/bin/env python3"
+        if script_path.suffix == ".sh":
+            expected_shebang = "#!/usr/bin/env bash"
+        if first_line != expected_shebang:
+            errors.append(
+                f"{HOOKS_PATH}: repo-local hook script must use '{expected_shebang}': {script_path}"
+            )
+    return errors
 
 
 
@@ -680,7 +714,9 @@ def validate_hooks() -> list[str]:
                 if not isinstance(command, str) or not command.strip():
                     errors.append(f"{HOOKS_PATH}: command hook missing command string")
                     continue
-                for script_path in extract_repo_script_paths(command):
+                script_paths = extract_repo_script_paths(command)
+                errors.extend(validate_repo_hook_script_command(command, script_paths))
+                for script_path in script_paths:
                     if not script_path.is_file():
                         errors.append(f"{HOOKS_PATH}: referenced script missing: {script_path}")
     return errors

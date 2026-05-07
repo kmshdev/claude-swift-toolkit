@@ -132,6 +132,75 @@ class CodexRuntimeDoctorTests(unittest.TestCase):
                                     "hooks": [
                                         {
                                             "type": "command",
+                                            "command": '".codex/hooks/session_context.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "PreToolUse": [
+                                {
+                                    "matcher": "Bash",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '".codex/hooks/pre_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "PostToolUse": [
+                                {
+                                    "matcher": "Bash",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '".codex/hooks/post_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "Stop": [
+                                {
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '".codex/hooks/stop_validate_codex_surface.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    }
+                )
+            )
+            with mock.patch.object(module, "HOOKS_PATH", hooks_path), mock.patch.object(
+                module, "run_command", side_effect=[
+                    completed(stdout="Codex support validation passed."),
+                    completed(stdout="/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"),
+                    completed(stdout="/Applications/Xcode.app/Contents/Developer/usr/bin/mcpbridge"),
+                ]
+            ), mock.patch.object(module.platform, "system", return_value="Darwin"), mock.patch.object(
+                module.Path, "home", return_value=Path("/tmp/no-overlay-home")
+            ):
+                report = module.build_report()
+
+        self.assertEqual(report["sections"]["repo_hooks"]["status"], "degraded")
+        self.assertIn("startup/resume", report["sections"]["repo_hooks"]["evidence"][0])
+
+    def test_pinned_system_python_marks_repo_hooks_degraded(self) -> None:
+        module = load_module("codex_runtime_doctor_pinned_python", DOCTOR_PATH)
+        with TemporaryDirectory() as temp_dir:
+            hooks_path = Path(temp_dir) / "hooks.json"
+            hooks_path.write_text(
+                json.dumps(
+                    {
+                        "hooks": {
+                            "SessionStart": [
+                                {
+                                    "matcher": "startup|resume",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
                                             "command": '/usr/bin/python3 ".codex/hooks/session_context.py"',
                                         }
                                     ],
@@ -185,7 +254,76 @@ class CodexRuntimeDoctorTests(unittest.TestCase):
                 report = module.build_report()
 
         self.assertEqual(report["sections"]["repo_hooks"]["status"], "degraded")
-        self.assertIn("startup/resume", report["sections"]["repo_hooks"]["evidence"][0])
+        self.assertIn("/usr/bin/python3", report["sections"]["repo_hooks"]["evidence"][0])
+
+    def test_git_repo_root_resolution_marks_repo_hooks_degraded(self) -> None:
+        module = load_module("codex_runtime_doctor_git_root", DOCTOR_PATH)
+        with TemporaryDirectory() as temp_dir:
+            hooks_path = Path(temp_dir) / "hooks.json"
+            hooks_path.write_text(
+                json.dumps(
+                    {
+                        "hooks": {
+                            "SessionStart": [
+                                {
+                                    "matcher": "startup|resume",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '"$(git rev-parse --show-toplevel)/.codex/hooks/session_context.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "PreToolUse": [
+                                {
+                                    "matcher": "Bash",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '"$(git rev-parse --show-toplevel)/.codex/hooks/pre_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "PostToolUse": [
+                                {
+                                    "matcher": "Bash",
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '"$(git rev-parse --show-toplevel)/.codex/hooks/post_tool_use_policy.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                            "Stop": [
+                                {
+                                    "hooks": [
+                                        {
+                                            "type": "command",
+                                            "command": '"$(git rev-parse --show-toplevel)/.codex/hooks/stop_validate_codex_surface.py"',
+                                        }
+                                    ],
+                                }
+                            ],
+                        }
+                    }
+                )
+            )
+            with mock.patch.object(module, "HOOKS_PATH", hooks_path), mock.patch.object(
+                module, "run_command", side_effect=[
+                    completed(stdout="Codex support validation passed."),
+                    completed(stdout="/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"),
+                    completed(stdout="/Applications/Xcode.app/Contents/Developer/usr/bin/mcpbridge"),
+                ]
+            ), mock.patch.object(module.platform, "system", return_value="Darwin"), mock.patch.object(
+                module.Path, "home", return_value=Path("/tmp/no-overlay-home")
+            ):
+                report = module.build_report()
+
+        self.assertEqual(report["sections"]["repo_hooks"]["status"], "degraded")
+        self.assertIn("git rev-parse", report["sections"]["repo_hooks"]["evidence"][0])
 
     def test_missing_xcrun_gets_targeted_remediation(self) -> None:
         module = load_module("codex_runtime_doctor_missing_xcrun", DOCTOR_PATH)
