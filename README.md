@@ -1,308 +1,192 @@
-# Claude Swift Toolkit v1.8.0
+# Codex Swift Toolkit
 
-**End-to-end Apple app development toolkit with a Claude-first full surface and a
-packaged Codex lifecycle plugin set** — systematic lifecycle workflow from
-scaffold to shipping, with 25 skills, 10 agents, and 21 commands covering
-Liquid Glass design, SwiftUI patterns, networking, concurrency, actor
-persistence, and localization. Claude keeps the full command, agent, and hook
-surface. Codex gets the four lifecycle plugins through `.codex-plugin`
-manifests, a repo-scoped marketplace, and plugin-level `.mcp.json` wiring that
-uses Xcode's official MCP bridge.
+Codex-first Apple app development toolkit for this repository.
 
-## Development Lifecycle
+The canonical system is no longer "a marketplace of four lifecycle plugins." It
+is one repo-scoped Codex operating layer that combines:
 
-The lifecycle table below describes the complete toolkit. Its command and agent
-columns are Claude-only. For Codex, use only the `Codex / OpenAI` section
-below, `AGENTS.md`, `.agents/plugins/marketplace.json`, the lifecycle plugin
-manifests, and the packaged Codex skill trees as the live install surface.
+- one root Codex plugin manifest
+- one repo-local Codex runtime in `.codex/`
+- one root Xcode MCP bridge config
+- one primary orchestration entrypoint skill
+- one generated parity contract that documents the supported surface
 
-```
-Phase 0: Scaffold → Phase 1: Architecture → Phase 2: Design → Phase 3: Implement → Phase 4: Build → Phase 5: Review → Phase 6: Test
-```
+## Canonical Source Of Truth
 
-| Phase | Skills | Agent | Commands |
-|-------|--------|-------|----------|
-| **0 — Scaffold** | `macos-development`, `app-development-workflow`, `swift-app-lifecycle` | — | `/write-plan`, `/brainstorm` |
-| **1 — Architecture** | `macos-development` (architecture-patterns), `swift-app-lifecycle` | `macos-architect` | — |
-| **2 — Design** | `macos-app-design`, `apple-liquid-glass-design` | — | `/design-ui` |
-| **3 — Implement** | `swiftui-components`, `swiftui-ui-patterns`, `swift-networking`, `swift-concurrency`, `swift-actor-persistence`, `swift-localization`, 8 API refs | `ui-developer` | `/implement-component` |
-| **4 — Build** | `xcode-mcp`, `autonomous-ui-workflow` | — | `/build`, `/fix-build`, `/run-app` |
-| **5 — Review** | `swiftui-view-refactor`, `code-analyzer`, `swift-concurrency` (checklist), `audit-context-building` | `swift-reviewer`, `code-reviewer` | `/review`, `/refactor-view`, `/swift-style` |
-| **6 — Test** | `ios-testing` | — | `/test` |
+Treat these files as the live Codex contract for this repo:
 
-## Quick Start (Full Toolkit / Claude-first)
+- `.codex-plugin/plugin.json`
+- `.codex/config.toml`
+- `.codex/hooks.json`
+- `.codex/agents/*.toml`
+- `.codex/skills/codex-operating-layer/`
+- `.codex/parity-source.toml`
+- `.codex/contracts/parity-contract.json`
+- `.mcp.json`
+- `.agents/plugins/marketplace.json`
+- `.agents/skills/plugin-creator/`
+- `AGENTS.md`
 
-These examples include Claude-only slash commands. Codex users should skip to
-the `Codex / OpenAI` section below.
+Everything else is secondary. In particular, the older plugin-local manifests in
+`plugins/*/.codex-plugin/` are now backing bundles for lifecycle skills, not the
+canonical Codex operating contract.
 
-**New macOS app:** Load `app-development-workflow` skill, follow phases 0-6.
+## What This Repo Provides
 
-**New feature:** `/feature-dev` → `autonomous-ui-workflow` → `/test`
+### 1. Root install surface
 
-**Code review:** `code-analyzer` → `swiftui-ui-patterns` (checklist) → `swiftui-view-refactor`
+The repo now exposes one canonical local plugin:
 
-## Installation
+- name: `codex-swift-toolkit`
+- manifest: `.codex-plugin/plugin.json`
+- marketplace wrapper: `.agents/plugins/marketplace.json`
+- Xcode MCP bridge: `.mcp.json`
 
-### Claude Code
+### 2. Repo-local runtime layer
 
-```bash
-git clone https://github.com/kmshdev/claude-swift-toolkit.git
-claude --plugin ./claude-swift-toolkit
-```
+The runtime lives in `.codex/` and adds:
 
-### Claude Project Settings
+- repo-scoped hooks
+- custom specialist agents
+- curated skill activation through `skills.config`
+- generated parity-contract metadata
 
-Add to your project's `.claude/settings.json`:
+### 3. One primary workflow entrypoint
 
-```json
-{
-  "plugins": [
-    "../claude-swift-toolkit"
-  ]
-}
-```
+Start with:
 
-### Claude via npx (if published to skills.sh)
+- `codex-operating-layer`
 
-```bash
-npx skills add kmshdev/claude-swift-toolkit
-```
+That skill is the top-level orchestrator for the repo. It maps the task to the
+right outcome lane, loads the narrowest skills, delegates to the right
+specialist agents, and reruns Codex-surface validation when the canonical layer
+changes.
+
+### 4. Backing lifecycle knowledge
+
+The operating layer reuses the existing Apple lifecycle skill library from the
+repo's backing bundles. Those skills are activated through `.codex/config.toml`
+rather than treated as four separate primary install units.
+
+## Quick Start
 
 ### Codex / OpenAI
 
-This repo now includes a Codex marketplace at `.agents/plugins/marketplace.json`
-and `.codex-plugin/plugin.json` manifests for the lifecycle plugins that are
-currently packaged for Codex:
+1. Clone the repo.
+2. Open the repo in Codex.
+3. Install the local plugin from `.agents/plugins/marketplace.json`.
+4. Restart Codex after changing `.codex-plugin/plugin.json`, `.codex/config.toml`,
+   `.codex/hooks.json`, or `.agents/plugins/marketplace.json`.
+5. Start with `$codex-operating-layer`.
+6. In the Codex app, enabled skills also appear in the slash-command list.
 
-- `apple-app-architect`
-- `apple-design-system`
-- `apple-app-builder`
-- `apple-app-quality`
+### Xcode requirement
 
-Clone the repo, open the plugin directory in Codex, choose the repo marketplace
-source from this checkout, and install whichever lifecycle plugins you need.
-Restart Codex after changing the marketplace or any `.codex-plugin/plugin.json`
-file so the local install picks up the new metadata.
+The build and test lanes depend on Xcode's official MCP bridge via `xcrun mcpbridge`.
+Xcode must be installed and running before the bridge can attach.
 
-For Codex, treat this section, `AGENTS.md`,
-`.agents/plugins/marketplace.json`, and the four lifecycle plugin manifests as
-the live source of truth. The command inventory, agent tables, hooks, and usage
-examples elsewhere in this README describe the broader Claude-first toolkit and
-are not part of the packaged Codex surface.
+## Runtime Layout
 
-`apple-app-builder` and `apple-app-quality` now bundle plugin-local
-`.mcp.json` files that start Xcode's official MCP bridge through
-`xcrun mcpbridge`, so their Codex build and test guidance no longer relies on
-an undeclared host MCP setup. Xcode must be installed and running before the
-bridge can attach.
+| Path | Role |
+|------|------|
+| `.codex-plugin/plugin.json` | Canonical root plugin manifest |
+| `.agents/plugins/marketplace.json` | Local install wrapper pointing at repo root |
+| `.mcp.json` | Root Xcode MCP bridge configuration |
+| `.codex/config.toml` | Repo-local Codex runtime config and curated skill activation |
+| `.codex/hooks.json` | Repo-local experimental Bash-only hook policy pack plus the Stop gate |
+| `.codex/hooks/` | Hook scripts for session context, Bash policy, and stop-time validation |
+| `.codex/hooks/policies/` | Declarative policy files for Bash guardrails and completion guidance |
+| `.codex/agents/` | Specialist custom-agent definitions |
+| `.codex/skills/codex-operating-layer/` | Primary orchestration entrypoint |
+| `.codex/skills/codex-runtime-doctor/` | Diagnosis-only readiness entrypoint for runtime and Xcode bridge health |
+| `.codex/parity-source.toml` | Human-authored outcome and validation source |
+| `.codex/contracts/parity-contract.json` | Generated machine-readable Codex surface contract |
+| `.agents/skills/plugin-creator/` | Integrated runtime-tooling skill for backing-bundle scaffolding |
+| `scripts/generate_codex_parity_contract.py` | Contract generator |
+| `scripts/validate-codex-support.py` | Canonical Codex surface validator |
 
-When editing the Codex marketplace, manifests, `.mcp.json`, or Codex-exposed
-skills, run:
+## Specialist Agents
 
-```bash
-python3 scripts/validate-codex-support.py
-```
+The operating layer uses these repo-local custom agents:
 
-`hookify` remains Claude-only for now because its current surface is built around
-Claude commands, agents, and hooks rather than Codex-packaged skills, apps, or
-MCP config.
+- `swift_architect` — planning, lifecycle boundaries, module seams
+- `swift_designer` — HIG alignment, Liquid Glass, component-system guidance
+- `swift_builder` — implementation, Xcode MCP workflows, runtime changes
+- `swift_quality` — review, refactor, testing, contract truth checks
 
-See `docs/codex-plugin-migration/README.md` for the archived migration
-rationale and research snapshot. Use the `Codex / OpenAI` section of this
-README, `AGENTS.md`, `.agents/plugins/marketplace.json`, and the plugin
-manifests as the live Codex source of truth.
+## Outcome Lanes
 
-## Dependencies
+The parity contract currently defines six high-value lanes:
 
-### Required
+- `plan-architecture` — app planning, architecture, lifecycle setup
+- `design-system` — Apple HIG, Liquid Glass, SwiftUI reference work
+- `implementation-build` — implementation, concurrency, networking, localization, Xcode-backed verification
+- `review-test` — read-heavy review, audit context, refactor, tests
+- `plugin-runtime` — Codex runtime, hooks, manifests, packaging, parity-contract work
+- `runtime-readiness` — diagnosis-only readiness checks for hooks, overlays, and the root Xcode bridge
 
-- **[obra/superpowers](https://github.com/obra/superpowers)** — Core workflow skills (29K+ installs)
-  ```bash
-  npx skills add obra/superpowers -g -y
-  ```
+The exact skill-to-lane mapping lives in `.codex/contracts/parity-contract.json`.
 
-### Recommended
+## Backing Skill Inventory
 
-- **[dimillian/skills@swiftui-view-refactor](https://skills.sh/dimillian/skills/swiftui-view-refactor)** — SwiftUI view refactoring (605 installs)
-  ```bash
-  npx skills add dimillian/skills@swiftui-view-refactor -g -y
-  ```
+The runtime currently activates the following backing skill families through
+`.codex/config.toml`:
 
-## Skills by Phase
-
-### Workflow (Phases 0-4)
-
-| Skill | Phase | Purpose |
-|-------|-------|---------|
-| `app-development-workflow` | 0-6 | Master lifecycle map — start here |
-| `autonomous-ui-workflow` | 2-4 | Inner UI loop: Spec → Build → Validate |
-| `macos-development` | 0-1 | macOS reference modules (architecture, SwiftData, Tahoe) |
-
-### Design (Phases 1-2)
-
-| Skill | Phase | Purpose |
-|-------|-------|---------|
-| `macos-app-design` | 1-2 | macOS HIG compliance, app archetypes |
-| `apple-liquid-glass-design` | 2-3 | Liquid Glass API reference and adoption guide |
-
-### Implementation (Phase 3)
-
-| Skill | Phase | Purpose |
-|-------|-------|---------|
-| `swiftui-components` | 3 | Reusable view patterns, templates, component library |
-| `swiftui-ui-patterns` | 3, 5 | Best practices + review checklist |
-
-### Swift Core (Phases 0-3)
-
-| Skill | Phase | Purpose |
-|-------|-------|---------|
-| `swift-networking` | 3 | URLSession async/await, API clients, error handling, retry |
-| `swift-concurrency` | 3, 5 | Actors, Sendable, structured concurrency, Swift 6 migration |
-| `swift-actor-persistence` | 3 | Thread-safe local storage with actor-based in-memory cache + file backing |
-| `swift-app-lifecycle` | 0-1 | App entry point, scenes, deep links, notifications |
-| `swift-localization` | 3 | String Catalogs, plurals, RTL layout, locale-aware formatting |
-
-### API Reference (Phase 3)
-
-| Skill | Covers |
-|-------|--------|
-| `swiftui-material-api` | Material backgrounds, shapes, stroke patterns |
-| `swiftui-iconography-api` | SF Symbols, rendering modes, symbol effects |
-| `swiftui-colors-api` | Semantic colors, gradients, tints, dark mode |
-| `swiftui-typography-api` | Fonts, text styles, Dynamic Type, text layout |
-| `swiftui-input-api` | Text fields, focus management, forms, pickers |
-| `swiftui-effects-api` | Blur, shadow, opacity, Canvas, Metal shaders |
-| `swiftui-presentation-api` | Sheets, popovers, alerts, detents, inspectors |
-| `swiftui-26-api` | iOS 26 non-glass APIs: WebView, rich text, @Animatable, UIKit bridge |
-
-### Tooling (Phase 4)
-
-| Skill | Purpose |
-|-------|---------|
-| `xcode-mcp` | Official Xcode MCP bridge for build, diagnostics, previews, and tests |
-
-### Review (Phase 5)
-
-| Skill | Purpose |
-|-------|---------|
-| `code-analyzer` | Structured code quality review (read-only) |
-| `swiftui-view-refactor` | View structure and ordering refactoring |
-| `audit-context-building` | Ultra-granular deep analysis |
-
-### Testing (Phase 6)
-
-| Skill | Purpose |
-|-------|---------|
-| `ios-testing` | XCTest + Swift Testing patterns |
-
-The remaining sections describe the broader Claude-first toolkit and are not
-part of the packaged Codex install surface.
-
-## Agents
-
-| Agent | Tools | Use Case |
-|-------|-------|----------|
-| **ui-developer** | Read/Write/Edit/Bash | Autonomous UI development with build verification |
-| **macos-architect** | Read/Grep/Glob/Edit/Bash | Architecture review and system design |
-| **code-reviewer** | Read-only | Code review and quality assessment |
-| **ios-developer** | Read/Write/Edit/Bash | iOS/iPadOS development with UIKit bridging |
-| **swift-reviewer** | Read-only | Swift code style review |
-| **code-architect** | General-purpose | Technical architecture decisions |
-| **code-explorer** | Read-only | Codebase exploration and analysis |
-| **skill-manager** | General-purpose | Skill creation and management |
-| **prompt-manager** | General-purpose | Prompt template management |
-| **conversation-analyzer** | Read-only | Conversation pattern analysis |
-
-## Commands
-
-### Development
-- `/build` — Build the Xcode project with error categorization
-- `/test` — Run unit and integration tests with failure analysis
-- `/run-app` — Build and launch on simulator or Mac
-- `/fix-build` — Diagnose and fix build errors systematically
-
-### UI Development
-- `/design-ui` — Launch autonomous UI workflow
-- `/implement-component` — Create or modify a SwiftUI view
-- `/review-ui` — Visual validation of implemented UI
-
-### Planning & Architecture
-- `/write-plan` — Create a detailed implementation plan
-- `/execute-plan` — Execute an existing markdown plan
-- `/brainstorm` — Ideate solutions for a feature or problem
-- `/feature-dev` — Full feature development workflow
-
-### Code Quality
-- `/review` — Run parallel review swarm (swift-reviewer + code-reviewer) with unified grading
-- `/swift-style` — Check Swift style, conventions, and modern API usage
-- `/refactor-view` — Analyze and refactor a SwiftUI view
-
-### Project Management
-- `/skills`, `/prompts`, `/revise-claude-md`
-
-### Utilities (Hook Management)
-- `/hookify` — Create a new hook rule
-- `/help` — Hookify documentation
-- `/list` — List active hook rules
-- `/configure` — Configure hookify settings
+- Core orchestration: `codex-operating-layer`
+- Runtime readiness: `codex-runtime-doctor` for diagnosis-only runtime and Xcode bridge checks
+- Runtime tooling: `plugin-creator` for backing-bundle scaffolding and external
+  marketplace files; the repo-root marketplace remains the single canonical
+  `./` install surface
+- Architecture: `app-development-workflow`, `macos-development`,
+  `swift-app-lifecycle`, `swift-project-scaffold`
+- Design system: `macos-app-design`, `apple-liquid-glass-design`,
+  `swiftui-components`, `swiftui-ui-patterns`, and the focused SwiftUI API
+  reference skills
+- Implementation and build: `autonomous-ui-workflow`, `swift-networking`,
+  `swift-concurrency`, `swift-localization`, `swift-actor-persistence`,
+  `xcode-mcp`
+- Quality: `code-analyzer`, `audit-context-building`, `swiftui-view-refactor`,
+  `ios-testing`
 
 ## Hooks
 
-Event-driven automation via Python scripts:
-- **userpromptsubmit.py** — Pre-process user input
-- **pretooluse.py** — Intercept tool calls
-- **posttooluse.py** — Process tool results
-- **stop.py** — Cleanup on conversation end
+Hooks are repo-scoped and experimental.
+`PreToolUse` and `PostToolUse` apply only to `Bash`.
+`Stop` remains the authoritative completion gate.
+`codex-runtime-doctor` is the diagnosis-only readiness entrypoint.
 
-## Usage Examples
+This repo uses them with one repo-local handler per configured event:
 
-### Full App Development Workflow
+- `SessionStart` injects canonical Codex operating-layer context from the
+  generated parity contract.
+- `PreToolUse` applies declarative Bash safety policy before a Bash command runs.
+- `PostToolUse` reviews Bash results and adds targeted follow-up guidance when
+  canonical runtime or bridge commands fail.
+- `UserPromptSubmit` is documented in the parity contract as available but
+  unused.
+- `Stop` regenerates and validates the Codex surface when canonical files have
+  changed, and remains the authoritative completion gate.
 
-```bash
-# Start with the lifecycle skill
-# Load app-development-workflow, follow Phase 0 → Phase 6
+Do not treat these hooks as a general Claude-style hook surface. They exist to
+keep the root Codex runtime truthful and self-checking.
 
-# Or jump to a specific phase:
-/design-ui          # Phase 2 — design UI
-/build              # Phase 4 — build and verify
-/test               # Phase 6 — run tests
-```
+## Validation
 
-### Autonomous UI Development
-
-```bash
-/design-ui                      # Full UI workflow
-/implement-component SidebarView  # Specific component
-/review-ui                      # Visual validation
-```
-
-### Code Quality
+When editing the canonical Codex layer, run:
 
 ```bash
-/swift-style                    # Style review
-/refactor-view Views/ContentView.swift  # Refactor
-# Load code-analyzer for architecture review
+python3 scripts/generate_codex_parity_contract.py
+python3 scripts/generate_codex_parity_contract.py --check
+python3 scripts/validate-codex-support.py
 ```
 
-## Integration with Kulpt
+Also rerun that stack when editing the integrated runtime-tooling skill at
+`.agents/skills/plugin-creator/`, because it is part of the canonical
+`plugin-runtime` lane.
 
-This plugin was extracted from the [Kulpt](https://github.com/kmshdev/kulpt) project — a native macOS resume builder with Liquid Glass design.
+## Legacy Note
 
-## Requirements
-
-- Claude Code CLI
-- macOS 14.0+ (for SwiftUI/Liquid Glass features)
-- Xcode 16.0+ (for SwiftUI API references to match)
-- Python 3.8+ (for hooks)
-
-## Contributing
-
-Fork and adapt for your Swift/macOS projects. Pull requests welcome for new skills, improved agent prompts, useful commands, and hook automation.
-
-## License
-
-MIT License — use freely, attribute if you share publicly.
-
-## Author
-
-**kmshdev** — Extracted from the Kulpt project's AI-powered development workflow.
+Claude-specific commands, hook workflows, and older plugin-local install shapes
+still exist in the repo, but they are not the canonical Codex story anymore.
+If you are intentionally working on Claude compatibility, use `CLAUDE.md` and
+those legacy surfaces directly. Otherwise, stay on the root Codex layer.

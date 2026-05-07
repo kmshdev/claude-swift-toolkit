@@ -1,0 +1,122 @@
+[features]
+codex_hooks = true
+
+[agents]
+max_threads = 6
+max_depth = 1
+
+[[skills.config]]
+path = "./skills/codex-operating-layer"
+enabled = true
+
+[[skills.config]]
+path = "./skills/codex-runtime-doctor"
+enabled = true
+
+[[skills.config]]
+path = "../.agents/skills/plugin-creator"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-architect/codex-skills/app-development-workflow"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-architect/codex-skills/macos-development"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-architect/skills/swift-app-lifecycle"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-architect/skills/swift-project-scaffold"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-architect/skills/swift-actor-persistence"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/macos-app-design"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/apple-liquid-glass-design"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-components"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-ui-patterns"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-colors-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-effects-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-iconography-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-input-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-material-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-presentation-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-typography-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-design-system/skills/swiftui-26-api"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-builder/codex-skills/autonomous-ui-workflow"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-builder/codex-skills/swift-networking"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-builder/codex-skills/swift-concurrency"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-builder/codex-skills/swift-localization"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-builder/codex-skills/xcode-mcp"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-quality/codex-skills/code-analyzer"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-quality/codex-skills/audit-context-building"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-quality/codex-skills/swiftui-view-refactor"
+enabled = true
+
+[[skills.config]]
+path = "../plugins/apple-app-quality/codex-skills/ios-testing"
+enabled = true

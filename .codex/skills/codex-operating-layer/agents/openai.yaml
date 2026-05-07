@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Operating Layer"
+  short_description: "Primary orchestration entrypoint for the repo's canonical Codex runtime"
+  default_prompt: "Use $codex-operating-layer to route this task through the repo's canonical Codex runtime, specialist agents, and parity contract."

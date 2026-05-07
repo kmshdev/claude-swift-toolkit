@@ -1,0 +1,44 @@
+{
+  "name": "codex-swift-toolkit",
+  "version": "2.0.0",
+  "description": "Canonical Codex operating layer for Apple app lifecycle work — orchestrator skill, repo-local runtime, custom agents, hooks, and Xcode MCP wiring.",
+  "author": {
+    "name": "kmshdev",
+    "url": "https://github.com/kmshdev"
+  },
+  "homepage": "https://github.com/kmshdev/claude-swift-toolkit",
+  "repository": "https://github.com/kmshdev/claude-swift-toolkit",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "swift",
+    "swiftui",
+    "ios",
+    "macos",
+    "hooks",
+    "subagents",
+    "xcode",
+    "orchestration"
+  ],
+  "skills": "./.codex/skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex Swift Toolkit",
+    "shortDescription": "Repo-scoped Codex operating layer for Apple app work",
+    "longDescription": "Codex-first operating layer for this repository: one primary orchestration entrypoint, an experimental Bash-only hook policy pack, repo-local custom agents, the authoritative completion gate, and a diagnosis-only readiness entrypoint through codex-runtime-doctor.",
+    "developerName": "kmshdev",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/kmshdev/claude-swift-toolkit",
+    "defaultPrompt": [
+      "Use $codex-operating-layer to plan, build, and review Apple app work in this repo.",
+      "Treat PreToolUse and PostToolUse as Bash-only guardrails, and Stop as the authoritative completion gate.",
+      "Use codex-runtime-doctor as the diagnosis-only readiness entrypoint before deeper runtime or Xcode bridge troubleshooting."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
